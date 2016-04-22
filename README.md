@@ -17,3 +17,7 @@ gradle build
 
 ```
 
+### Use for eclipse
+```
+gradle eclipse
+```
