@@ -437,6 +437,7 @@ public final class FileUtil {
 					ZipEntry zipEntry = enumeration.nextElement();
 					String zipEntryName = zipEntry.getName();
 					InputStream inputStream = null;
+					InputStream newInputStream = null;
 					if (zipEntryPathMap.containsKey(zipEntryName)) {
 						ZipEntryPath zipEntryPath = zipEntryPathMap.get(zipEntryName);
 						needToAddEntryNameList.remove(zipEntryName);
@@ -448,21 +449,28 @@ public final class FileUtil {
 					if (inputStream == null) {
 						inputStream = zipFile.getInputStream(zipEntry);
 						if(zipProcessor!=null){
-							inputStream = zipProcessor.zipEntryProcess(zipEntryName, inputStream);
+							newInputStream = zipProcessor.zipEntryProcess(zipEntryName, inputStream);
+							if(newInputStream!=null&&!newInputStream.equals(inputStream)){
+								inputStream.close();
+							}
 						}
 					}
 					ZipEntry newZipEntry=new ZipEntry(zipEntryName);
-					addZipEntry(zipOutputStream, newZipEntry, inputStream);
+					addZipEntry(zipOutputStream, newZipEntry, newInputStream);
 				}
 			}
 			for (String zipEntryName : needToAddEntryNameList) {
 				ZipEntryPath zipEntryPath = zipEntryPathMap.get(zipEntryName);
 				ZipEntry zipEntry = zipEntryPath.zipEntry;
 				InputStream inputStream = new FileInputStream(zipEntryPath.fullFilename);
+				InputStream newInputStream = null;
 				if(zipProcessor!=null){
-					inputStream = zipProcessor.zipEntryProcess(zipEntry.getName(), inputStream);
+					newInputStream = zipProcessor.zipEntryProcess(zipEntry.getName(), inputStream);
+					if(newInputStream!=null&&!newInputStream.equals(inputStream)){
+						inputStream.close();
+					}
 				}
-				addZipEntry(zipOutputStream, zipEntry, inputStream);
+				addZipEntry(zipOutputStream, zipEntry, newInputStream);
 			}
 		} catch (Exception e) {
 			throw new FileUtilException(e);
@@ -529,6 +537,9 @@ public final class FileUtil {
 	 * @throws Exception
 	 */
 	public static void addZipEntry(ZipOutputStream zipOutputStream, ZipEntry zipEntry, InputStream inputStream) throws Exception {
+		if (zipOutputStream == null || inputStream == null) {
+			return;
+		}
 		try {
 			zipOutputStream.putNextEntry(zipEntry);
 			byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
@@ -791,6 +802,9 @@ public final class FileUtil {
 		queue.add(sourceDirectoryFile);
 		while (!queue.isEmpty()) {
 			File file = queue.poll();
+			if(!file.exists()){
+				continue;
+			}
 			boolean result = false;
 			if (!file.isHidden() || includeHidden) {
 				result = true;
