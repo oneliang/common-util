@@ -509,7 +509,8 @@ public final class FileUtil {
 						while (enumeration.hasMoreElements()) {
 							ZipEntry zipEntry = enumeration.nextElement();
 							InputStream inputStream = zipFile.getInputStream(zipEntry);
-							addZipEntry(zipOutputStream, zipEntry, inputStream);
+							ZipEntry newZipEntry=new ZipEntry(zipEntry.getName());
+							addZipEntry(zipOutputStream, newZipEntry, inputStream);
 						}
 						zipFile.close();
 					}
@@ -834,12 +835,12 @@ public final class FileUtil {
 	}
 
 	/**
-	 * get zip entry hash map
+	 * get zip entry map
 	 * 
 	 * @param zipFile
 	 * @return Map<String, String>
 	 */
-	private static Map<String, String> getZipEntryHashMap(String zipFullFilename) {
+	private static Map<String, String> getZipEntryMap(String zipFullFilename) {
 		ZipFile zipFile = null;
 		Map<String, String> map = new HashMap<String, String>();
 		try {
@@ -875,7 +876,7 @@ public final class FileUtil {
 	 * @param newZipFullFilename
 	 */
 	public static void differZip(String differentOutputFullFilename, String oldZipFullFilename, String newZipFullFilename) {
-		Map<String, String> map = getZipEntryHashMap(oldZipFullFilename);
+		Map<String, String> map = getZipEntryMap(oldZipFullFilename);
 		ZipFile newZipFile = null;
 		ZipOutputStream zipOutputStream = null;
 		try {
@@ -893,7 +894,8 @@ public final class FileUtil {
 					// is a modified zip entry
 					if (oldZipEntryHash == null || (!newZipEntryHash.equals(oldZipEntryHash))) {
 						System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
-						addZipEntry(zipOutputStream, zipEntry, newZipFile.getInputStream(zipEntry));
+						ZipEntry newZipEntry=new ZipEntry(zipEntryName);
+						addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
 					}
 				}
 			}
