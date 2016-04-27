@@ -38,7 +38,7 @@ public final class FileUpload {
 		FileUploadResult fileUploadResult=null;
 		OutputStream outputStream=null;
 		try{
-			outputStream=new FileOutputStream(saveFilePath+filename);
+			outputStream=new FileOutputStream(saveFilePath+Constant.Symbol.SLASH_LEFT+filename);
 			byte[] buffer=new byte[Constant.Capacity.BYTES_PER_KB];
 			int length=-1;
 			while((length=inputStream.read(buffer,0,buffer.length))!=-1){
@@ -124,7 +124,7 @@ public final class FileUpload {
 										saveFilename=tempFilename+originalFilename.substring(originalFilename.lastIndexOf(Constant.Symbol.DOT),originalFilename.length());
 									}
 								}
-								outputStream=new FileOutputStream(saveFilePath+saveFilename);
+								outputStream=new FileOutputStream(saveFilePath+Constant.Symbol.SLASH_LEFT+saveFilename);
 								int i=0;
 								boolean mayBeEndSign=false;
 								byte[] byteArray=new byte[headByteArray.length];
