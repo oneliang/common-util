@@ -23,7 +23,8 @@ sourceSets {
     }
 }
 
-repositories {  
+repositories {
+    mavenLocal()
     maven {
     	url 'http://repo1.maven.org/maven2' 
     }
