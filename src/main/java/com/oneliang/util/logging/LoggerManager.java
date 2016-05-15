@@ -16,6 +16,8 @@ public final class LoggerManager {
 	private static final Map<String, Logger> loggerPatternMap=new ConcurrentHashMap<String, Logger>();
 	private static final Set<String> loggerPatternSet=new ConcurrentSkipListSet<String>();
 
+	private LoggerManager(){}
+
 	/**
 	 * get logger
 	 * @param clazz
