@@ -8,6 +8,7 @@ import java.io.PrintStream;
 
 import com.oneliang.Constant;
 import com.oneliang.util.common.StringUtil;
+import com.oneliang.util.file.FileUtil;
 
 public class FileLogger extends AbstractLogger {
 
@@ -19,6 +20,7 @@ public class FileLogger extends AbstractLogger {
 			throw new NullPointerException("outputFile can not be null.");
 		}else{
 			try {
+				FileUtil.createFile(outputFile.getAbsolutePath());
 				this.fileOutputStream=new FileOutputStream(outputFile);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
