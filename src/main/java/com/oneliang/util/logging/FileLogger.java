@@ -10,7 +10,7 @@ import com.oneliang.Constant;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
 
-public class FileLogger extends AbstractLogger {
+public class FileLogger extends BaseLogger {
 
 	private FileOutputStream fileOutputStream=null;
 
@@ -29,7 +29,7 @@ public class FileLogger extends AbstractLogger {
 	}
 
 	protected void log(Level level, Object message, Throwable throwable) {
-		String messageString=(message==null?StringUtil.NULL:message.toString())+StringUtil.CRLF_STRING;
+		String messageString=this.processMessage(level, message, throwable)+StringUtil.CRLF_STRING;
 		try {
 			this.fileOutputStream.write(messageString.getBytes(Constant.Encoding.UTF8));
 			if(throwable!=null){
@@ -51,6 +51,5 @@ public class FileLogger extends AbstractLogger {
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		
 	}
 }
