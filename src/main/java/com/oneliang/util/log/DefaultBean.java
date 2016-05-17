@@ -1,5 +1,6 @@
 package com.oneliang.util.log;
 
+@Deprecated
 public class DefaultBean{
 
 	public static final String DEFAULT="default";

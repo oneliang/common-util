@@ -26,6 +26,7 @@ import com.oneliang.util.concurrent.ResourceQueueThread;
 import com.oneliang.util.concurrent.ResourceQueueThread.ResourceProcessor;
 import com.oneliang.util.file.FileUtil;
 
+@Deprecated
 public class LoggerManager implements Runnable,ResourceProcessor<LoggerManager.LoggerMessage>{
 
 	private static final long SLEEP_TIME=20000;

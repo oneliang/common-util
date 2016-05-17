@@ -4,11 +4,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.oneliang.Constant;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 public class ResourceQueueThread<T extends Object> implements Runnable {
 
-	private static final Logger logger=Logger.getLogger(ResourceQueueThread.class);
+	private static final Logger logger=LoggerManager.getLogger(ResourceQueueThread.class);
 
 	private Queue<T> resourceQueue=new ConcurrentLinkedQueue<T>();
 	private Thread thread=null;
@@ -44,7 +45,7 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
 					}
 				}
 			}catch (InterruptedException e) {
-				logger.log("need to interrupt:"+e.getMessage());
+				logger.verbose("need to interrupt:"+e.getMessage());
 				Thread.currentThread().interrupt();
 			}catch (Exception e){
 				logger.error(Constant.Base.EXCEPTION, e);

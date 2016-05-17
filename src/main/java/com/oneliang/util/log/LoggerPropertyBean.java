@@ -1,5 +1,6 @@
 package com.oneliang.util.log;
 
+@Deprecated
 public class LoggerPropertyBean{
 
 	public static final String TAG_PROPERTY="property";

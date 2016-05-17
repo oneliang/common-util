@@ -8,6 +8,7 @@ import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.common.TimeUtil;
 import com.oneliang.util.log.LoggerManager.LoggerMessage;
 
+@Deprecated
 public class Logger{
 
 	static final String PATTERN_CLASS_NAME="%c";

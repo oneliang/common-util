@@ -1,5 +1,6 @@
 package com.oneliang.util.log;
 
+@Deprecated
 public class ErrorBean{
 
 	public static final String ERROR="error";

@@ -1,7 +1,6 @@
 package com.oneliang.util.log;
 
-
-
+@Deprecated
 public class LoggerBean{
 
 	public static final String TAG_LOGGER="logger";

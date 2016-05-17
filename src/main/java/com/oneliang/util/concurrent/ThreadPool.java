@@ -4,11 +4,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.oneliang.Constant;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 public final class ThreadPool implements Runnable {
 
-	private static final Logger logger = Logger.getLogger(ThreadPool.class);
+	private static final Logger logger = LoggerManager.getLogger(ThreadPool.class);
 
 	private int minThreads = 0;
 	private int maxThreads = 1;
@@ -47,7 +48,7 @@ public final class ThreadPool implements Runnable {
 							}
 							ThreadTask threadTask = this.threadTaskQueue.poll();
 							if (threadTask != null) {
-								logger.log("second");
+								logger.verbose("second");
 								innerThread.setCurrentThreadTask(threadTask);
 							}
 						} else if (innerThread == null) {
@@ -57,7 +58,7 @@ public final class ThreadPool implements Runnable {
 							}
 							ThreadTask threadTask = this.threadTaskQueue.poll();
 							if (threadTask != null) {
-								logger.log("first");
+								logger.verbose("first");
 								innerThread = new InnerThread(this);
 								innerThread.setCurrentThreadTask(threadTask);
 								innerThread.start();
@@ -69,20 +70,20 @@ public final class ThreadPool implements Runnable {
 					}
 					if(hasAllInnerThreadBusy){
 						synchronized (this) {
-							logger.log("All inner thread busy,waiting");
+							logger.verbose("All inner thread busy,waiting");
 							this.wait();
 						}
-						logger.log("after wait");
+						logger.verbose("after wait");
 					}
 				} else {
 					synchronized (this) {
-						logger.log("waiting");
+						logger.verbose("waiting");
 						this.wait();
 					}
-					logger.log("after wait");
+					logger.verbose("after wait");
 				}
 			} catch (InterruptedException e) {
-				logger.log("Thread pool need to interrupt:" + e.getMessage());
+				logger.verbose("Thread pool need to interrupt:" + e.getMessage());
 				Thread.currentThread().interrupt();
 			} catch (Exception e) {
 				logger.error(Constant.Base.EXCEPTION, e);
@@ -179,7 +180,7 @@ public final class ThreadPool implements Runnable {
 
 	private static class InnerThread implements Runnable {
 
-		private static final Logger logger = Logger.getLogger(InnerThread.class);
+		private static final Logger logger = LoggerManager.getLogger(InnerThread.class);
 
 		private ThreadPool threadPool=null;
 		private long beginTimeMillis = 0;
@@ -232,7 +233,7 @@ public final class ThreadPool implements Runnable {
 				try {
 					synchronized (this) {
 						if (this.currentThreadTask != null) {
-							logger.log(this + "--begin--");
+							logger.verbose(this + "--begin--");
 							this.beginTimeMillis = System.currentTimeMillis();
 							try {
 								this.currentThreadTask.runTask();
@@ -240,7 +241,7 @@ public final class ThreadPool implements Runnable {
 								this.finishedTimeMillis = System.currentTimeMillis();
 								this.finishedCount++;
 								this.currentThreadTask = null;
-								logger.log(this + "--end--cost:" + (this.finishedTimeMillis - this.beginTimeMillis));
+								logger.verbose(this + "--end--cost:" + (this.finishedTimeMillis - this.beginTimeMillis));
 							}
 						}
 						if(this.threadPool!=null){
@@ -252,7 +253,7 @@ public final class ThreadPool implements Runnable {
 						this.wait();
 					}
 				} catch (InterruptedException e) {
-					logger.log("Inner thread need to interrupt:" + Thread.currentThread().getName()+",message:"+e.getMessage());
+					logger.verbose("Inner thread need to interrupt:" + Thread.currentThread().getName()+",message:"+e.getMessage());
 					Thread.currentThread().interrupt();
 				} catch (Exception e) {
 					logger.error(Constant.Base.EXCEPTION, e);
@@ -306,7 +307,7 @@ public final class ThreadPool implements Runnable {
 	}
 
 	private static class DaemonThread implements Runnable {
-		private static final Logger logger = Logger.getLogger(DaemonThread.class);
+		private static final Logger logger = LoggerManager.getLogger(DaemonThread.class);
 		private static final long THREAD_WAIT_TIME = 5000;
 
 		private Queue<InnerThread> innerThreadQueue = new ConcurrentLinkedQueue<InnerThread>();
@@ -342,7 +343,7 @@ public final class ThreadPool implements Runnable {
 							if (state == Thread.State.TERMINATED) {
 								innerThread.restart();
 							}
-							logger.log(innerThread.toString() + "---" + innerThread.isIdle() + "---execute:" + innerThread.getExecuteCount() + "---finished:" + innerThread.getFinishedCount());
+							logger.verbose(innerThread.toString() + "---" + innerThread.isIdle() + "---execute:" + innerThread.getExecuteCount() + "---finished:" + innerThread.getFinishedCount());
 						}
 						synchronized (this) {
 							this.wait(THREAD_WAIT_TIME);
@@ -353,7 +354,7 @@ public final class ThreadPool implements Runnable {
 						}
 					}
 				} catch (InterruptedException e) {
-					logger.log("Daemon thread need to interrupt:" + e.getMessage());
+					logger.verbose("Daemon thread need to interrupt:" + e.getMessage());
 					Thread.currentThread().interrupt();
 				} catch (Exception e) {
 					logger.error(Constant.Base.EXCEPTION, e);

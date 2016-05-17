@@ -1,5 +1,6 @@
 package com.oneliang.util.log;
 
+@Deprecated
 public class LevelBean{
 
 	public static final String LEVEL="level";

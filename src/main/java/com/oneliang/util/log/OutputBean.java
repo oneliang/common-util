@@ -1,5 +1,6 @@
 package com.oneliang.util.log;
 
+@Deprecated
 public class OutputBean{
 
 	public static final String OUTPUT="output";
