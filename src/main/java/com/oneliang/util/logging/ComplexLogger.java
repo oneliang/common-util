@@ -20,7 +20,7 @@ public class ComplexLogger extends AbstractLogger {
 	 * log
 	 */
 	protected void log(Level level, Object message, Throwable throwable) {
-		if(loggerList!=null){
+		if(this.loggerList!=null){
 			for(AbstractLogger logger:this.loggerList){
 				logger.log(level, message, throwable);
 			}
