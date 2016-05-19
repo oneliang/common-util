@@ -17,7 +17,7 @@ public class TaskNodeThreadTask implements ThreadTask {
 	}
 	public void runTask() {
 		long begin=System.currentTimeMillis();
-		logger.verbose(taskNode.getName()+" ready");
+		logger.info(taskNode.getName()+" ready");
 		while(!taskNode.isAllParentFinished()){
 			synchronized(taskNode){
 				try {
@@ -30,7 +30,7 @@ public class TaskNodeThreadTask implements ThreadTask {
 		long runBegin=System.currentTimeMillis();
 		try{
 			if(taskNode.getRunnable()!=null){
-				logger.verbose(taskNode.getName()+" start");
+				logger.info(taskNode.getName()+" start");
 				taskNode.getRunnable().run();
 			}
 		}catch(Exception e){
@@ -49,7 +49,7 @@ public class TaskNodeThreadTask implements ThreadTask {
 			}
 		}
 		long taskCost=System.currentTimeMillis()-begin;
-		logger.verbose(taskNode.getName()+" end,task cost:"+taskCost+",run cost:"+runCost+",waiting:"+(taskCost-runCost));
+		logger.info(taskNode.getName()+" end,task cost:"+taskCost+",run cost:"+runCost+",waiting:"+(taskCost-runCost));
 		this.taskNode.setRunCostTime(runCost);
 		if(this.taskEngine.isDefaultMode()){
 			if(this.taskEngine.isAllTaskNodeFinished()){
