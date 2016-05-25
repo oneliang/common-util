@@ -1,5 +1,10 @@
 package com.oneliang.util.common;
 
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +14,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import com.oneliang.Constant;
 import com.oneliang.exception.MethodInvokeException;
 import com.oneliang.exception.MethodNotFoundException;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 /**
  * reflect the object property and invoke the method
@@ -16,6 +23,8 @@ import com.oneliang.exception.MethodNotFoundException;
  * @since 2008-04-??
  */
 public final class ObjectUtil{
+
+	private static final Logger logger=LoggerManager.getLogger(ObjectUtil.class);
 
 	private ObjectUtil(){}
 
@@ -269,5 +278,58 @@ public final class ObjectUtil{
 			throw new MethodInvokeException(e);
 		}
 		return value;
+	}
+
+	/**
+	 * read object
+	 * @param inputStream
+	 * @return Object
+	 */
+	public static Object readObject(InputStream inputStream){
+		Object object=null;
+		if(inputStream!=null){
+			ObjectInputStream objectInputStream=null;
+			try {
+				objectInputStream=new ObjectInputStream(inputStream);
+				object=objectInputStream.readObject();
+			} catch (Exception e) {
+				logger.warning("Read exception:"+e.getMessage());
+			} finally{
+				if(objectInputStream!=null){
+					try{
+						objectInputStream.close();
+					}catch(Exception e){
+						logger.warning("Read close exception:"+e.getMessage());
+					}
+				}
+			}
+		}
+		return object;
+	}
+
+	/**
+	 * write object
+	 * @param serializable
+	 * @param outputStream
+	 */
+	public static void writeObject(Serializable serializable, OutputStream outputStream){
+		if(serializable!=null&&outputStream!=null){
+			ObjectOutputStream objectOutputStream=null;
+			try{
+				objectOutputStream=new ObjectOutputStream(outputStream);
+				objectOutputStream.writeObject(serializable);
+				objectOutputStream.flush();
+			} catch (Exception e){
+				logger.warning("Write exception:"+e.getMessage());
+			} finally{
+				if(objectOutputStream!=null){
+					try{
+						objectOutputStream.close();
+					}catch(Exception e){
+						logger.warning("Write close exception:"+e.getMessage());
+					}
+				}
+			}
+		}
 	}
 }

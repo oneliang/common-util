@@ -268,7 +268,7 @@ public final class Generator{
 		String result=null;
 		if(fullFilename!=null){
 			try{
-				result=MD5File(new FileInputStream(fullFilename));
+				result=MD5(new FileInputStream(fullFilename));
 			}catch(Exception e){
 				throw new RuntimeException(e);
 			}
@@ -277,11 +277,11 @@ public final class Generator{
 	}
 
 	/**
-	 * md5 file
+	 * md5
 	 * @param inputStream
 	 * @return String
 	 */
-	public static String MD5File(final InputStream inputStream) {
+	public static String MD5(final InputStream inputStream) {
 		String result=null;
 		if(inputStream!=null){
 			try {
