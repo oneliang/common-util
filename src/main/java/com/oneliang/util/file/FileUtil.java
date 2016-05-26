@@ -453,6 +453,8 @@ public final class FileUtil {
 							if(newInputStream!=null&&!newInputStream.equals(inputStream)){
 								inputStream.close();
 							}
+						}else{
+							newInputStream = inputStream;
 						}
 					}
 					ZipEntry newZipEntry=new ZipEntry(zipEntryName);
@@ -469,6 +471,8 @@ public final class FileUtil {
 					if(newInputStream!=null&&!newInputStream.equals(inputStream)){
 						inputStream.close();
 					}
+				}else{
+					newInputStream = inputStream;
 				}
 				addZipEntry(zipOutputStream, zipEntry, newInputStream);
 			}
@@ -1331,8 +1335,7 @@ public final class FileUtil {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String outputZipFullFilename = "/D:/a/b.zip";
-		mergeZip(outputZipFullFilename, Arrays.asList("/D:/a.zip", "/D:/b.zip"));
+		FileUtil.zip("/D:/a.jar", "/D:/Dandelion/git/wechat/app/build/intermediates/classes/debug");
 	}
 
 }
