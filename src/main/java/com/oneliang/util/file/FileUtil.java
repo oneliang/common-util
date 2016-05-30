@@ -17,10 +17,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.zip.ZipEntry;
@@ -30,6 +30,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.oneliang.Constant;
 import com.oneliang.util.common.Generator;
+import com.oneliang.util.common.ObjectUtil;
 import com.oneliang.util.common.StringUtil;
 
 /**
@@ -360,7 +361,9 @@ public final class FileUtil {
 	 * @param zipProcessor
 	 */
 	public static void zip(String outputZipFullFilename, String directory, String fileSuffix, ZipProcessor zipProcessor) {
-		List<String> fileList = FileUtil.findMatchFile(directory, fileSuffix);
+		MatchOption matchOption=new MatchOption(directory);
+		matchOption.fileSuffix=fileSuffix;
+		List<String> fileList = FileUtil.findMatchFile(matchOption);
 		if (fileList != null && !fileList.isEmpty()) {
 			List<ZipEntryPath> zipEntryPathList = new ArrayList<ZipEntryPath>();
 			int outputFullFilenameLength = new File(directory).getAbsolutePath().length() + 1;
@@ -695,123 +698,47 @@ public final class FileUtil {
 	/**
 	 * find match file directory
 	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
+	 * @param matchOption
 	 * @return List<String>
 	 */
-	public static List<String> findMatchFileDirectory(String sourceDirectory, String fileSuffix) {
-		return findMatchFileOrMatchFileDirectory(sourceDirectory, fileSuffix, null, false, true);
-	}
-
-	/**
-	 * find match file directory
-	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
-	 * @param includeHidden
-	 * @return List<String>
-	 */
-	public static List<String> findMatchFileDirectory(String sourceDirectory, String fileSuffix, boolean includeHidden) {
-		return findMatchFileOrMatchFileDirectory(sourceDirectory, fileSuffix, null, false, includeHidden);
-	}
-
-	/**
-	 * find match file directory and append some string to rear
-	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
-	 * @param somethingAppendToRear
-	 * @return List<String>
-	 */
-	public static List<String> findMatchFileDirectory(String sourceDirectory, String fileSuffix, String somethingAppendToRear) {
-		return findMatchFileOrMatchFileDirectory(sourceDirectory, fileSuffix, somethingAppendToRear, false, true);
-	}
-
-	/**
-	 * find match file directory and append some string to rear
-	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
-	 * @param somethingAppendToRear
-	 * @param includeHidden
-	 * @return List<String>
-	 */
-	public static List<String> findMatchFileDirectory(String sourceDirectory, String fileSuffix, String somethingAppendToRear, boolean includeHidden) {
-		return findMatchFileOrMatchFileDirectory(sourceDirectory, fileSuffix, somethingAppendToRear, false, includeHidden);
+	public static List<String> findMatchFileDirectory(MatchOption matchOption) {
+		ObjectUtil.checkNotNull(matchOption, "matchOption can not be null.");
+		matchOption.findFile=false;
+		return findMatchFileOrMatchFileDirectory(matchOption);
 	}
 
 	/**
 	 * find match file
 	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
+	 * @param matchOption
 	 * @return List<String>
 	 */
-	public static List<String> findMatchFile(String sourceDirectory, String fileSuffix) {
-		return findMatchFileOrMatchFileDirectory(sourceDirectory, fileSuffix, null, true, true);
-	}
-
-	/**
-	 * find match file
-	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
-	 * @param includeHidden
-	 * @return List<String>
-	 */
-	public static List<String> findMatchFile(String sourceDirectory, String fileSuffix, boolean includeHidden) {
-		return findMatchFileOrMatchFileDirectory(sourceDirectory, fileSuffix, null, true, includeHidden);
-	}
-
-	/**
-	 * find match file and append some string to rear
-	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
-	 * @param somethingAppendToRear
-	 * @return List<String>
-	 */
-	public static List<String> findMatchFile(String sourceDirectory, String fileSuffix, String somethingAppendToRear) {
-		return findMatchFileOrMatchFileDirectory(sourceDirectory, fileSuffix, somethingAppendToRear, true, false);
-	}
-
-	/**
-	 * find match file and append some string to rear
-	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
-	 * @param somethingAppendToRear
-	 * @param includeHidden
-	 * @return List<String>
-	 */
-	public static List<String> findMatchFile(String sourceDirectory, String fileSuffix, String somethingAppendToRear, boolean includeHidden) {
-		return findMatchFileOrMatchFileDirectory(sourceDirectory, fileSuffix, somethingAppendToRear, true, includeHidden);
+	public static List<String> findMatchFile(MatchOption matchOption) {
+		ObjectUtil.checkNotNull(matchOption, "matchOption can not be null.");
+		matchOption.findFile=true;
+		return findMatchFileOrMatchFileDirectory(matchOption);
 	}
 
 	/**
 	 * find match file or match file directory
-	 * 
-	 * @param sourceDirectory
-	 * @param fileSuffix
-	 * @param somethingAppendToRear
-	 * @param isFindMatchFile
-	 * @param includeHidden
+	 * @param matchOption
 	 * @return List<String>
 	 */
-	private static List<String> findMatchFileOrMatchFileDirectory(String sourceDirectory, String fileSuffix, String somethingAppendToRear, boolean isFindMatchFile, boolean includeHidden) {
-		fileSuffix = StringUtil.nullToBlank(fileSuffix);
-		somethingAppendToRear = StringUtil.nullToBlank(somethingAppendToRear);
+	private static List<String> findMatchFileOrMatchFileDirectory(MatchOption matchOption) {
+		String fileSuffix = StringUtil.nullToBlank(matchOption.fileSuffix);
 		List<String> list = new ArrayList<String>();
-		File sourceDirectoryFile = new File(sourceDirectory);
 		Queue<File> queue = new ConcurrentLinkedQueue<File>();
-		queue.add(sourceDirectoryFile);
+		if(matchOption.directory!=null){
+			File directoryFile = new File(matchOption.directory);
+			queue.add(directoryFile);
+		}
 		while (!queue.isEmpty()) {
 			File file = queue.poll();
 			if(!file.exists()){
 				continue;
 			}
 			boolean result = false;
-			if (!file.isHidden() || includeHidden) {
+			if (!file.isHidden() || matchOption.includeHidden) {
 				result = true;
 			}
 			if (result) {
@@ -822,13 +749,29 @@ public final class FileUtil {
 					}
 				} else if (file.isFile()) {
 					if (file.getName().toLowerCase().endsWith(fileSuffix.toLowerCase())) {
-						if (isFindMatchFile) {
-							list.add(file.getAbsolutePath() + somethingAppendToRear);
+						if (matchOption.findFile) {
+							String fullFilename=null;
+							if(matchOption.processor!=null){
+								fullFilename=matchOption.processor.onMatch(file);
+								if(fullFilename==null){
+									fullFilename=file.getAbsolutePath();
+								}
+							}else{
+								fullFilename=file.getAbsolutePath();
+							}
+							list.add(fullFilename);
 						} else {
-							String parentPath = file.getParent();
-							parentPath = parentPath + somethingAppendToRear;
-							if (!list.contains(parentPath)) {
-								list.add(parentPath);
+							String parentFullFilename=null;
+							if(matchOption.processor!=null){
+								parentFullFilename=matchOption.processor.onMatch(file.getParentFile());
+								if(parentFullFilename==null){
+									parentFullFilename=file.getParentFile().getAbsolutePath();
+								}
+							}else{
+								parentFullFilename=file.getParentFile().getAbsolutePath();
+							}
+							if (!list.contains(parentFullFilename)) {
+								list.add(parentFullFilename);
 							}
 						}
 					}
@@ -930,7 +873,7 @@ public final class FileUtil {
 	 * @param newDirectory
 	 */
 	public static void differDirectory(String differenOutputDirectory, String oldDirectory, String newDirectory){
-		List<String> oldFileList=FileUtil.findMatchFile(oldDirectory, StringUtil.BLANK);
+		List<String> oldFileList=FileUtil.findMatchFile(new MatchOption(oldDirectory));
 		String oldDirectoryAbsolutePath=new File(oldDirectory).getAbsolutePath();
 		Map<String,String> oldFileMD5Map=new HashMap<String,String>();
 		differenOutputDirectory=new File(differenOutputDirectory).getAbsolutePath();
@@ -940,7 +883,7 @@ public final class FileUtil {
 			String value=Generator.MD5File(oldFile);
 			oldFileMD5Map.put(key, value);
 		}
-		List<String> newFileList=FileUtil.findMatchFile(newDirectory, StringUtil.BLANK);
+		List<String> newFileList=FileUtil.findMatchFile(new MatchOption(newDirectory));
 		String newDirectoryAbsolutePath=new File(newDirectory).getAbsolutePath();
 		for(String newFile:newFileList){
 			String key=new File(newFile).getAbsolutePath().substring(newDirectoryAbsolutePath.length()+1);
@@ -1030,59 +973,59 @@ public final class FileUtil {
 
 	/**
 	 * find file list with cache
-	 * @param sourceDirectoryList
+	 * @param directoryList
 	 * @param cacheProperties
 	 * @param file suffix it will search file in source directory list
-	 * @param somethingAppendToRear
 	 * @param isFile if true the return list is source file else is the source directory
 	 * @return List<String>
 	 */
-	public static List<String> findFileListWithCache(List<String> sourceDirectoryList,Properties cacheProperties,String fileSuffix,String somethingAppendToRear,boolean isFile){
-		return findFileListWithCache(sourceDirectoryList, cacheProperties, fileSuffix, somethingAppendToRear, isFile, null);
+	public static List<String> findFileListWithCache(List<String> directoryList,Properties cacheProperties,String fileSuffix,boolean isFile){
+		return findFileListWithCache(directoryList, cacheProperties, fileSuffix, isFile, null);
 	}
 
 	/**
 	 * find file list with cache
-	 * @param sourceDirectoryList
+	 * @param directoryList
 	 * @param cacheProperties
 	 * @param fileSuffix
-	 * @param somethingAppendToRear
 	 * @param isFile
 	 * @param cacheProcessor
 	 * @return List<String>
 	 */
-	public static List<String> findFileListWithCache(List<String> sourceDirectoryList,Properties cacheProperties,String fileSuffix,String somethingAppendToRear,boolean isFile,CacheProcessor cacheProcessor){
-		return findFileListWithCache(sourceDirectoryList, cacheProperties, fileSuffix, somethingAppendToRear, isFile, false, cacheProcessor);
+	public static List<String> findFileListWithCache(List<String> directoryList,Properties cacheProperties,String fileSuffix,boolean isFile,CacheProcessor cacheProcessor){
+		return findFileListWithCache(directoryList, cacheProperties, fileSuffix, isFile, false, cacheProcessor);
 	}
 
 	/**
 	 * find file list with cache
-	 * @param sourceDirectoryList
+	 * @param directoryList
 	 * @param cacheProperties
 	 * @param file suffix it will search file in source directory list
-	 * @param somethingAppendToRear
-	 * @param isFile if true the return list is source file else is the source directory
+	 * @param findFile if true the return list is source file else is the source directory
 	 * @param includeHidden
 	 * @return List<String>
 	 */
-	public static List<String> findFileListWithCache(List<String> sourceDirectoryList,Properties cacheProperties,String fileSuffix,String somethingAppendToRear,boolean isFile,boolean includeHidden,CacheProcessor cacheProcessor){
+	public static List<String> findFileListWithCache(List<String> directoryList,Properties cacheProperties,String fileSuffix,boolean findFile,boolean includeHidden,CacheProcessor cacheProcessor){
 		List<String> sourceList=new ArrayList<String>();
 		//no cache
 		if(cacheProperties==null){
-			if(sourceDirectoryList!=null&&!sourceDirectoryList.isEmpty()){
-				for(String sourceDirectory:sourceDirectoryList){
-					if(isFile){
-						sourceList.addAll(FileUtil.findMatchFile(sourceDirectory,fileSuffix,includeHidden));
-					}else{
-						sourceList.addAll(FileUtil.findMatchFileDirectory(sourceDirectory,fileSuffix,somethingAppendToRear,includeHidden));
-					}
+			if(directoryList!=null&&!directoryList.isEmpty()){
+				for(String directory:directoryList){
+					MatchOption matchOption=new MatchOption(directory);
+					matchOption.fileSuffix=fileSuffix;
+					matchOption.includeHidden=includeHidden;
+					matchOption.findFile=findFile;
+					sourceList.addAll(findMatchFileOrMatchFileDirectory(matchOption));
 				}
 			}
 		}else if(cacheProperties.isEmpty()){
 			List<String> fileList=new ArrayList<String>();
-			if(sourceDirectoryList!=null&&!sourceDirectoryList.isEmpty()){
-				for(String sourceDirectory:sourceDirectoryList){
-					fileList.addAll(FileUtil.findMatchFile(sourceDirectory, fileSuffix,includeHidden));
+			if(directoryList!=null&&!directoryList.isEmpty()){
+				for(String directory:directoryList){
+					MatchOption matchOption=new MatchOption(directory);
+					matchOption.fileSuffix=fileSuffix;
+					matchOption.includeHidden=includeHidden;
+					fileList.addAll(FileUtil.findMatchFile(matchOption));
 				}
 			}
 			for(String fullFilename:fileList){
@@ -1092,20 +1035,26 @@ public final class FileUtil {
 				}
 				cacheProperties.setProperty(cacheKey, Generator.MD5File(fullFilename));
 			}
-			if(isFile){
+			if(findFile){
 				sourceList.addAll(fileList);
 			}else{
-				if(sourceDirectoryList!=null&&!sourceDirectoryList.isEmpty()){
-					for(String sourceDirectory:sourceDirectoryList){
-						sourceList.addAll(FileUtil.findMatchFileDirectory(sourceDirectory,fileSuffix,somethingAppendToRear,includeHidden));
+				if(directoryList!=null&&!directoryList.isEmpty()){
+					for(String directory:directoryList){
+						MatchOption matchOption=new MatchOption(directory);
+						matchOption.fileSuffix=fileSuffix;
+						matchOption.includeHidden=includeHidden;
+						sourceList.addAll(findMatchFileDirectory(matchOption));
 					}
 				}
 			}
 		}else{//with cache
 			List<String> fileList=new ArrayList<String>();
-			if(sourceDirectoryList!=null&&!sourceDirectoryList.isEmpty()){
-				for(String sourceDirectory:sourceDirectoryList){
-					fileList.addAll(FileUtil.findMatchFile(sourceDirectory, fileSuffix,includeHidden));
+			if(directoryList!=null&&!directoryList.isEmpty()){
+				for(String directory:directoryList){
+					MatchOption matchOption=new MatchOption(directory);
+					matchOption.fileSuffix=fileSuffix;
+					matchOption.includeHidden=includeHidden;
+					fileList.addAll(findMatchFile(matchOption));
 				}
 			}
 			for(String fullFilename:fileList){
@@ -1328,14 +1277,23 @@ public final class FileUtil {
 		 * @param cacheFileMapping
 		 * @return List<String>
 		 */
-		public abstract List<String> findNoCacheFileList(Properties  cacheFileMapping);
+		public abstract List<String> findNoCacheFileList(Properties cacheFileMapping);
 	}
 
 	/**
-	 * @param args
+	 * match option
 	 */
-	public static void main(String[] args) {
-		FileUtil.zip("/D:/a.jar", "/D:/Dandelion/git/wechat/app/build/intermediates/classes/debug");
+	public static class MatchOption{
+		public final String directory;
+		public String fileSuffix=null;
+		public boolean findFile=true;
+		public boolean includeHidden=false;
+		public Processor processor=null;
+		public MatchOption(String directory) {
+			this.directory=directory;
+		}
+		public static interface Processor{
+			public abstract String onMatch(File file);
+		}
 	}
-
 }

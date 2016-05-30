@@ -51,6 +51,17 @@ public final class ObjectUtil{
 	}
 
 	/**
+	 * check not null
+	 * @param object
+	 * @param message
+	 */
+	public static void checkNotNull(Object object, String message){
+		if(object==null){
+			throw new NullPointerException(message);
+		}
+	}
+
+	/**
 	 * field name to method name
 	 * @param methodPrefix
 	 * @param fieldName

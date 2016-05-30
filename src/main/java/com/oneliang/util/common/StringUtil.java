@@ -22,6 +22,7 @@ public final class StringUtil{
 	public static final String NULL="null";
 	public static final String CRLF_STRING="\r\n";
 	public static final String CR_STRING="\r";
+	public static final String LF_STRING="\n";
 	public static final byte CR='\r';
 	public static final byte LF='\n';
 	public static final byte[] CRLF={CR,LF};
