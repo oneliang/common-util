@@ -8,17 +8,18 @@ import java.util.Map;
 
 import com.oneliang.Constant;
 import com.oneliang.util.http.HttpDownloader.DownloadListener;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 /**
  * @author oneliang
  */
 public class DefaultDownloadListener implements DownloadListener {
 
-	private static final Logger logger=Logger.getLogger(DefaultDownloadListener.class);
+	private static final Logger logger=LoggerManager.getLogger(DefaultDownloadListener.class);
 
 	public void onStart() {
-		logger.log("download on start");
+		logger.debug("download on start");
 	}
 
 	public void onProcess(Map<String, List<String>> headerFieldMap, InputStream inputStream, int contentLength, String saveFile) {
@@ -39,7 +40,7 @@ public class DefaultDownloadListener implements DownloadListener {
 	}
 
 	public void onFinish() {
-		logger.log("download on finish");
+		logger.debug("download on finish");
 	}
 
 	public void onFailure(Exception exception) {

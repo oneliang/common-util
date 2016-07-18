@@ -6,14 +6,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.oneliang.Constant;
 import com.oneliang.util.common.TimeUtil;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 /**
  * Timer control the task which is it time to run,and manage the task
  */
 public class Timer implements Runnable{
 
-	private static final Logger logger=Logger.getLogger(Timer.class);
+	private static final Logger logger=LoggerManager.getLogger(Timer.class);
 
 	private Thread thread=null;
 	private List<TimerTask> timerTaskList=new CopyOnWriteArrayList<TimerTask>();
@@ -89,7 +90,7 @@ public class Timer implements Runnable{
 					}
 				}
 			}catch (InterruptedException e) {
-				logger.log("need to interrupt:"+e.getMessage());
+				logger.debug("need to interrupt:"+e.getMessage());
 				Thread.currentThread().interrupt();
 			}catch (Exception e){
 				logger.error(Constant.Base.EXCEPTION, e);

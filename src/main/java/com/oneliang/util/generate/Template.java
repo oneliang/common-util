@@ -15,11 +15,12 @@ import com.oneliang.Constant;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
 import com.oneliang.util.json.JsonUtil;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 public class Template {
 
-	private static final Logger logger=Logger.getLogger(Template.class);
+	private static final Logger logger=LoggerManager.getLogger(Template.class);
 	private static final ScriptEngine scriptEngine;
 	static{
 		ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
@@ -51,12 +52,12 @@ public class Template {
 				scriptEngine.eval(JavaScriptFunctionGenerator.getObject(json));
 				scriptEngine.eval(JavaScriptFunctionGenerator.template());
 				Invocable invocable = (Invocable) scriptEngine;
-				logger.log(stringBuilder.toString());
+				logger.debug(stringBuilder.toString());
 				Object object = invocable.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_TEMPLATE, stringBuilder.toString());
-				logger.log(JavaScriptFunctionGenerator.getResult(object.toString()));
+				logger.debug(JavaScriptFunctionGenerator.getResult(object.toString()));
 				scriptEngine.eval(JavaScriptFunctionGenerator.getResult(object.toString()));
 				object = invocable.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_GET_RESULT);
-				logger.log(object);
+				logger.debug(object);
 				if(object!=null){
 					String toFile=templateParameter.getToFile();
 					FileUtil.createFile(toFile);

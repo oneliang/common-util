@@ -11,14 +11,15 @@ import java.util.List;
 
 import com.oneliang.Constant;
 import com.oneliang.util.common.StringUtil;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 /**
  * for any file upload
  * @author Dandelion
  */
 public final class FileUpload {
-	private static final Logger logger=Logger.getLogger(FileUpload.class);
+	private static final Logger logger=LoggerManager.getLogger(FileUpload.class);
 	
 	private String saveFilePath=null;//save file path
 	
@@ -49,16 +50,16 @@ public final class FileUpload {
 			fileUploadResult.setSuccess(true);
 			fileUploadResult.setFilePath(saveFilePath);
 			fileUploadResult.setFilename(filename);
-			logger.log("Upload end,original save file is:"+filename);
+			logger.debug("Upload end,original save file is:"+filename);
 		}catch(Exception e){
-			logger.log("upload error", e);
+			logger.error("upload error", e);
 		}finally{
 			if(outputStream!=null){
 				try{
 					outputStream.flush();
 					outputStream.close();
 				}catch (Exception e) {
-					logger.log("outputStream close error", e);
+					logger.error("outputStream close error", e);
 				}
 			}
 		}
@@ -161,7 +162,7 @@ public final class FileUpload {
 											if(compare(headByteArray, byteArray)){//upload file end
 												outputStream.flush();
 												outputStream.close();
-												logger.log("Upload end,original file is:"+originalFilename+",save file is:"+saveFilename);
+												logger.debug("Upload end,original file is:"+originalFilename+",save file is:"+saveFilename);
 												//initial all variable
 												FileUploadResult fileUploadResult=new FileUploadResult();
 												fileUploadResult.setSuccess(true);
@@ -218,14 +219,14 @@ public final class FileUpload {
 				}
 			}
 		}catch (Exception e) {
-			logger.log("upload error", e);
+			logger.error("upload error", e);
 		}finally{
 			if(outputStream!=null){
 				try {
 					outputStream.flush();
 					outputStream.close();
 				} catch (Exception e) {
-					logger.log("outputStream close error", e);
+					logger.error("outputStream close error", e);
 				}
 			}
 		}

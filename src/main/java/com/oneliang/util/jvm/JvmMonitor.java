@@ -1,11 +1,12 @@
 package com.oneliang.util.jvm;
 
 import com.oneliang.Constant;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 public class JvmMonitor implements Runnable {
 
-	private static final Logger logger=Logger.getLogger(JvmMonitor.class);
+	private static final Logger logger=LoggerManager.getLogger(JvmMonitor.class);
 	
 	private static final short DEFAULT_PERCENT=85;
 	
@@ -54,10 +55,10 @@ public class JvmMonitor implements Runnable {
 			    if(currentPercent>=this.percent){
 			    	Runtime.getRuntime().gc();
 			    }
-			    logger.log("jvm used percent:"+currentPercent+"%"+",heap size:"+heapSizeM+"M,max:"+heapMaxSizeM+"M");
+			    logger.debug("jvm used percent:"+currentPercent+"%"+",heap size:"+heapSizeM+"M,max:"+heapMaxSizeM+"M");
 				Thread.sleep(this.checkTime);
 			}catch (InterruptedException e) {
-				logger.log("need to interrupt:"+e.getMessage());
+				logger.debug("need to interrupt:"+e.getMessage());
 				Thread.currentThread().interrupt();
 			}catch (Exception e){
 				logger.error(Constant.Base.EXCEPTION, e);

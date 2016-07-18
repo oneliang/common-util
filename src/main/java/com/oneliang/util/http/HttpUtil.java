@@ -15,11 +15,12 @@ import java.util.Map;
 
 import com.oneliang.Constant;
 import com.oneliang.util.common.StringUtil;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 public final class HttpUtil {
 
-	private static final Logger logger=Logger.getLogger(HttpUtil.class);
+	private static final Logger logger=LoggerManager.getLogger(HttpUtil.class);
 
 	private static final int DEFAULT_TIMEOUT = 20000;
 
@@ -83,7 +84,7 @@ public final class HttpUtil {
 				byteArrayOutputStream.close();
 			}
 			public void httpNotOkCallback(int responseCode, Map<String, List<String>> headerFieldMap) throws Exception{
-				logger.log("Response code:"+responseCode);
+				logger.debug("Response code:"+responseCode);
 			}
 			public void exceptionCallback(Exception exception) {
 				logger.error(Constant.Base.EXCEPTION, exception);
@@ -181,7 +182,7 @@ public final class HttpUtil {
 				logger.error(Constant.Base.EXCEPTION, exception);
 			}
 			public void httpNotOkCallback(int responseCode, Map<String, List<String>> headerFieldMap) throws Exception {
-				logger.log("Response code:"+responseCode);
+				logger.debug("Response code:"+responseCode);
 			}
 		});
 		byte[] byteArray=byteArrayOutputStream.toByteArray();
@@ -255,7 +256,7 @@ public final class HttpUtil {
 				logger.error(Constant.Base.EXCEPTION, exception);
 			}
 			public void httpNotOkCallback(int responseCode, Map<String, List<String>> headerFieldMap) throws Exception {
-				logger.log("Response code:"+responseCode);
+				logger.debug("Response code:"+responseCode);
 			}
 		});
 		return byteArrayOutputStream.toByteArray();
@@ -337,7 +338,7 @@ public final class HttpUtil {
 				logger.error(Constant.Base.EXCEPTION, exception);
 			}
 			public void httpNotOkCallback(int responseCode, Map<String, List<String>> headerFieldMap) throws Exception {
-				logger.log("Response code:"+responseCode);
+				logger.debug("Response code:"+responseCode);
 			}
 		});
 		byte[] byteArray=byteArrayOutputStream.toByteArray();

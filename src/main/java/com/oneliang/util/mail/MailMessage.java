@@ -19,11 +19,12 @@ import javax.mail.internet.MimeUtility;
 import com.oneliang.Constant;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.common.TimeUtil;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 public class MailMessage{
 
-	private static final Logger logger=Logger.getLogger(MailMessage.class);
+	private static final Logger logger=LoggerManager.getLogger(MailMessage.class);
 
 	private static final String TYPE_TEXT_PLAIN="text/plain";
 	private static final String TYPE_TEXT_HTML="text/html";

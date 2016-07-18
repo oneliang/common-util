@@ -6,11 +6,12 @@ import java.util.Map;
 
 import com.oneliang.util.http.HttpUtil.Callback;
 import com.oneliang.util.http.HttpUtil.HttpNameValue;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 public class HttpDownloader{
 
-	private static final Logger logger=Logger.getLogger(HttpDownloader.class);
+	private static final Logger logger=LoggerManager.getLogger(HttpDownloader.class);
 
 	private static final DownloadListener DEFAULT_DOWNLOAD_LISTENER = new DefaultDownloadListener();
 
@@ -43,7 +44,7 @@ public class HttpDownloader{
 				}
 
 				public void httpNotOkCallback(int responseCode, Map<String, List<String>> headerFieldMap) throws Exception {
-					logger.log("Response code:"+responseCode);
+					logger.debug("Response code:"+responseCode);
 				}
 			});
 		} catch (Exception e) {

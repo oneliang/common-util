@@ -1,7 +1,8 @@
 package com.oneliang.util.resource;
 
 import com.oneliang.Constant;
-import com.oneliang.util.log.Logger;
+import com.oneliang.util.logging.Logger;
+import com.oneliang.util.logging.LoggerManager;
 
 /**
  * class Pool,resource pool
@@ -11,7 +12,7 @@ import com.oneliang.util.log.Logger;
  */
 public abstract class ResourcePool<T extends Object> implements Runnable {
 
-	protected static final Logger logger=Logger.getLogger(ResourcePool.class);
+	protected static final Logger logger=LoggerManager.getLogger(ResourcePool.class);
 
 	protected String resourcePoolName=null;
 	protected ResourceSource<T> resourceSource=null;
@@ -154,11 +155,11 @@ public abstract class ResourcePool<T extends Object> implements Runnable {
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				Thread.sleep(threadSleepTime);
-				logger.log("--"+thread.getName()+"--The resource pool is:'"+this.resourcePoolName+"',before clean resources number:"+String.valueOf(this.currentSize));
+				logger.debug("--"+thread.getName()+"--The resource pool is:'"+this.resourcePoolName+"',before clean resources number:"+String.valueOf(this.currentSize));
 				this.clean();
-				logger.log("--"+thread.getName()+"--The resource pool is:'"+this.resourcePoolName+"',after clean resources number:"+String.valueOf(this.currentSize));
+				logger.debug("--"+thread.getName()+"--The resource pool is:'"+this.resourcePoolName+"',after clean resources number:"+String.valueOf(this.currentSize));
 			} catch (InterruptedException e) {
-				logger.log("need to interrupt:"+e.getMessage());
+				logger.debug("need to interrupt:"+e.getMessage());
 				Thread.currentThread().interrupt();
 			} catch (Exception e){
 				logger.error(Constant.Base.EXCEPTION, e);
