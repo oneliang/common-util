@@ -75,4 +75,12 @@ public final class LoggerManager {
 		loggerPatternMap.remove(pattern);
 		loggerPatternSet.remove(pattern);
 	}
+
+	/**
+	 * unregister all logger
+	 */
+	public static void unregisterAllLogger(){
+		loggerPatternMap.clear();
+		loggerPatternSet.clear();
+	}
 }
