@@ -753,24 +753,22 @@ public final class FileUtil {
 							String fullFilename=null;
 							if(matchOption.processor!=null){
 								fullFilename=matchOption.processor.onMatch(file);
-								if(fullFilename==null){
-									fullFilename=file.getAbsolutePath();
-								}
 							}else{
 								fullFilename=file.getAbsolutePath();
 							}
-							list.add(fullFilename);
+							//ignore when null
+							if(fullFilename!=null){
+								list.add(fullFilename);
+							}
 						} else {
 							String parentFullFilename=null;
 							if(matchOption.processor!=null){
 								parentFullFilename=matchOption.processor.onMatch(file.getParentFile());
-								if(parentFullFilename==null){
-									parentFullFilename=file.getParentFile().getAbsolutePath();
-								}
 							}else{
 								parentFullFilename=file.getParentFile().getAbsolutePath();
 							}
-							if (!list.contains(parentFullFilename)) {
+							//ignore when null
+							if (parentFullFilename!=null&&!list.contains(parentFullFilename)) {
 								list.add(parentFullFilename);
 							}
 						}
@@ -1293,6 +1291,11 @@ public final class FileUtil {
 			this.directory=directory;
 		}
 		public static interface Processor{
+			/**
+			 * on match
+			 * @param file
+			 * @return String,return null then ignore the match file
+			 */
 			public abstract String onMatch(File file);
 		}
 	}
