@@ -6,7 +6,7 @@ package com.oneliang.util.logging;
 public abstract interface Logger {
 
 	public enum Level{
-		VERBOSE,DEBUG,INFO,WARNING,ERROR;
+		VERBOSE,DEBUG,INFO,WARNING,ERROR,FATAL;
 	}
 
 	/**
@@ -39,4 +39,10 @@ public abstract interface Logger {
 	 * @param throwable
 	 */
 	public abstract void error(Object message, Throwable throwable);
+
+	/**
+	 * fatal
+	 * @param message
+	 */
+	public abstract void fatal(Object message);
 }
