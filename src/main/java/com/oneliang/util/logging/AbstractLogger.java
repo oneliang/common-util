@@ -57,6 +57,14 @@ public abstract class AbstractLogger implements Logger {
 	}
 
 	/**
+	 * fatal
+	 * @param message
+	 */
+	public void fatal(Object message) {
+		logByLevel(Level.FATAL, message, null);
+	}
+
+	/**
 	 * log by level
 	 * @param level
 	 * @param message

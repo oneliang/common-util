@@ -782,7 +782,7 @@ public final class FileUtil {
 	/**
 	 * get zip entry map
 	 * 
-	 * @param zipFile
+	 * @param zipFullFilename
 	 * @return Map<String, String>
 	 */
 	private static Map<String, String> getZipEntryMap(String zipFullFilename) {
@@ -973,7 +973,7 @@ public final class FileUtil {
 	 * find file list with cache
 	 * @param directoryList
 	 * @param cacheProperties
-	 * @param file suffix it will search file in source directory list
+	 * @param fileSuffix,file suffix it will search file in source directory list
 	 * @param isFile if true the return list is source file else is the source directory
 	 * @return List<String>
 	 */
@@ -998,7 +998,7 @@ public final class FileUtil {
 	 * find file list with cache
 	 * @param directoryList
 	 * @param cacheProperties
-	 * @param file suffix it will search file in source directory list
+	 * @param fileSuffix,file suffix it will search file in source directory list
 	 * @param findFile if true the return list is source file else is the source directory
 	 * @param includeHidden
 	 * @return List<String>
