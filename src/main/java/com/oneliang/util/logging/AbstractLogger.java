@@ -50,6 +50,14 @@ public abstract class AbstractLogger implements Logger {
 	/**
 	 * error
 	 * @param message
+	 */
+	public void error(Object message) {
+		this.error(message, null);
+	}
+
+	/**
+	 * error
+	 * @param message
 	 * @param throwable
 	 */
 	public void error(Object message, Throwable throwable) {

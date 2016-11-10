@@ -36,6 +36,12 @@ public abstract interface Logger {
 	/**
 	 * error
 	 * @param message
+	 */
+	public abstract void error(Object message);
+
+	/**
+	 * error
+	 * @param message
 	 * @param throwable
 	 */
 	public abstract void error(Object message, Throwable throwable);
