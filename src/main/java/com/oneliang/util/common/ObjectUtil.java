@@ -166,7 +166,7 @@ public final class ObjectUtil{
 	 * @param clazz
 	 * @return List<Class<?>>
 	 */
-	private static <T extends Object> List<Class<?>> getClassAllSuperclassAndAllInterfaceList(boolean isIncludeSelfClass,boolean isAllSuperClass,boolean isAllInterface,final Class<T> clazz){
+	private static <T extends Object> List<Class<?>> getClassAllSuperclassAndAllInterfaceList(boolean isIncludeSelfClass,boolean isAllSuperclass,boolean isAllInterface,final Class<T> clazz){
 		List<Class<?>> list=new ArrayList<Class<?>>();
 		Queue<Class<?>> queue=new ConcurrentLinkedQueue<Class<?>>();
 		queue.add(clazz);
@@ -175,12 +175,12 @@ public final class ObjectUtil{
 		}
 		while(!queue.isEmpty()){
 			Class<?> currentClass=queue.poll();
-			Class<?> superClass=currentClass.getSuperclass();
-			if(superClass!=null){
-				queue.add(superClass);
-				if(isAllSuperClass){
-					if(!list.contains(superClass)){
-						list.add(superClass);
+			Class<?> superclass=currentClass.getSuperclass();
+			if(superclass!=null){
+				queue.add(superclass);
+				if(isAllSuperclass){
+					if(!list.contains(superclass)){
+						list.add(superclass);
 					}
 				}
 			}
