@@ -154,19 +154,19 @@ public final class ObjectUtil{
 	 * @return List<Class<?>>
 	 */
 	private static <T extends Object> List<Class<?>> getClassAllInterfaceList(final Class<T> clazz){
-		return getClassAllSuperClassAndAllInterfaceList(false,false, true, clazz);
+		return getClassAllSuperclassAndAllInterfaceList(false,false, true, clazz);
 	}
 
 	/**
-	 * get class all super class and all interface list include self class.
+	 * get class all superclass and all interface list include self class.
 	 * @param <T>
 	 * @param isIncludeSelfClass
-	 * @param isAllSuperClass
+	 * @param isAllSuperclass
 	 * @param isAllInterface
 	 * @param clazz
 	 * @return List<Class<?>>
 	 */
-	private static <T extends Object> List<Class<?>> getClassAllSuperClassAndAllInterfaceList(boolean isIncludeSelfClass,boolean isAllSuperClass,boolean isAllInterface,final Class<T> clazz){
+	private static <T extends Object> List<Class<?>> getClassAllSuperclassAndAllInterfaceList(boolean isIncludeSelfClass,boolean isAllSuperClass,boolean isAllInterface,final Class<T> clazz){
 		List<Class<?>> list=new ArrayList<Class<?>>();
 		Queue<Class<?>> queue=new ConcurrentLinkedQueue<Class<?>>();
 		queue.add(clazz);
@@ -234,7 +234,7 @@ public final class ObjectUtil{
 	public static boolean isInheritanceOrInterfaceImplement(final Class<?> objectClass,final Class<?> clazz){
 		boolean result=false;
 		if(objectClass!=null){
-			List<Class<?>> list=getClassAllSuperClassAndAllInterfaceList(true,true, true, objectClass);
+			List<Class<?>> list=getClassAllSuperclassAndAllInterfaceList(true,true, true, objectClass);
 			if(list.contains(clazz)){
 				result=true;
 			}
