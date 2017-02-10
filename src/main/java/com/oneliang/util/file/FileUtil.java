@@ -633,6 +633,34 @@ public final class FileUtil {
 	}
 
 	/**
+	 * read file content ignore line
+	 * @param fullFilename
+	 * @return String
+	 */
+	public static String readFileContentIgnoreLine(String fullFilename) {
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fullFilename)));
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line.trim());
+            }
+        } catch (Exception e) {
+            throw new FileUtilException(e);
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (Exception e) {
+                    throw new FileUtilException(e);
+                }
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+	/**
 	 * copy stream , from input to output,it don't close
 	 * 
 	 * @param inputStream
