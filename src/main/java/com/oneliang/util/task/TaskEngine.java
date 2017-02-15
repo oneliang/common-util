@@ -216,6 +216,7 @@ public class TaskEngine {
 	 * @return Map<String,TaskNode>
 	 */
 	private Map<String,TaskNode> travelAllTaskNode(List<TaskNode> rootTaskNodeList,List<String> excludeTaskNodeNameList){
+        List<TaskNode> newRootTaskNodeList = new ArrayList<TaskNode>();
 		Map<String,TaskNode> taskNodeMap=new HashMap<String, TaskNode>();
 		Map<String,String> excludeTaskNodeNameMap=new HashMap<String,String>();
 		if(excludeTaskNodeNameList!=null){
@@ -223,8 +224,21 @@ public class TaskEngine {
 				excludeTaskNodeNameMap.put(excludeTaskNodeName,excludeTaskNodeName);
 			}
 		}
+		//bug fix,first check root task
+        for (TaskNode rootTaskNode : rootTaskNodeList) {
+            if(!excludeTaskNodeNameMap.containsKey(rootTaskNode.getName())){
+                newRootTaskNodeList.add(rootTaskNode);
+                continue;
+            }
+            List<TaskNode> childChildTaskNodeList=rootTaskNode.getChildTaskNodeList();
+            for(TaskNode childChildTaskNode:childChildTaskNodeList){
+                childChildTaskNode.removeParentTaskNode(rootTaskNode);
+                newRootTaskNodeList.add(childChildTaskNode);
+            }
+        }
+		
 		Queue<TaskNode> queue=new ConcurrentLinkedQueue<TaskNode>();
-		queue.addAll(rootTaskNodeList);
+		queue.addAll(newRootTaskNodeList);
 		Map<String,String> hasAddQueueMap=new HashMap<String, String>();
 		while(!queue.isEmpty()){
 			TaskNode taskNode=queue.poll();
