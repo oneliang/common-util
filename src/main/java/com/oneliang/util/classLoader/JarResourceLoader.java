@@ -70,7 +70,7 @@ public class JarResourceLoader {
 			} catch (Exception localException) {
 			}
 		}
-		System.err.println("Missing attributes for JarRsrcLoader in Manifest (Rsrc-Main-Class, Rsrc-Class-Path)");
+		System.err.println("Missing attributes for JarResourceLoader in Manifest (Rsrc-Main-Class, Rsrc-Class-Path)");
 		return null;
 	}
 
