@@ -84,7 +84,7 @@ public class JarResourceLoader {
 			if (lastPos == -1)
 				lastPos = line.length();
 			if (lastPos > firstPos) {
-				result.add(line.substring(firstPos, lastPos));
+				result.add(line.substring(firstPos, lastPos).trim());
 			}
 			firstPos = lastPos + 1;
 		}
