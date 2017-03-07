@@ -842,55 +842,84 @@ public final class FileUtil {
 	}
 
 	/**
+     * differ zip
+     * 
+     * @param differentOutputFullFilename
+     * @param oldZipFullFilename
+     * @param newZipFullFilename
+     */
+    public static void differZip(String differentOutputFullFilename, String oldZipFullFilename, String newZipFullFilename) {
+        differZip(differentOutputFullFilename, oldZipFullFilename, newZipFullFilename, null);
+    }
+
+	/**
 	 * differ zip
 	 * 
 	 * @param differentOutputFullFilename
 	 * @param oldZipFullFilename
 	 * @param newZipFullFilename
+	 * @param differZipProcessor
 	 */
-	public static void differZip(String differentOutputFullFilename, String oldZipFullFilename, String newZipFullFilename) {
-		Map<String, String> map = getZipEntryMap(oldZipFullFilename);
-		ZipFile newZipFile = null;
-		ZipOutputStream zipOutputStream = null;
-		try {
-			newZipFile = new ZipFile(newZipFullFilename);
-			Enumeration<? extends ZipEntry> entries = newZipFile.entries();
-			FileUtil.createFile(differentOutputFullFilename);
-			zipOutputStream = new ZipOutputStream(new FileOutputStream(differentOutputFullFilename));
-			while (entries.hasMoreElements()) {
-				ZipEntry zipEntry = entries.nextElement();
-				if (!zipEntry.isDirectory()) {
-					String zipEntryName = zipEntry.getName();
-					String oldZipEntryHash = map.get(zipEntryName);
-					String newZipEntryHash = zipEntry.getCrc() + Constant.Symbol.DOT + zipEntry.getSize();
-					// old zip entry hash not exist is a new zip entry,if exist
-					// is a modified zip entry
-					if (oldZipEntryHash == null || (!newZipEntryHash.equals(oldZipEntryHash))) {
-						System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
-						ZipEntry newZipEntry=new ZipEntry(zipEntryName);
-						addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
-					}
-				}
-			}
-		} catch (Exception e) {
-			throw new FileUtilException(e);
-		} finally {
-			if (newZipFile != null) {
-				try {
-					newZipFile.close();
-				} catch (IOException e) {
-					throw new FileUtilException(e);
-				}
-			}
-			if (zipOutputStream != null) {
-				try {
-					zipOutputStream.finish();
-				} catch (IOException e) {
-					throw new FileUtilException(e);
-				}
-			}
-		}
-	}
+    public static void differZip(String differentOutputFullFilename, String oldZipFullFilename, String newZipFullFilename, DifferZipProcessor differZipProcessor) {
+        Map<String, String> map = getZipEntryMap(oldZipFullFilename);
+        ZipFile newZipFile = null;
+        ZipOutputStream zipOutputStream = null;
+        try {
+            newZipFile = new ZipFile(newZipFullFilename);
+            Enumeration<? extends ZipEntry> entries = newZipFile.entries();
+            FileUtil.createFile(differentOutputFullFilename);
+            zipOutputStream = new ZipOutputStream(new FileOutputStream(differentOutputFullFilename));
+            while (entries.hasMoreElements()) {
+                ZipEntry zipEntry = entries.nextElement();
+                if (!zipEntry.isDirectory()) {
+                    String zipEntryName = zipEntry.getName();
+                    String oldZipEntryHash = map.get(zipEntryName);
+                    String newZipEntryHash = zipEntry.getCrc() + Constant.Symbol.DOT + zipEntry.getSize();
+                    // old zip entry hash not exist is a new zip entry,if exist
+                    // is a modified zip entry
+                    if (oldZipEntryHash == null) {
+                        if (differZipProcessor != null) {
+                            differZipProcessor.addZipEntryProcess(zipEntryName);
+                        }
+                        System.out.println(String.format("found added entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
+                        ZipEntry newZipEntry = new ZipEntry(zipEntryName);
+                        addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
+                    } else if (!newZipEntryHash.equals(oldZipEntryHash)) {
+                        if (differZipProcessor != null) {
+                            differZipProcessor.modifyZipEntryProcess(zipEntryName);
+                        }
+                        System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
+                        ZipEntry newZipEntry = new ZipEntry(zipEntryName);
+                        addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
+                    }
+                    map.remove(zipEntryName);
+                }
+            }
+            Set<String> deleteKeySet = map.keySet();
+            for (String deleteKey : deleteKeySet) {
+                if (differZipProcessor != null) {
+                    differZipProcessor.deleteZipEntryProcess(deleteKey);
+                }
+            }
+        } catch (Exception e) {
+            throw new FileUtilException(e);
+        } finally {
+            if (newZipFile != null) {
+                try {
+                    newZipFile.close();
+                } catch (IOException e) {
+                    throw new FileUtilException(e);
+                }
+            }
+            if (zipOutputStream != null) {
+                try {
+                    zipOutputStream.finish();
+                } catch (IOException e) {
+                    throw new FileUtilException(e);
+                }
+            }
+        }
+    }
 
 	/**
 	 * differ directory
@@ -1327,4 +1356,22 @@ public final class FileUtil {
 			public abstract String onMatch(File file);
 		}
 	}
+
+    public static abstract interface DifferZipProcessor {
+        /**
+         * add zip entry process
+         * @param zipEntryName
+         */
+        public abstract void addZipEntryProcess(String zipEntryName);
+        /**
+         * modify zip entry process
+         * @param zipEntryName
+         */
+        public abstract void modifyZipEntryProcess(String zipEntryName);
+        /**
+         * delete zip entry process
+         * @param zipEntryName
+         */
+        public abstract void deleteZipEntryProcess(String zipEntryName);
+    }
 }
