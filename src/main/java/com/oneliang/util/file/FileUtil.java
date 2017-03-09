@@ -879,14 +879,14 @@ public final class FileUtil {
                     // is a modified zip entry
                     if (oldZipEntryHash == null) {
                         if (differZipProcessor != null) {
-                            differZipProcessor.addZipEntryProcess(zipEntryName);
+                            differZipProcessor.addedZipEntryProcess(zipEntryName);
                         }
                         System.out.println(String.format("found added entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
                         ZipEntry newZipEntry = new ZipEntry(zipEntryName);
                         addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
                     } else if (!newZipEntryHash.equals(oldZipEntryHash)) {
                         if (differZipProcessor != null) {
-                            differZipProcessor.modifyZipEntryProcess(zipEntryName);
+                            differZipProcessor.modifiedZipEntryProcess(zipEntryName);
                         }
                         System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
                         ZipEntry newZipEntry = new ZipEntry(zipEntryName);
@@ -898,7 +898,7 @@ public final class FileUtil {
             Set<String> deleteKeySet = map.keySet();
             for (String deleteKey : deleteKeySet) {
                 if (differZipProcessor != null) {
-                    differZipProcessor.deleteZipEntryProcess(deleteKey);
+                    differZipProcessor.deletedZipEntryProcess(deleteKey);
                 }
             }
         } catch (Exception e) {
@@ -1359,19 +1359,19 @@ public final class FileUtil {
 
     public static abstract interface DifferZipProcessor {
         /**
-         * add zip entry process
+         * added zip entry process
          * @param zipEntryName
          */
-        public abstract void addZipEntryProcess(String zipEntryName);
+        public abstract void addedZipEntryProcess(String zipEntryName);
         /**
-         * modify zip entry process
+         * modified zip entry process
          * @param zipEntryName
          */
-        public abstract void modifyZipEntryProcess(String zipEntryName);
+        public abstract void modifiedZipEntryProcess(String zipEntryName);
         /**
-         * delete zip entry process
+         * deleted zip entry process
          * @param zipEntryName
          */
-        public abstract void deleteZipEntryProcess(String zipEntryName);
+        public abstract void deletedZipEntryProcess(String zipEntryName);
     }
 }
