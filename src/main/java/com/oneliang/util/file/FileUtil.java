@@ -878,19 +878,25 @@ public final class FileUtil {
                     // old zip entry hash not exist is a new zip entry,if exist
                     // is a modified zip entry
                     if (oldZipEntryHash == null) {
+                        boolean needToSave = true;
                         if (differZipProcessor != null) {
-                            differZipProcessor.addedZipEntryProcess(zipEntryName);
+                            needToSave = differZipProcessor.foundAddedZipEntryProcess(zipEntryName);
                         }
-//                        System.out.println(String.format("found added entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
-                        ZipEntry newZipEntry = new ZipEntry(zipEntryName);
-                        addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
+                        if(needToSave){
+//                          System.out.println(String.format("found added entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
+                            ZipEntry newZipEntry = new ZipEntry(zipEntryName);
+                            addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
+                        }
                     } else if (!newZipEntryHash.equals(oldZipEntryHash)) {
+                        boolean needToSave = true;
                         if (differZipProcessor != null) {
-                            differZipProcessor.modifiedZipEntryProcess(zipEntryName);
+                            needToSave = differZipProcessor.foundModifiedZipEntryProcess(zipEntryName);
                         }
-//                        System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
-                        ZipEntry newZipEntry = new ZipEntry(zipEntryName);
-                        addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
+                        if(needToSave){
+//                            System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
+                            ZipEntry newZipEntry = new ZipEntry(zipEntryName);
+                            addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
+                        }
                     }
                     map.remove(zipEntryName);
                 }
@@ -898,7 +904,7 @@ public final class FileUtil {
             Set<String> deleteKeySet = map.keySet();
             for (String deleteKey : deleteKeySet) {
                 if (differZipProcessor != null) {
-                    differZipProcessor.deletedZipEntryProcess(deleteKey);
+                    differZipProcessor.foundDeletedZipEntryProcess(deleteKey);
                 }
             }
         } catch (Exception e) {
@@ -1359,19 +1365,21 @@ public final class FileUtil {
 
     public static abstract interface DifferZipProcessor {
         /**
-         * added zip entry process
+         * found added zip entry process
          * @param zipEntryName
+         * @return boolean true is need to save in different.zip
          */
-        public abstract void addedZipEntryProcess(String zipEntryName);
+        public abstract boolean foundAddedZipEntryProcess(String zipEntryName);
         /**
-         * modified zip entry process
+         * found modified zip entry process
          * @param zipEntryName
+         * @return boolean true is need to save in different.zip
          */
-        public abstract void modifiedZipEntryProcess(String zipEntryName);
+        public abstract boolean foundModifiedZipEntryProcess(String zipEntryName);
         /**
-         * deleted zip entry process
+         * found deleted zip entry process
          * @param zipEntryName
          */
-        public abstract void deletedZipEntryProcess(String zipEntryName);
+        public abstract void foundDeletedZipEntryProcess(String zipEntryName);
     }
 }
