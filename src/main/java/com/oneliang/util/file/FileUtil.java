@@ -881,14 +881,14 @@ public final class FileUtil {
                         if (differZipProcessor != null) {
                             differZipProcessor.addedZipEntryProcess(zipEntryName);
                         }
-                        System.out.println(String.format("found added entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
+//                        System.out.println(String.format("found added entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
                         ZipEntry newZipEntry = new ZipEntry(zipEntryName);
                         addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
                     } else if (!newZipEntryHash.equals(oldZipEntryHash)) {
                         if (differZipProcessor != null) {
                             differZipProcessor.modifiedZipEntryProcess(zipEntryName);
                         }
-                        System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
+//                        System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
                         ZipEntry newZipEntry = new ZipEntry(zipEntryName);
                         addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
                     }
@@ -947,7 +947,7 @@ public final class FileUtil {
 			String oldValue=oldFileMD5Map.get(key);
 			if (oldValue == null || (!oldValue.equals(value))) {
 				String toFile=differenOutputDirectory+Constant.Symbol.SLASH_LEFT+key;
-				System.out.println("key:"+key+",oldValue:"+oldValue+",value:"+value);
+//				System.out.println("key:"+key+",oldValue:"+oldValue+",value:"+value);
 				copyFile(newFile, toFile, FileCopyType.FILE_TO_FILE);
 			}
 		}
