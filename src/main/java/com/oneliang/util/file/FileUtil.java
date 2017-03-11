@@ -1347,7 +1347,7 @@ public final class FileUtil {
 	public static class MatchOption{
 		public final String directory;
 		public String fileSuffix=null;
-		public boolean findFile=true;
+		private boolean findFile=true;
 		public boolean includeHidden=false;
 		public Processor processor=null;
 		public MatchOption(String directory) {
