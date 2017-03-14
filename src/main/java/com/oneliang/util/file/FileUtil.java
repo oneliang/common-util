@@ -878,24 +878,24 @@ public final class FileUtil {
                     // old zip entry hash not exist is a new zip entry,if exist
                     // is a modified zip entry
                     if (oldZipEntryHash == null) {
-                        boolean needToSave = true;
+                        DifferZipProcessor.ZipEntryInformation zipEntryInformation = null;
                         if (differZipProcessor != null) {
-                            needToSave = differZipProcessor.foundAddedZipEntryProcess(zipEntryName);
+                            zipEntryInformation = differZipProcessor.foundAddedZipEntryProcess(zipEntryName);
                         }
-                        if(needToSave){
+                        if (zipEntryInformation != null && zipEntryInformation.needToSave) {
 //                          System.out.println(String.format("found added entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
-                            ZipEntry newZipEntry = new ZipEntry(zipEntryName);
-                            addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
+                            ZipEntry newZipEntry = zipEntryInformation.zipEntry == null ? new ZipEntry(zipEntryName) : zipEntryInformation.zipEntry;
+                            addZipEntry(zipOutputStream, newZipEntry, zipEntryInformation.inputStream == null ? newZipFile.getInputStream(zipEntry) : zipEntryInformation.inputStream);
                         }
                     } else if (!newZipEntryHash.equals(oldZipEntryHash)) {
-                        boolean needToSave = true;
+                        DifferZipProcessor.ZipEntryInformation zipEntryInformation = null;
                         if (differZipProcessor != null) {
-                            needToSave = differZipProcessor.foundModifiedZipEntryProcess(zipEntryName);
+                            zipEntryInformation = differZipProcessor.foundModifiedZipEntryProcess(zipEntryName);
                         }
-                        if(needToSave){
+                        if (zipEntryInformation != null && zipEntryInformation.needToSave) {
 //                            System.out.println(String.format("found modified entry, key=%s(%s/%s)", new Object[] { zipEntryName, oldZipEntryHash, newZipEntryHash }));
-                            ZipEntry newZipEntry = new ZipEntry(zipEntryName);
-                            addZipEntry(zipOutputStream, newZipEntry, newZipFile.getInputStream(zipEntry));
+                            ZipEntry newZipEntry = zipEntryInformation.zipEntry == null ? new ZipEntry(zipEntryName) : zipEntryInformation.zipEntry;
+                            addZipEntry(zipOutputStream, newZipEntry, zipEntryInformation.inputStream == null ? newZipFile.getInputStream(zipEntry) : zipEntryInformation.inputStream);
                         }
                     }
                     map.remove(zipEntryName);
@@ -1369,17 +1369,29 @@ public final class FileUtil {
          * @param zipEntryName
          * @return boolean true is need to save in different.zip
          */
-        public abstract boolean foundAddedZipEntryProcess(String zipEntryName);
+        public abstract ZipEntryInformation foundAddedZipEntryProcess(String zipEntryName);
         /**
          * found modified zip entry process
          * @param zipEntryName
          * @return boolean true is need to save in different.zip
          */
-        public abstract boolean foundModifiedZipEntryProcess(String zipEntryName);
+        public abstract ZipEntryInformation foundModifiedZipEntryProcess(String zipEntryName);
         /**
          * found deleted zip entry process
          * @param zipEntryName
          */
         public abstract void foundDeletedZipEntryProcess(String zipEntryName);
+
+        public static class ZipEntryInformation {
+            public final boolean needToSave;
+            public final ZipEntry zipEntry;
+            public final InputStream inputStream;
+
+            public ZipEntryInformation(boolean needToSave, ZipEntry zipEntry, InputStream inputStream) {
+                this.needToSave = needToSave;
+                this.zipEntry = zipEntry;
+                this.inputStream = inputStream;
+            }
+        }
     }
 }
