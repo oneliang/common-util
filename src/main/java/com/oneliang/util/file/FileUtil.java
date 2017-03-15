@@ -54,10 +54,13 @@ public final class FileUtil {
 	 *            directory or file
 	 * @return boolean
 	 */
-	public static boolean isExist(String path) {
-		File file = new File(path);
-		return file.exists();
-	}
+    public static boolean isExist(String path) {
+        if (path == null) {
+            return false;
+        }
+        File file = new File(path);
+        return file.exists();
+    }
 
 	/**
 	 * is has file from directory
