@@ -63,13 +63,13 @@ public final class FileUtil {
     }
 
 	/**
-	 * is has file from directory
+	 * has file from directory
 	 * 
 	 * @param directory
 	 * @param fileSuffix
 	 * @return boolean
 	 */
-	public static boolean isHasFile(String directory, String fileSuffix) {
+	public static boolean hasFile(String directory, String fileSuffix) {
 		boolean result = false;
 		File directoryFile = new File(directory);
 		Queue<File> queue = new ConcurrentLinkedQueue<File>();
