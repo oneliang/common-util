@@ -790,8 +790,15 @@ public final class FileUtil {
             }
             if (file.isDirectory()) {
                 File[] fileArray = file.listFiles();
-                if (fileArray != null && matchOption.deep) {
-                    queue.addAll(Arrays.asList(fileArray));
+                if (fileArray == null) {
+                    continue;
+                }
+                for (File singleFile : fileArray) {
+                    if (singleFile.isDirectory() && matchOption.deep) {
+                        queue.add(singleFile);
+                    } else if (singleFile.isFile()) {
+                        queue.add(singleFile);
+                    }
                 }
             } else if (file.isFile()) {
                 if (!file.getName().toLowerCase().endsWith(fileSuffix.toLowerCase())) {
