@@ -785,37 +785,39 @@ public final class FileUtil {
             if (!file.isHidden() || matchOption.includeHidden) {
                 result = true;
             }
-            if (result) {
-                if (file.isDirectory()) {
-                    File[] fileArray = file.listFiles();
-                    if (fileArray != null) {
-                        queue.addAll(Arrays.asList(fileArray));
+            if (!result) {
+                continue;
+            }
+            if (file.isDirectory()) {
+                File[] fileArray = file.listFiles();
+                if (fileArray != null && matchOption.deep) {
+                    queue.addAll(Arrays.asList(fileArray));
+                }
+            } else if (file.isFile()) {
+                if (!file.getName().toLowerCase().endsWith(fileSuffix.toLowerCase())) {
+                    continue;
+                }
+                if (matchOption.findFile) {
+                    String fullFilename = null;
+                    if (matchOption.processor != null) {
+                        fullFilename = matchOption.processor.onMatch(file);
+                    } else {
+                        fullFilename = file.getAbsolutePath();
                     }
-                } else if (file.isFile()) {
-                    if (file.getName().toLowerCase().endsWith(fileSuffix.toLowerCase())) {
-                        if (matchOption.findFile) {
-                            String fullFilename = null;
-                            if (matchOption.processor != null) {
-                                fullFilename = matchOption.processor.onMatch(file);
-                            } else {
-                                fullFilename = file.getAbsolutePath();
-                            }
-                            // ignore when null
-                            if (fullFilename != null) {
-                                list.add(fullFilename);
-                            }
-                        } else {
-                            String parentFullFilename = null;
-                            if (matchOption.processor != null) {
-                                parentFullFilename = matchOption.processor.onMatch(file.getParentFile());
-                            } else {
-                                parentFullFilename = file.getParentFile().getAbsolutePath();
-                            }
-                            // ignore when null
-                            if (parentFullFilename != null && !list.contains(parentFullFilename)) {
-                                list.add(parentFullFilename);
-                            }
-                        }
+                    // ignore when null
+                    if (fullFilename != null) {
+                        list.add(fullFilename);
+                    }
+                } else {
+                    String parentFullFilename = null;
+                    if (matchOption.processor != null) {
+                        parentFullFilename = matchOption.processor.onMatch(file.getParentFile());
+                    } else {
+                        parentFullFilename = file.getParentFile().getAbsolutePath();
+                    }
+                    // ignore when null
+                    if (parentFullFilename != null && !list.contains(parentFullFilename)) {
+                        list.add(parentFullFilename);
                     }
                 }
             }
@@ -1389,6 +1391,7 @@ public final class FileUtil {
         public String fileSuffix = null;
         private boolean findFile = true;
         public boolean includeHidden = false;
+        public boolean deep = true;
         public Processor processor = null;
 
         public MatchOption(String directory) {
