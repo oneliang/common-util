@@ -646,6 +646,7 @@ public final class FileUtil {
         }
     }
 
+
     /**
      * read file content ignore line
      * 
@@ -653,6 +654,17 @@ public final class FileUtil {
      * @return String
      */
     public static String readFileContentIgnoreLine(String fullFilename) {
+        return readFileContentIgnoreLine(fullFilename, null);
+    }
+
+    /**
+     * read file content ignore line
+     * 
+     * @param fullFilename
+     * @param append
+     * @return String
+     */
+    public static String readFileContentIgnoreLine(String fullFilename,String append) {
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader bufferedReader = null;
         try {
@@ -660,6 +672,7 @@ public final class FileUtil {
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line.trim());
+                stringBuilder.append(StringUtil.nullToBlank(append));
             }
         } catch (Exception e) {
             throw new FileUtilException(e);
