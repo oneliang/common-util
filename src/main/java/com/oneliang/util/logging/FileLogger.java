@@ -41,8 +41,7 @@ public class FileLogger extends BaseLogger {
         }
     }
 
-    protected void finalize() throws Throwable {
-        super.finalize();
+    public void destroy() {
         try {
             if (this.fileOutputStream != null) {
                 this.fileOutputStream.flush();
