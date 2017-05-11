@@ -56,4 +56,7 @@ public class BaseLogger extends AbstractLogger {
         stringBuilder.append(Constant.Symbol.MIDDLE_BRACKET_RIGHT);
         return stringBuilder.toString();
     }
+
+    public void destroy() {
+    }
 }

@@ -101,7 +101,4 @@ public abstract class AbstractLogger implements Logger {
      * @param throwable
      */
     protected abstract void log(Level level, Object message, Throwable throwable);
-
-    public void destroy() {
-    }
 }
