@@ -689,7 +689,6 @@ public final class FileUtil {
                 if (readFileContentProcessor != null) {
                     readFileContentProcessor.afterReadLine(line.trim());
                 }
-
             }
         } catch (Exception e) {
             throw new FileUtilException(e);
