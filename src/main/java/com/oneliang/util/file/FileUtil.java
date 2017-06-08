@@ -646,7 +646,6 @@ public final class FileUtil {
         }
     }
 
-
     /**
      * read file content ignore line
      * 
@@ -654,7 +653,7 @@ public final class FileUtil {
      * @return String
      */
     public static String readFileContentIgnoreLine(String fullFilename) {
-        return readFileContentIgnoreLine(fullFilename, null);
+        return readFileContentIgnoreLine(fullFilename, StringUtil.BLANK);
     }
 
     /**
@@ -664,15 +663,33 @@ public final class FileUtil {
      * @param append
      * @return String
      */
-    public static String readFileContentIgnoreLine(String fullFilename,String append) {
-        StringBuilder stringBuilder = new StringBuilder();
+    public static String readFileContentIgnoreLine(String fullFilename, final String append) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        readFileContentIgnoreLine(fullFilename, new ReadFileContentProcessor() {
+            public void afterReadLine(String line) {
+                stringBuilder.append(line.trim());
+                stringBuilder.append(StringUtil.nullToBlank(append));
+            }
+        });
+        return stringBuilder.toString();
+    }
+
+    /**
+     * read file content ignore line
+     * 
+     * @param fullFilename
+     * @param readFileContentProcessor
+     */
+    public static void readFileContentIgnoreLine(String fullFilename, ReadFileContentProcessor readFileContentProcessor) {
         BufferedReader bufferedReader = null;
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fullFilename)));
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line.trim());
-                stringBuilder.append(StringUtil.nullToBlank(append));
+                if (readFileContentProcessor != null) {
+                    readFileContentProcessor.afterReadLine(line.trim());
+                }
+
             }
         } catch (Exception e) {
             throw new FileUtilException(e);
@@ -685,7 +702,6 @@ public final class FileUtil {
                 }
             }
         }
-        return stringBuilder.toString();
     }
 
     /**
@@ -1464,5 +1480,14 @@ public final class FileUtil {
                 this.inputStream = inputStream;
             }
         }
+    }
+
+    public static abstract interface ReadFileContentProcessor {
+        /**
+         * after read line
+         * 
+         * @param line
+         */
+        public abstract void afterReadLine(String line);
     }
 }
