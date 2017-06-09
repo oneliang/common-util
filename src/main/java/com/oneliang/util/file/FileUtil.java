@@ -1,6 +1,7 @@
 package com.oneliang.util.file;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -696,6 +698,33 @@ public final class FileUtil {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
+                } catch (Exception e) {
+                    throw new FileUtilException(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * write file content,best for string content
+     * 
+     * @param fullFilename
+     * @param writeFileContentProcessor
+     */
+    public static void writeFileContent(String fullFilename, WriteFileContentProcessor writeFileContentProcessor) {
+        createFile(fullFilename);
+        BufferedWriter bufferedWriter = null;
+        try {
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fullFilename)));
+            if (writeFileContentProcessor != null) {
+                writeFileContentProcessor.writeContent(bufferedWriter);
+            }
+        } catch (Exception e) {
+            throw new FileUtilException(e);
+        } finally {
+            if (bufferedWriter != null) {
+                try {
+                    bufferedWriter.close();
                 } catch (Exception e) {
                     throw new FileUtilException(e);
                 }
@@ -1488,5 +1517,14 @@ public final class FileUtil {
          * @param line
          */
         public abstract void afterReadLine(String line);
+    }
+
+    public static abstract interface WriteFileContentProcessor {
+        /**
+         * write content
+         * 
+         * @param bufferedWriter
+         */
+        public abstract void writeContent(BufferedWriter bufferedWriter);
     }
 }
