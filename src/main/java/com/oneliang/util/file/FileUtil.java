@@ -1524,7 +1524,8 @@ public final class FileUtil {
          * write content
          * 
          * @param bufferedWriter
+         * @throws Exception
          */
-        public abstract void writeContent(BufferedWriter bufferedWriter);
+        public abstract void writeContent(BufferedWriter bufferedWriter) throws Exception;
     }
 }
