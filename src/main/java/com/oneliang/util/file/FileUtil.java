@@ -668,9 +668,10 @@ public final class FileUtil {
     public static String readFileContentIgnoreLine(String fullFilename, final String append) {
         final StringBuilder stringBuilder = new StringBuilder();
         readFileContentIgnoreLine(fullFilename, new ReadFileContentProcessor() {
-            public void afterReadLine(String line) {
+            public boolean afterReadLine(String line) {
                 stringBuilder.append(line.trim());
                 stringBuilder.append(StringUtil.nullToBlank(append));
+                return true;
             }
         });
         return stringBuilder.toString();
@@ -689,7 +690,10 @@ public final class FileUtil {
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 if (readFileContentProcessor != null) {
-                    readFileContentProcessor.afterReadLine(line.trim());
+                    boolean continueRead = readFileContentProcessor.afterReadLine(line.trim());
+                    if (!continueRead) {
+                        break;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -1515,8 +1519,9 @@ public final class FileUtil {
          * after read line
          * 
          * @param line
+         * @return boolean
          */
-        public abstract void afterReadLine(String line);
+        public abstract boolean afterReadLine(String line);
     }
 
     public static abstract interface WriteFileContentProcessor {
