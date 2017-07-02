@@ -1519,7 +1519,7 @@ public final class FileUtil {
          * after read line
          * 
          * @param line
-         * @return boolean
+         * @return boolean, if true continue read, false break read
          */
         public abstract boolean afterReadLine(String line);
     }
