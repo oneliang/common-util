@@ -669,7 +669,7 @@ public final class FileUtil {
         final StringBuilder stringBuilder = new StringBuilder();
         readFileContentIgnoreLine(fullFilename, new ReadFileContentProcessor() {
             public boolean afterReadLine(String line) {
-                stringBuilder.append(line.trim());
+                stringBuilder.append(line);
                 stringBuilder.append(StringUtil.nullToBlank(append));
                 return true;
             }
@@ -690,7 +690,7 @@ public final class FileUtil {
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 if (readFileContentProcessor != null) {
-                    boolean continueRead = readFileContentProcessor.afterReadLine(line.trim());
+                    boolean continueRead = readFileContentProcessor.afterReadLine(line);
                     if (!continueRead) {
                         break;
                     }
