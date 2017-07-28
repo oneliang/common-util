@@ -18,7 +18,7 @@ import com.oneliang.util.file.FileUtil.MatchOption;
 public class ClassesMerger {
 
 	public void mergeClasses() throws Exception {
-		String inputFullFilename = "/D:/Dandelion/java/ammdev/boot/build/intermediates/transforms/customProguard/debug/jars/3/1f/inputList.jar";
+		String inputFullFilename = "/D:/Dandelion/git/wechat/boot/build/intermediates/transforms/customProguard/debug/jars/3/1f/inputList1501143421616.jar";
 		String outputJarFullFilename = "/D:/main.jar";
 		FileUtil.createFile(outputJarFullFilename);
 		List<String> mergeZipFullFilenameList = new ArrayList<String>();
