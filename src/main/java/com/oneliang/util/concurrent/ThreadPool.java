@@ -364,8 +364,8 @@ public final class ThreadPool implements Runnable {
 
 		public void addInnerThread(InnerThread innerThread) {
 			if (innerThread != null) {
+			    this.innerThreadQueue.add(innerThread);
 				synchronized (this) {
-					this.innerThreadQueue.add(innerThread);
 					this.notify();
 				}
 			}
