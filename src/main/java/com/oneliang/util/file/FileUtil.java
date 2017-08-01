@@ -684,9 +684,36 @@ public final class FileUtil {
      * @param readFileContentProcessor
      */
     public static void readFileContentIgnoreLine(String fullFilename, ReadFileContentProcessor readFileContentProcessor) {
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(fullFilename);
+            readFileContentIgnoreLine(inputStream, readFileContentProcessor);
+        } catch (Exception e) {
+            throw new FileUtilException(e);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Exception e) {
+                    throw new FileUtilException(e);
+                }
+            }
+        }
+    }
+
+    /**
+     * read file content ignore line
+     * 
+     * @param inputStream
+     * @param readFileContentProcessor
+     */
+    public static void readFileContentIgnoreLine(InputStream inputStream, ReadFileContentProcessor readFileContentProcessor) {
+        if (inputStream == null) {
+            return;
+        }
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(fullFilename)));
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 if (readFileContentProcessor != null) {
