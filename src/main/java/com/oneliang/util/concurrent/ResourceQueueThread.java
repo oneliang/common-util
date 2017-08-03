@@ -17,7 +17,9 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
 
     private static final Logger logger = LoggerManager.getLogger(ResourceQueueThread.class);
 
-    private Queue<T> resourceQueue = null;
+    // addResource() may do before the start(),so must initialize it in self
+    // instance initializing
+    private Queue<T> resourceQueue = new ConcurrentLinkedQueue<T>();
     private Thread thread = null;
     // always binding in self instance(ResourceQueueThread),finalize self
     // instance will set null(release the resourceProcessor)
@@ -66,9 +68,6 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
      * start
      */
     public synchronized void start() {
-        if (this.resourceQueue == null) {
-            this.resourceQueue = new ConcurrentLinkedQueue<T>();
-        }
         if (this.thread == null) {
             this.thread = new Thread(this);
             this.thread.start();
@@ -92,7 +91,6 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
         if (this.thread != null) {
             this.thread.interrupt();
             this.thread = null;
-            this.resourceQueue = null;
             this.needToInterrupt = false;
         }
     }
@@ -114,6 +112,8 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
      * finalize
      */
     protected void finalize() throws Throwable {
+        super.finalize();
+        this.resourceQueue = null;
         this.resourceProcessor = null;
     }
 
