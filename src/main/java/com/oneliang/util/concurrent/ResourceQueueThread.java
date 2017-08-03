@@ -19,6 +19,8 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
 
     private Queue<T> resourceQueue = null;
     private Thread thread = null;
+    // always binding in self instance(ResourceQueueThread),finalize self
+    // instance will set null(release the resourceProcessor)
     private ResourceProcessor<T> resourceProcessor = null;
     private boolean needToInterrupt = false;
 
@@ -29,7 +31,6 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
      */
     public ResourceQueueThread(ResourceProcessor<T> resourceProcessor) {
         this.resourceProcessor = resourceProcessor;
-        this.resourceQueue = new ConcurrentLinkedQueue<T>();
     }
 
     public void run() {
@@ -65,6 +66,9 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
      * start
      */
     public synchronized void start() {
+        if (this.resourceQueue == null) {
+            this.resourceQueue = new ConcurrentLinkedQueue<T>();
+        }
         if (this.thread == null) {
             this.thread = new Thread(this);
             this.thread.start();
@@ -89,7 +93,6 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
             this.thread.interrupt();
             this.thread = null;
             this.resourceQueue = null;
-            this.resourceProcessor = null;
             this.needToInterrupt = false;
         }
     }
@@ -105,6 +108,13 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
                 this.notify();
             }
         }
+    }
+
+    /**
+     * finalize
+     */
+    protected void finalize() throws Throwable {
+        this.resourceProcessor = null;
     }
 
     public abstract static interface ResourceProcessor<T extends Object> {
