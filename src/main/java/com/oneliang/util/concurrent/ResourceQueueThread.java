@@ -44,11 +44,8 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
                         this.resourceProcessor.process(resource);
                     }
                 } else {
-                    if (this.needToInterrupt) {
-                        this.realInterrupt();
-                    }
                     synchronized (this) {
-                        // double check,for the scene which notify first
+                        // check,for the scene which notify first
                         if (this.needToInterrupt) {
                             this.realInterrupt();
                         }
