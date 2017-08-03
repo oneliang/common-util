@@ -45,7 +45,7 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
                     }
                 } else {
                     synchronized (this) {
-                        // check,for the scene which notify first
+                        // check for the scene which notify first,so do it in synchronized block
                         if (this.needToInterrupt) {
                             this.realInterrupt();
                         }
