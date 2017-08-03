@@ -17,7 +17,7 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
 
     private static final Logger logger = LoggerManager.getLogger(ResourceQueueThread.class);
 
-    private Queue<T> resourceQueue = new ConcurrentLinkedQueue<T>();
+    private Queue<T> resourceQueue = null;
     private Thread thread = null;
     private ResourceProcessor<T> resourceProcessor = null;
     private boolean needToInterrupt = false;
@@ -29,6 +29,7 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
      */
     public ResourceQueueThread(ResourceProcessor<T> resourceProcessor) {
         this.resourceProcessor = resourceProcessor;
+        this.resourceQueue = new ConcurrentLinkedQueue<T>();
     }
 
     public void run() {
@@ -87,6 +88,8 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
         if (this.thread != null) {
             this.thread.interrupt();
             this.thread = null;
+            this.resourceQueue = null;
+            this.resourceProcessor = null;
             this.needToInterrupt = false;
         }
     }
