@@ -834,7 +834,7 @@ public final class FileUtil {
      */
     public static List<String> findMatchFileDirectory(MatchOption matchOption) {
         ObjectUtil.checkNotNull(matchOption, "matchOption can not be null.");
-        matchOption.findFile = false;
+        matchOption.findType = MatchOption.FindType.FILE_DIRECTORY;
         return findMatchFileOrMatchFileDirectory(matchOption);
     }
 
@@ -846,7 +846,19 @@ public final class FileUtil {
      */
     public static List<String> findMatchFile(MatchOption matchOption) {
         ObjectUtil.checkNotNull(matchOption, "matchOption can not be null.");
-        matchOption.findFile = true;
+        matchOption.findType = MatchOption.FindType.FILE;
+        return findMatchFileOrMatchFileDirectory(matchOption);
+    }
+
+    /**
+     * find match directory
+     * 
+     * @param matchOption
+     * @return List<String>
+     */
+    public static List<String> findMatchDirectory(MatchOption matchOption) {
+        ObjectUtil.checkNotNull(matchOption, "matchOption can not be null.");
+        matchOption.findType = MatchOption.FindType.DIRECTORY;
         return findMatchFileOrMatchFileDirectory(matchOption);
     }
 
@@ -882,17 +894,27 @@ public final class FileUtil {
                     continue;
                 }
                 for (File singleFile : fileArray) {
-                    if (singleFile.isDirectory() && matchOption.deep) {
-                        queue.add(singleFile);
-                    } else if (singleFile.isFile()) {
-                        queue.add(singleFile);
+                    if (matchOption.findType == MatchOption.FindType.DIRECTORY) {
+                        if (singleFile.isDirectory() && matchOption.deep) {
+                            queue.add(singleFile);
+                            if (!singleFile.getName().toLowerCase().endsWith(fileSuffix.toLowerCase())) {
+                                continue;
+                            }
+                            list.add(singleFile.getAbsolutePath());
+                        }
+                    } else {
+                        if (singleFile.isDirectory() && matchOption.deep) {
+                            queue.add(singleFile);
+                        } else if (singleFile.isFile()) {
+                            queue.add(singleFile);
+                        }
                     }
                 }
             } else if (file.isFile()) {
                 if (!file.getName().toLowerCase().endsWith(fileSuffix.toLowerCase())) {
                     continue;
                 }
-                if (matchOption.findFile) {
+                if (matchOption.findType == MatchOption.FindType.FILE) {
                     String fullFilename = null;
                     if (matchOption.processor != null) {
                         fullFilename = matchOption.processor.onMatch(file);
@@ -903,7 +925,7 @@ public final class FileUtil {
                     if (fullFilename != null) {
                         list.add(fullFilename);
                     }
-                } else {
+                } else if (matchOption.findType == MatchOption.FindType.FILE_DIRECTORY) {
                     String parentFullFilename = null;
                     if (matchOption.processor != null) {
                         parentFullFilename = matchOption.processor.onMatch(file.getParentFile());
@@ -1204,7 +1226,7 @@ public final class FileUtil {
                     MatchOption matchOption = new MatchOption(directory);
                     matchOption.fileSuffix = fileSuffix;
                     matchOption.includeHidden = includeHidden;
-                    matchOption.findFile = findFile;
+                    matchOption.findType = findFile ? MatchOption.FindType.FILE : MatchOption.FindType.FILE_DIRECTORY;
                     sourceList.addAll(findMatchFileOrMatchFileDirectory(matchOption));
                 }
             }
@@ -1482,9 +1504,13 @@ public final class FileUtil {
      * match option
      */
     public static class MatchOption {
+        private static enum FindType {
+            FILE, DIRECTORY, FILE_DIRECTORY
+        }
+
         public final String directory;
         public String fileSuffix = null;
-        private boolean findFile = true;
+        private FindType findType = FindType.FILE;
         public boolean includeHidden = false;
         public boolean deep = true;
         public Processor processor = null;
