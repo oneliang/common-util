@@ -517,15 +517,15 @@ public final class FileUtil {
      * merge zip file
      * 
      * @param zipOutputFullFilename
-     * @param mergeZipFullFilenameList
+     * @param zipFullFilenameList
      */
-    public static void mergeZip(String zipOutputFullFilename, List<String> mergeZipFullFilenameList) {
+    public static void mergeZip(String zipOutputFullFilename, List<String> zipFullFilenameList) {
         FileUtil.createFile(zipOutputFullFilename);
         ZipOutputStream zipOutputStream = null;
         try {
             zipOutputStream = new ZipOutputStream(new FileOutputStream(zipOutputFullFilename));
-            if (mergeZipFullFilenameList != null) {
-                for (String zipFullFilename : mergeZipFullFilenameList) {
+            if (zipFullFilenameList != null) {
+                for (String zipFullFilename : zipFullFilenameList) {
                     if (isExist(zipFullFilename)) {
                         ZipFile zipFile = new ZipFile(zipFullFilename);
                         Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
