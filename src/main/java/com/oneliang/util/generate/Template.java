@@ -35,6 +35,7 @@ public class Template {
                     return true;
                 }
             });
+            String templateContent = stringBuilder.toString();
             Bindings bindings = scriptEngine.createBindings();
             scriptEngine.setBindings(bindings, ScriptContext.GLOBAL_SCOPE);
             String json = null;
@@ -48,17 +49,18 @@ public class Template {
             scriptEngine.eval(JavaScriptFunctionGenerator.getObject(json));
             scriptEngine.eval(JavaScriptFunctionGenerator.template());
             Invocable invocable = (Invocable) scriptEngine;
-            logger.debug(stringBuilder.toString());
-            Object object = invocable.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_TEMPLATE, stringBuilder.toString());
+            logger.debug(templateContent);
+            Object object = invocable.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_TEMPLATE, templateContent);
             logger.debug(JavaScriptFunctionGenerator.getResult(object.toString()));
             scriptEngine.eval(JavaScriptFunctionGenerator.getResult(object.toString()));
             object = invocable.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_GET_RESULT);
-            logger.debug(object);
             String toFile = parameter.getToFile();
             byte[] toFileByteArray = null;
             if (object != null && StringUtil.isNotBlank(object.toString())) {
+                logger.debug(object);
                 toFileByteArray = object.toString().getBytes(Constant.Encoding.UTF8);
             } else {
+                logger.debug(templateContent);
                 toFileByteArray = stringBuilder.toString().getBytes(Constant.Encoding.UTF8);
             }
             FileUtil.writeFile(toFile, toFileByteArray);
