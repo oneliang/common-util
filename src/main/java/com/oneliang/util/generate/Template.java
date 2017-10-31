@@ -54,10 +54,14 @@ public class Template {
             scriptEngine.eval(JavaScriptFunctionGenerator.getResult(object.toString()));
             object = invocable.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_GET_RESULT);
             logger.debug(object);
-            if (object != null) {
-                String toFile = parameter.getToFile();
-                FileUtil.writeFile(toFile, object.toString().getBytes(Constant.Encoding.UTF8));
+            String toFile = parameter.getToFile();
+            byte[] toFileByteArray = null;
+            if (object != null && StringUtil.isNotBlank(object.toString())) {
+                toFileByteArray = object.toString().getBytes(Constant.Encoding.UTF8);
+            } else {
+                toFileByteArray = stringBuilder.toString().getBytes(Constant.Encoding.UTF8);
             }
+            FileUtil.writeFile(toFile, toFileByteArray);
         } catch (Exception e) {
             logger.error(Constant.Base.EXCEPTION, e);
         }
