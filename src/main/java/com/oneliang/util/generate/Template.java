@@ -1,10 +1,5 @@
 package com.oneliang.util.generate;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.OutputStream;
-
 import javax.script.Bindings;
 import javax.script.Invocable;
 import javax.script.ScriptContext;
@@ -32,14 +27,14 @@ public class Template {
             return;
         }
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(parameter.getTemplateFile()));
-            StringBuilder stringBuilder = new StringBuilder();
-            String line = null;
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-                stringBuilder.append(StringUtil.CRLF_STRING);
-            }
-            bufferedReader.close();
+            final StringBuilder stringBuilder = new StringBuilder();
+            FileUtil.readFileContentIgnoreLine(parameter.getTemplateFile(), new FileUtil.ReadFileContentProcessor() {
+                public boolean afterReadLine(String line) {
+                    stringBuilder.append(line);
+                    stringBuilder.append(StringUtil.CRLF_STRING);
+                    return true;
+                }
+            });
             Bindings bindings = scriptEngine.createBindings();
             scriptEngine.setBindings(bindings, ScriptContext.GLOBAL_SCOPE);
             String json = null;
@@ -61,11 +56,7 @@ public class Template {
             logger.debug(object);
             if (object != null) {
                 String toFile = parameter.getToFile();
-                FileUtil.createFile(toFile);
-                OutputStream outputStream = new FileOutputStream(toFile);
-                outputStream.write(object.toString().getBytes(Constant.Encoding.UTF8));
-                outputStream.flush();
-                outputStream.close();
+                FileUtil.writeFile(toFile, object.toString().getBytes(Constant.Encoding.UTF8));
             }
         } catch (Exception e) {
             logger.error(Constant.Base.EXCEPTION, e);
