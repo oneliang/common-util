@@ -40,7 +40,7 @@ public class Template {
             scriptEngine.setBindings(bindings, ScriptContext.GLOBAL_SCOPE);
             String json = null;
             if (parameter.getObject() != null) {
-                json = JsonUtil.objectToJson(parameter.getObject());
+                json = JsonUtil.objectToJson(parameter.getObject(), new String[] {}, parameter.getJsonProcessor());
             } else {
                 if (StringUtil.isNotBlank(parameter.getJson())) {
                     json = parameter.getJson();
@@ -74,6 +74,7 @@ public class Template {
         private String toFile = null;
         private Object object = null;
         private String json = null;
+        private JsonUtil.JsonProcessor jsonProcessor = null;
 
         /**
          * @return the templateFile
@@ -133,6 +134,21 @@ public class Template {
          */
         public void setJson(String json) {
             this.json = json;
+        }
+
+        /**
+         * @return the jsonProcessor
+         */
+        public JsonUtil.JsonProcessor getJsonProcessor() {
+            return jsonProcessor;
+        }
+
+        /**
+         * @param jsonProcessor
+         *            the jsonProcessor to set
+         */
+        public void setJsonProcessor(JsonUtil.JsonProcessor jsonProcessor) {
+            this.jsonProcessor = jsonProcessor;
         }
     }
 
