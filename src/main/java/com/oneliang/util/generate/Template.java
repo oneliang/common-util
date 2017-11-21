@@ -46,6 +46,7 @@ public class Template {
                     json = parameter.getJson();
                 }
             }
+            logger.debug("data object json:" + json);
             scriptEngine.eval(JavaScriptFunctionGenerator.getObject(json));
             scriptEngine.eval(JavaScriptFunctionGenerator.template());
             Invocable invocable = (Invocable) scriptEngine;
