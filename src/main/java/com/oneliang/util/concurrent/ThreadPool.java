@@ -85,6 +85,7 @@ public final class ThreadPool implements Runnable {
             } catch (InterruptedException e) {
                 logger.verbose("Thread pool need to interrupt:" + e.getMessage());
                 Thread.currentThread().interrupt();
+                break;
             } catch (Exception e) {
                 logger.error(Constant.Base.EXCEPTION, e);
             }
@@ -229,8 +230,8 @@ public final class ThreadPool implements Runnable {
         }
 
         public void run() {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
                     synchronized (this) {
                         if (this.currentThreadTask != null) {
                             logger.verbose(this + "--begin--");
@@ -252,12 +253,12 @@ public final class ThreadPool implements Runnable {
                         }
                         this.wait();
                     }
-                } catch (InterruptedException e) {
-                    logger.verbose("Inner thread need to interrupt:" + Thread.currentThread().getName() + ",message:" + e.getMessage());
-                    Thread.currentThread().interrupt();
-                } catch (Exception e) {
-                    logger.error(Constant.Base.EXCEPTION, e);
                 }
+            } catch (InterruptedException e) {
+                logger.verbose("Inner thread need to interrupt:" + Thread.currentThread().getName() + ",message:" + e.getMessage());
+                Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                logger.error(Constant.Base.EXCEPTION, e);
             }
         }
 
@@ -356,6 +357,7 @@ public final class ThreadPool implements Runnable {
                 } catch (InterruptedException e) {
                     logger.verbose("Daemon thread need to interrupt:" + e.getMessage());
                     Thread.currentThread().interrupt();
+                    break;
                 } catch (Exception e) {
                     logger.error(Constant.Base.EXCEPTION, e);
                 }

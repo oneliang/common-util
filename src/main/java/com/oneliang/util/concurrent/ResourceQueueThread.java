@@ -45,7 +45,8 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
                     }
                 } else {
                     synchronized (this) {
-                        // check for the scene which notify first,so do it in synchronized block
+                        // check for the scene which notify first,so do it in
+                        // synchronized block
                         if (this.needToInterrupt) {
                             this.realInterrupt();
                         }
@@ -55,6 +56,7 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
             } catch (InterruptedException e) {
                 logger.verbose("need to interrupt:" + e.getMessage());
                 Thread.currentThread().interrupt();
+                break;
             } catch (Exception e) {
                 logger.error(Constant.Base.EXCEPTION, e);
             }
