@@ -622,8 +622,8 @@ public final class FileUtil {
      * @param byteArray
      */
     public static void writeFile(String outputFullFilename, byte[] byteArray) {
-        InputStream inputStream = new ByteArrayInputStream(byteArray);
         FileUtil.createFile(outputFullFilename);
+        InputStream inputStream = new ByteArrayInputStream(byteArray);
         OutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(outputFullFilename);
