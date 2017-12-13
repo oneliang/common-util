@@ -110,6 +110,9 @@ public final class FileUtil {
      * @param directoryPath
      */
     public static void createDirectory(final String directoryPath) {
+        if (StringUtil.isBlank(directoryPath)) {
+            return;
+        }
         File file = new File(directoryPath);
         if (!file.exists()) {
             file.setReadable(true, false);
