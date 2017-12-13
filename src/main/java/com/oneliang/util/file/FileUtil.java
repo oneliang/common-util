@@ -125,6 +125,9 @@ public final class FileUtil {
      * @return boolean
      */
     public static boolean createFile(final String fullFilename) {
+        if (StringUtil.isBlank(fullFilename)) {
+            return false;
+        }
         boolean result = false;
         File file = new File(fullFilename);
         createDirectory(file.getParent());
@@ -144,6 +147,9 @@ public final class FileUtil {
      * @param directory
      */
     public static void deleteAllFile(String directory) {
+        if (StringUtil.isBlank(directory)) {
+            return;
+        }
         List<File> fileList = new ArrayList<File>();
         File directoryFile = new File(directory);
         Queue<File> queue = new ConcurrentLinkedQueue<File>();
