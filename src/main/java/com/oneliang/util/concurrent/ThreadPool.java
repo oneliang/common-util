@@ -230,8 +230,8 @@ public final class ThreadPool implements Runnable {
         }
 
         public void run() {
-            try {
-                while (!Thread.currentThread().isInterrupted()) {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
                     synchronized (this) {
                         if (this.currentThreadTask != null) {
                             logger.verbose(this + "--begin--");
@@ -253,12 +253,13 @@ public final class ThreadPool implements Runnable {
                         }
                         this.wait();
                     }
+                } catch (InterruptedException e) {
+                    logger.verbose("Inner thread need to interrupt:" + Thread.currentThread().getName() + ",message:" + e.getMessage());
+                    Thread.currentThread().interrupt();
+                    break;
+                } catch (Exception e) {
+                    logger.error(Constant.Base.EXCEPTION, e);
                 }
-            } catch (InterruptedException e) {
-                logger.verbose("Inner thread need to interrupt:" + Thread.currentThread().getName() + ",message:" + e.getMessage());
-                Thread.currentThread().interrupt();
-            } catch (Exception e) {
-                logger.error(Constant.Base.EXCEPTION, e);
             }
         }
 
