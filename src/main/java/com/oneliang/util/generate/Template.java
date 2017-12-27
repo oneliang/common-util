@@ -28,7 +28,7 @@ public class Template {
         }
         try {
             final StringBuilder stringBuilder = new StringBuilder();
-            FileUtil.readFileContentIgnoreLine(parameter.getTemplateFile(), new FileUtil.ReadFileContentProcessor() {
+            FileUtil.readFileContentIgnoreLine(parameter.getTemplateFile(), Constant.Encoding.UTF8, new FileUtil.ReadFileContentProcessor() {
                 public boolean afterReadLine(String line) {
                     stringBuilder.append(line);
                     stringBuilder.append(StringUtil.CRLF_STRING);

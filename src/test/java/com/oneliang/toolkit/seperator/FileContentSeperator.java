@@ -32,7 +32,7 @@ public class FileContentSeperator extends DefaultFileCopyProcessor {
             if (StringUtil.isMatchPattern(filename, seperatorConfig.suffix)) {
                 isMatch = true;
                 final StringBuilder content = new StringBuilder();
-                FileUtil.readFileContentIgnoreLine(from, new ReadFileContentProcessor() {
+                FileUtil.readFileContentIgnoreLine(from, Constant.Encoding.UTF8, new ReadFileContentProcessor() {
                     private boolean needToCollect = false;
 
                     public boolean afterReadLine(String line) {
