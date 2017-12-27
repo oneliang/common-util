@@ -664,19 +664,31 @@ public final class FileUtil {
      * @return String
      */
     public static String readFileContentIgnoreLine(String fullFilename) {
-        return readFileContentIgnoreLine(fullFilename, StringUtil.BLANK);
+        return readFileContentIgnoreLine(fullFilename, Constant.Encoding.UTF8, StringUtil.BLANK);
     }
 
     /**
      * read file content ignore line
      * 
      * @param fullFilename
+     * @param encoding
+     * @return String
+     */
+    public static String readFileContentIgnoreLine(String fullFilename, String encoding) {
+        return readFileContentIgnoreLine(fullFilename, encoding, StringUtil.BLANK);
+    }
+
+    /**
+     * read file content ignore line
+     * 
+     * @param fullFilename
+     * @param encoding
      * @param append
      * @return String
      */
-    public static String readFileContentIgnoreLine(String fullFilename, final String append) {
+    public static String readFileContentIgnoreLine(String fullFilename, String encoding, final String append) {
         final StringBuilder stringBuilder = new StringBuilder();
-        readFileContentIgnoreLine(fullFilename, new ReadFileContentProcessor() {
+        readFileContentIgnoreLine(fullFilename, encoding, new ReadFileContentProcessor() {
             public boolean afterReadLine(String line) {
                 stringBuilder.append(line);
                 stringBuilder.append(StringUtil.nullToBlank(append));
@@ -690,13 +702,14 @@ public final class FileUtil {
      * read file content ignore line
      * 
      * @param fullFilename
+     * @param encoding
      * @param readFileContentProcessor
      */
-    public static void readFileContentIgnoreLine(String fullFilename, ReadFileContentProcessor readFileContentProcessor) {
+    public static void readFileContentIgnoreLine(String fullFilename, String encoding, ReadFileContentProcessor readFileContentProcessor) {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(fullFilename);
-            readFileContentIgnoreLine(inputStream, readFileContentProcessor);
+            readInputStreamContentIgnoreLine(inputStream, encoding, readFileContentProcessor);
         } catch (Exception e) {
             throw new FileUtilException(e);
         } finally {
@@ -711,18 +724,60 @@ public final class FileUtil {
     }
 
     /**
-     * read file content ignore line
+     * read input stream content ignore line
      * 
      * @param inputStream
+     * @return String
+     */
+    public static String readInputStreamContentIgnoreLine(InputStream inputStream) {
+        return readInputStreamContentIgnoreLine(inputStream, Constant.Encoding.UTF8, StringUtil.BLANK);
+    }
+
+    /**
+     * read input stream content ignore line
+     * 
+     * @param inputStream
+     * @param encoding
+     * @return String
+     */
+    public static String readInputStreamContentIgnoreLine(InputStream inputStream, String encoding) {
+        return readInputStreamContentIgnoreLine(inputStream, encoding, StringUtil.BLANK);
+    }
+
+    /**
+     * read input stream content ignore line
+     * 
+     * @param inputStream
+     * @param encoding
+     * @param append
+     * @return String
+     */
+    public static String readInputStreamContentIgnoreLine(InputStream inputStream, String encoding, final String append) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        readInputStreamContentIgnoreLine(inputStream, encoding, new ReadFileContentProcessor() {
+            public boolean afterReadLine(String line) {
+                stringBuilder.append(line);
+                stringBuilder.append(StringUtil.nullToBlank(append));
+                return true;
+            }
+        });
+        return stringBuilder.toString();
+    }
+
+    /**
+     * read input stream content ignore line
+     * 
+     * @param inputStream
+     * @param encoding
      * @param readFileContentProcessor
      */
-    public static void readFileContentIgnoreLine(InputStream inputStream, ReadFileContentProcessor readFileContentProcessor) {
+    public static void readInputStreamContentIgnoreLine(InputStream inputStream, String encoding, ReadFileContentProcessor readFileContentProcessor) {
         if (inputStream == null) {
             return;
         }
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, encoding));
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 if (readFileContentProcessor != null) {
