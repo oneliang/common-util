@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -33,7 +35,17 @@ public final class HttpUtil {
      * @param httpUrl
      */
     public static String sendRequestGet(String httpUrl) {
-        return sendRequestGet(httpUrl, null, Constant.Encoding.UTF8);
+        return sendRequestGet(httpUrl, null);
+    }
+
+    /**
+     * send request by get method,default return encoding utf8
+     * 
+     * @param httpUrl
+     * @param advancedOption
+     */
+    public static String sendRequestGet(String httpUrl, AdvancedOption advancedOption) {
+        return sendRequestGet(httpUrl, null, Constant.Encoding.UTF8, advancedOption);
     }
 
     /**
@@ -41,10 +53,11 @@ public final class HttpUtil {
      * 
      * @param httpUrl
      * @param returnEncoding
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestGet(String httpUrl, String returnEncoding) {
-        return sendRequestGet(httpUrl, null, returnEncoding);
+    public static String sendRequestGet(String httpUrl, String returnEncoding, AdvancedOption advancedOption) {
+        return sendRequestGet(httpUrl, null, returnEncoding, advancedOption);
     }
 
     /**
@@ -52,10 +65,11 @@ public final class HttpUtil {
      * 
      * @param httpUrl
      * @param timeout
+     * @param advancedOption
      * @param callback
      */
-    public static void sendRequestGet(String httpUrl, int timeout, Callback callback) {
-        sendRequestGet(httpUrl, null, timeout, callback);
+    public static void sendRequestGet(String httpUrl, int timeout, AdvancedOption advancedOption, Callback callback) {
+        sendRequestGet(httpUrl, null, timeout, advancedOption, callback);
     }
 
     /**
@@ -63,10 +77,11 @@ public final class HttpUtil {
      * 
      * @param httpUrl
      * @param httpHeaderList
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList) {
-        return sendRequestGet(httpUrl, httpHeaderList, Constant.Encoding.UTF8);
+    public static String sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, AdvancedOption advancedOption) {
+        return sendRequestGet(httpUrl, httpHeaderList, Constant.Encoding.UTF8, advancedOption);
     }
 
     /**
@@ -75,11 +90,12 @@ public final class HttpUtil {
      * @param httpUrl
      * @param httpHeaderList
      * @param returnEncoding
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, String returnEncoding) {
+    public static String sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, String returnEncoding, AdvancedOption advancedOption) {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        sendRequestGet(httpUrl, httpHeaderList, new Callback() {
+        sendRequestGet(httpUrl, httpHeaderList, advancedOption, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int contentLength) throws Exception {
                 byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
@@ -114,10 +130,11 @@ public final class HttpUtil {
      * 
      * @param httpUrl
      * @param httpHeaderList
+     * @param advancedOption
      * @param callback
      */
-    public static void sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, Callback callback) {
-        sendRequestGet(httpUrl, httpHeaderList, DEFAULT_TIMEOUT, callback);
+    public static void sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, AdvancedOption advancedOption, Callback callback) {
+        sendRequestGet(httpUrl, httpHeaderList, DEFAULT_TIMEOUT, advancedOption, callback);
     }
 
     /**
@@ -126,10 +143,11 @@ public final class HttpUtil {
      * @param httpUrl
      * @param httpHeaderList
      * @param timeout
+     * @param advancedOption
      * @param callback
      */
-    public static void sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, int timeout, Callback callback) {
-        sendRequest(httpUrl, Constant.Http.RequestMethod.GET, httpHeaderList, null, null, null, timeout, null, callback);
+    public static void sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, int timeout, AdvancedOption advancedOption, Callback callback) {
+        sendRequest(httpUrl, Constant.Http.RequestMethod.GET, httpHeaderList, null, null, null, timeout, null, advancedOption, callback);
     }
 
     /**
@@ -139,7 +157,18 @@ public final class HttpUtil {
      * @return String
      */
     public static String sendRequestPost(String httpUrl) {
-        return sendRequestPost(httpUrl, null, null);
+        return sendRequestPost(httpUrl, null);
+    }
+
+    /**
+     * send request by post method
+     * 
+     * @param httpUrl
+     * @param advancedOption
+     * @return String
+     */
+    public static String sendRequestPost(String httpUrl, AdvancedOption advancedOption) {
+        return sendRequestPost(httpUrl, null, null, advancedOption);
     }
 
     /**
@@ -148,10 +177,11 @@ public final class HttpUtil {
      * @param httpUrl
      * @param httpHeaderList
      * @param httpParameterList
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList) {
-        return sendRequestPost(httpUrl, httpHeaderList, httpParameterList, DEFAULT_TIMEOUT);
+    public static String sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, AdvancedOption advancedOption) {
+        return sendRequestPost(httpUrl, httpHeaderList, httpParameterList, DEFAULT_TIMEOUT, advancedOption);
     }
 
     /**
@@ -161,10 +191,11 @@ public final class HttpUtil {
      * @param httpHeaderList
      * @param httpParameterList
      * @param timeout
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, int timeout) {
-        return sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, Constant.Encoding.UTF8);
+    public static String sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, int timeout, AdvancedOption advancedOption) {
+        return sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, Constant.Encoding.UTF8, advancedOption);
     }
 
     /**
@@ -175,11 +206,12 @@ public final class HttpUtil {
      * @param httpParameterList
      * @param timeout
      * @param returnEncoding
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, int timeout, String returnEncoding) {
+    public static String sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, int timeout, String returnEncoding, AdvancedOption advancedOption) {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, new Callback() {
+        sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, advancedOption, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int length) throws Exception {
                 byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
@@ -216,10 +248,11 @@ public final class HttpUtil {
      * @param httpHeaderList
      * @param httpParameterList
      * @param timeout
+     * @param advancedOption
      * @param callback
      */
-    public static void sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, int timeout, Callback callback) {
-        sendRequestPost(httpUrl, httpHeaderList, httpParameterList, null, null, timeout, null, callback);
+    public static void sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, int timeout, AdvancedOption advancedOption, Callback callback) {
+        sendRequestPost(httpUrl, httpHeaderList, httpParameterList, null, null, timeout, null, advancedOption, callback);
     }
 
     /**
@@ -229,10 +262,11 @@ public final class HttpUtil {
      * @param httpHeaderList
      * @param byteArray
      * @param timeout
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestPostWithBytes(String httpUrl, List<HttpNameValue> httpHeaderList, byte[] byteArray, int timeout) {
-        byte[] tempByteArray = sendRequestPostWithWholeBytes(httpUrl, httpHeaderList, byteArray, timeout);
+    public static String sendRequestPostWithBytes(String httpUrl, List<HttpNameValue> httpHeaderList, byte[] byteArray, int timeout, AdvancedOption advancedOption) {
+        byte[] tempByteArray = sendRequestPostWithWholeBytes(httpUrl, httpHeaderList, byteArray, timeout, advancedOption);
         String result = null;
         if (tempByteArray.length > 0) {
             try {
@@ -252,11 +286,12 @@ public final class HttpUtil {
      * @param httpHeaderList
      * @param byteArray
      * @param timeout
+     * @param advancedOption
      * @return byte[]
      */
-    public static byte[] sendRequestPostWithWholeBytes(String httpUrl, List<HttpNameValue> httpHeaderList, byte[] byteArray, int timeout) {
+    public static byte[] sendRequestPostWithWholeBytes(String httpUrl, List<HttpNameValue> httpHeaderList, byte[] byteArray, int timeout, AdvancedOption advancedOption) {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        sendRequestPostWithBytes(httpUrl, httpHeaderList, byteArray, timeout, new Callback() {
+        sendRequestPostWithBytes(httpUrl, httpHeaderList, byteArray, timeout, advancedOption, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int length) throws Exception {
                 byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
@@ -284,10 +319,11 @@ public final class HttpUtil {
      * @param httpHeaderList
      * @param byteArray
      * @param timeout
+     * @param advancedOption
      * @param callback
      */
-    public static void sendRequestPostWithBytes(String httpUrl, List<HttpNameValue> httpHeaderList, byte[] byteArray, int timeout, Callback callback) {
-        sendRequestPost(httpUrl, httpHeaderList, null, byteArray, null, timeout, null, callback);
+    public static void sendRequestPostWithBytes(String httpUrl, List<HttpNameValue> httpHeaderList, byte[] byteArray, int timeout, AdvancedOption advancedOption, Callback callback) {
+        sendRequestPost(httpUrl, httpHeaderList, null, byteArray, null, timeout, null, advancedOption, callback);
     }
 
     /**
@@ -297,9 +333,10 @@ public final class HttpUtil {
      * @param httpHeaderList
      * @param inputStream
      * @param timeout
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout) {
+    public static String sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, AdvancedOption advancedOption) {
         String result = sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, new InputStreamProcessor() {
             public void process(InputStream inputStream, OutputStream outputStream) throws Exception {
                 byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
@@ -309,7 +346,7 @@ public final class HttpUtil {
                     outputStream.flush();
                 }
             }
-        });
+        }, advancedOption);
         return result;
     }
 
@@ -324,8 +361,8 @@ public final class HttpUtil {
      * @param inputStreamProcessor
      * @return String
      */
-    public static String sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor) {
-        return sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, inputStreamProcessor, Constant.Encoding.UTF8);
+    public static String sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, AdvancedOption advancedOption) {
+        return sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, inputStreamProcessor, Constant.Encoding.UTF8, advancedOption);
     }
 
     /**
@@ -337,11 +374,12 @@ public final class HttpUtil {
      * @param timeout
      * @param inputStreamProcessor
      * @param returnEncoding
+     * @param advancedOption
      * @return String
      */
-    public static String sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, String returnEncoding) {
+    public static String sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, String returnEncoding, AdvancedOption advancedOption) {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, inputStreamProcessor, new Callback() {
+        sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, inputStreamProcessor, advancedOption, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int length) throws Exception {
                 byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
@@ -380,7 +418,7 @@ public final class HttpUtil {
      * @param timeout
      * @param callback
      */
-    public static void sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, Callback callback) {
+    public static void sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, AdvancedOption advancedOption, Callback callback) {
         sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, new InputStreamProcessor() {
             public void process(InputStream inputStream, OutputStream outputStream) throws Exception {
                 byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
@@ -390,7 +428,7 @@ public final class HttpUtil {
                     outputStream.flush();
                 }
             }
-        }, callback);
+        }, advancedOption, callback);
     }
 
     /**
@@ -401,44 +439,53 @@ public final class HttpUtil {
      * @param inputStream
      * @param timeout
      * @param inputStreamProcessor
+     * @param advancedOption
      * @param callback
      */
-    public static void sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, Callback callback) {
-        sendRequestPost(httpUrl, httpHeaderList, null, null, inputStream, timeout, inputStreamProcessor, callback);
+    public static void sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, AdvancedOption advancedOption, Callback callback) {
+        sendRequestPost(httpUrl, httpHeaderList, null, null, inputStream, timeout, inputStreamProcessor, advancedOption, callback);
+    }
+
+    /**
+     * send request post
+     * 
+     * @param httpUrl
+     * @param httpHeaderList
+     * @param httpParameterList
+     * @param streamByteArray
+     * @param inputStream
+     * @param timeout
+     * @param inputStreamProcessor
+     * @param advancedOption
+     * @param callback
+     */
+    private static void sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, byte[] streamByteArray, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, AdvancedOption advancedOption, Callback callback) {
+        sendRequest(httpUrl, Constant.Http.RequestMethod.POST, httpHeaderList, httpParameterList, streamByteArray, inputStream, timeout, inputStreamProcessor, advancedOption, callback);
     }
 
     /**
      * send request
      * 
      * @param httpUrl
+     * @param method
      * @param httpHeaderList
      * @param httpParameterList
      * @param streamByteArray
-     * @param stream
+     * @param inputStream
      * @param timeout
      * @param inputStreamProcessor
+     * @param advancedOption
      * @param callback
      */
-    private static void sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, byte[] streamByteArray, InputStream stream, int timeout, InputStreamProcessor inputStreamProcessor, Callback callback) {
-        sendRequest(httpUrl, Constant.Http.RequestMethod.POST, httpHeaderList, httpParameterList, streamByteArray, stream, timeout, inputStreamProcessor, callback);
-    }
-
-    /**
-     * send request
-     * 
-     * @param httpUrl
-     * @param httpHeaderList
-     * @param httpParameterList
-     * @param streamByteArray
-     * @param stream
-     * @param timeout
-     * @param inputStreamProcessor
-     * @param callback
-     */
-    private static void sendRequest(String httpUrl, String method, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, byte[] streamByteArray, InputStream stream, int timeout, InputStreamProcessor inputStreamProcessor, Callback callback) {
+    private static void sendRequest(String httpUrl, String method, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, byte[] streamByteArray, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, AdvancedOption advancedOption, Callback callback) {
         try {
             URL url = new URL(httpUrl);
-            HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
+            Proxy proxy = Proxy.NO_PROXY;
+            if (advancedOption != null && StringUtil.isNotBlank(advancedOption.hostname) && advancedOption.port > 0) {
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(advancedOption.hostname, advancedOption.port);
+                proxy = new Proxy(Proxy.Type.HTTP, inetSocketAddress);
+            }
+            HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection(proxy);
             httpUrlConnection.setDoOutput(true);
             httpUrlConnection.setDoInput(true);
             httpUrlConnection.setRequestMethod(method);
@@ -474,7 +521,7 @@ public final class HttpUtil {
                     outputStream.flush();
                 } else {
                     if (inputStreamProcessor != null) {
-                        inputStreamProcessor.process(stream, outputStream);
+                        inputStreamProcessor.process(inputStream, outputStream);
                     }
                 }
                 outputStream.close();
@@ -484,13 +531,13 @@ public final class HttpUtil {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 if (callback != null) {
                     int contentLength = httpUrlConnection.getContentLength();
-                    InputStream inputStream = httpUrlConnection.getInputStream();
+                    InputStream responseInputStream = httpUrlConnection.getInputStream();
                     try {
-                        callback.httpOkCallback(headerFieldMap, inputStream, contentLength);
+                        callback.httpOkCallback(headerFieldMap, responseInputStream, contentLength);
                     } catch (Exception e) {
                         callback.exceptionCallback(e);
                     }
-                    inputStream.close();
+                    responseInputStream.close();
                 }
             } else {
                 if (callback != null) {
@@ -596,6 +643,11 @@ public final class HttpUtil {
         }
     }
 
+    public static class AdvancedOption {
+        public String hostname = null;
+        public int port = 0;
+    }
+
     public static void main(String[] args) throws Exception {
         // Accept
         // text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
@@ -624,7 +676,7 @@ public final class HttpUtil {
         // httpHeaderList.add(new HttpNameValue("User-Agent","Mozilla/5.0
         // (Windows NT 6.1; rv:12.0) Gecko/20100101 Firefox/12.0"));
         final FileOutputStream byteArrayOutputStream = new FileOutputStream(new File("D:\\baidu.html"));
-        HttpUtil.sendRequestGet("http://www.baidu.com", httpHeaderList, new Callback() {
+        HttpUtil.sendRequestGet("http://www.baidu.com", httpHeaderList, null, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int contentLength) throws Exception {
                 System.out.println(contentLength);
                 byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];

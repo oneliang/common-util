@@ -33,7 +33,7 @@ public class HttpDownloader{
 		final DownloadListener listener = downloadListener;
 		try {
 			listener.onStart();
-			HttpUtil.sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, new Callback() {
+			HttpUtil.sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, null, new Callback() {
 				public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int contentLength) throws Exception {
 					listener.onProcess(headerFieldMap, inputStream, contentLength, saveFile);
 					listener.onFinish();
