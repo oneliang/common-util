@@ -272,16 +272,16 @@ public final class StringUtil{
 
 	/**
 	 * hex string to byte array
-	 * @param source
+	 * @param string
 	 * @return byte
 	 */
-	public static byte[] hexStringToByteArray(final String source){
+	public static byte[] hexStringToByteArray(final String string){
 		byte[] bytes=null;
-		if(source!=null){
-			bytes=new byte[source.length()/2];
+		if(string!=null){
+			bytes=new byte[string.length()/2];
 			int i=0;
 			while(i<bytes.length){
-				bytes[i]=(byte)(Integer.parseInt(source.substring(i*2, (i+1)*2),16));
+				bytes[i]=(byte)(Integer.parseInt(string.substring(i*2, (i+1)*2),16));
 				i++;
 			}
 		}
