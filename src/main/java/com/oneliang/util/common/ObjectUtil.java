@@ -406,9 +406,42 @@ public final class ObjectUtil {
         if (object == null) {
             return null;
         }
+        return methodInvoke(object.getClass(), object, methodName, parameterTypes, parameterValues);
+    }
+
+    /**
+     * method invoke
+     * @param clazz
+     * @param methodName
+     * @param parameterTypes
+     * @param parameterValues
+     * @return T
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Object> T methodInvoke(Class<?> clazz, String methodName, Class<?>[] parameterTypes, Object[] parameterValues) {
+        if (clazz == null) {
+            return null;
+        }
+        return methodInvoke(clazz, null, methodName, parameterTypes, parameterValues);
+    }
+
+    /**
+     * method invoke
+     * @param clazz
+     * @param object
+     * @param methodName
+     * @param parameterTypes
+     * @param parameterValues
+     * @return T
+     */
+    @SuppressWarnings("unchecked")
+    private static <T extends Object> T methodInvoke(Class<?> clazz, Object object, String methodName, Class<?>[] parameterTypes, Object[] parameterValues) {
+        if (clazz == null) {
+            return null;
+        }
         T value = null;
         try {
-            value = (T) object.getClass().getMethod(methodName, parameterTypes).invoke(object, parameterValues);
+            value = (T) clazz.getMethod(methodName, parameterTypes).invoke(object, parameterValues);
         } catch (Exception e) {
             throw new ObjectUtilException(e);
         }
