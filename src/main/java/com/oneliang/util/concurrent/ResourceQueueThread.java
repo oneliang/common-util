@@ -108,6 +108,17 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
     }
 
     /**
+     * remove resource
+     *
+     * @param resource
+     */
+    public void removeResource(T resource) {
+        if (resource != null) {
+            this.resourceQueue.remove(resource);
+        }
+    }
+
+    /**
      * finalize
      */
     protected void finalize() throws Throwable {
