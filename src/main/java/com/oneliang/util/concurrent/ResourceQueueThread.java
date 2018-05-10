@@ -112,10 +112,11 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
      *
      * @param resource
      */
-    public void removeResource(T resource) {
+    public boolean removeResource(T resource) {
         if (resource != null) {
-            this.resourceQueue.remove(resource);
+            return this.resourceQueue.remove(resource);
         }
+        return false;
     }
 
     /**
