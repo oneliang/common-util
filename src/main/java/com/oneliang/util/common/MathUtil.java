@@ -74,13 +74,13 @@ public final class MathUtil {
 	}
 
 	/**
-	 * integer to scale string
+	 * int to scale string
 	 * 
 	 * @param number
 	 * @param scale
 	 * @return String
 	 */
-	public static String integerToScaleString(final int number, final int scale) {
+	public static String intToScaleString(final int number, final int scale) {
 		int length = scale <= characters.length ? scale : characters.length;
 		StringBuilder builder = new StringBuilder();
 		int num = number;
@@ -93,13 +93,13 @@ public final class MathUtil {
 	}
 
 	/**
-	 * scale string to integer
+	 * scale string to int
 	 * 
 	 * @param string
 	 * @param scale
 	 * @return int
 	 */
-	public static int scaleStringToInteger(final String string, final int scale) {
+	public static int scaleStringToInt(final String string, final int scale) {
 		int length = string.length();
 		int total = 0;
 		for (int i = 0, j = length - 1; i < length; i++, j--) {
