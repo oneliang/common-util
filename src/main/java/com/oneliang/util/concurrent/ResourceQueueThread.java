@@ -124,8 +124,7 @@ public class ResourceQueueThread<T extends Object> implements Runnable {
      */
     protected void finalize() throws Throwable {
         super.finalize();
-        this.resourceQueue = null;
-        this.resourceProcessor = null;
+        this.interrupt();
     }
 
     public abstract static interface ResourceProcessor<T extends Object> {

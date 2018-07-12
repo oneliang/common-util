@@ -179,6 +179,14 @@ public final class ThreadPool implements Runnable {
         this.currentTaskCount++;
     }
 
+    /**
+     * finalize
+     */
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.interrupt();
+    }
+
     private static class InnerThread implements Runnable {
 
         private static final Logger logger = LoggerManager.getLogger(InnerThread.class);
