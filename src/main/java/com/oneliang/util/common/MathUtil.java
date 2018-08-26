@@ -80,7 +80,11 @@ public final class MathUtil {
      * @param scale
      * @return String
      */
-    public static String intToScaleString(final int number, final int scale) {
+    @Deprecated
+    private static String intToScaleString(final int number, final int scale) {
+        if (number < 0) {
+            throw new RuntimeException(String.format("unsupport nagative number:%s", number));
+        }
         int length = scale <= characters.length ? scale : characters.length;
         StringBuilder builder = new StringBuilder();
         int num = number;
@@ -99,7 +103,8 @@ public final class MathUtil {
      * @param scale
      * @return int
      */
-    public static int scaleStringToInt(final String string, final int scale) {
+    @Deprecated
+    private static int scaleStringToInt(final String string, final int scale) {
         int length = string.length();
         int total = 0;
         for (int i = 0, j = length - 1; i < length; i++, j--) {
