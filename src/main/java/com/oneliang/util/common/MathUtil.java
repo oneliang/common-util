@@ -118,7 +118,7 @@ public final class MathUtil {
     /**
      * long to byte array,byte[8]
      * 
-     * @param longNum
+     * @param number
      * @return byte[]
      */
     public static byte[] longToByteArray(long number) {
