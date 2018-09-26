@@ -16,7 +16,7 @@ import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.Base64;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
@@ -39,7 +39,7 @@ public final class RSA {
 	public static KeyPair getKeyPair() throws Exception {
 		SecureRandom secureRandom = new SecureRandom();
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM_RSA);
-		keyPairGenerator.initialize(Constant.Capacity.BYTES_PER_KB, secureRandom);
+		keyPairGenerator.initialize(Constants.Capacity.BYTES_PER_KB, secureRandom);
 		return keyPairGenerator.generateKeyPair();
 	}
 
@@ -125,9 +125,9 @@ public final class RSA {
 		//need to encrypt data max length:117
 		//need to decrypt data max length:128
 		String string = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-		System.out.println(string.getBytes(Constant.Encoding.UTF8).length);
-		byte[] encryptByteArray = encryptByKey(string.getBytes(Constant.Encoding.UTF8), privateKey);
+		System.out.println(string.getBytes(Constants.Encoding.UTF8).length);
+		byte[] encryptByteArray = encryptByKey(string.getBytes(Constants.Encoding.UTF8), privateKey);
 		System.out.println(StringUtil.byteArrayToHexString(encryptByteArray));
-		System.out.println(new String(decryptByKey(encryptByteArray, publicKey), Constant.Encoding.UTF8));
+		System.out.println(new String(decryptByKey(encryptByteArray, publicKey), Constants.Encoding.UTF8));
 	}
 }

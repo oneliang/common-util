@@ -4,7 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.StringUtil;
 
 public final class DES {
@@ -45,6 +45,6 @@ public final class DES {
 		Cipher cipher = Cipher.getInstance(DES_CBC_PKC5PADDING);
 		cipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec);
 		byte[] array=cipher.doFinal(bytes);
-		return new String(array, Constant.Encoding.UTF8);
+		return new String(array, Constants.Encoding.UTF8);
 	}
 }

@@ -30,7 +30,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.Generator;
 import com.oneliang.util.common.ObjectUtil;
 import com.oneliang.util.common.StringUtil;
@@ -317,14 +317,14 @@ public final class FileUtil {
                 }
                 if (contains) {
                     InputStream inputStream = zipFile.getInputStream(zipEntry);
-                    String outputFullFilename = outputDirectoryAbsolutePath + Constant.Symbol.SLASH_LEFT + zipEntryName;
+                    String outputFullFilename = outputDirectoryAbsolutePath + Constants.Symbol.SLASH_LEFT + zipEntryName;
                     if (zipEntry.isDirectory()) {
                         createDirectory(outputFullFilename);
                     } else {
                         createFile(outputFullFilename);
                         OutputStream outputStream = new FileOutputStream(outputFullFilename);
                         try {
-                            byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+                            byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
                             int length = -1;
                             while ((length = inputStream.read(buffer, 0, buffer.length)) != -1) {
                                 outputStream.write(buffer, 0, length);
@@ -394,7 +394,7 @@ public final class FileUtil {
             int outputFullFilenameLength = new File(directory).getAbsolutePath().length() + 1;
             for (String file : fileList) {
                 String zipEntryName = file.substring(outputFullFilenameLength, file.length());
-                zipEntryName = zipEntryName.replace(Constant.Symbol.SLASH_RIGHT, Constant.Symbol.SLASH_LEFT);
+                zipEntryName = zipEntryName.replace(Constants.Symbol.SLASH_RIGHT, Constants.Symbol.SLASH_LEFT);
                 zipEntryPathList.add(new ZipEntryPath(file, new ZipEntry(zipEntryName), true));
             }
             zip(outputZipFullFilename, null, zipEntryPathList, zipProcessor);
@@ -575,7 +575,7 @@ public final class FileUtil {
         }
         try {
             zipOutputStream.putNextEntry(zipEntry);
-            byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+            byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
             int length = -1;
             while ((length = inputStream.read(buffer, 0, buffer.length)) != -1) {
                 zipOutputStream.write(buffer, 0, length);
@@ -664,7 +664,7 @@ public final class FileUtil {
      * @return String
      */
     public static String readFileContentIgnoreLine(String fullFilename) {
-        return readFileContentIgnoreLine(fullFilename, Constant.Encoding.UTF8, StringUtil.BLANK);
+        return readFileContentIgnoreLine(fullFilename, Constants.Encoding.UTF8, StringUtil.BLANK);
     }
 
     /**
@@ -730,7 +730,7 @@ public final class FileUtil {
      * @return String
      */
     public static String readInputStreamContentIgnoreLine(InputStream inputStream) {
-        return readInputStreamContentIgnoreLine(inputStream, Constant.Encoding.UTF8, StringUtil.BLANK);
+        return readInputStreamContentIgnoreLine(inputStream, Constants.Encoding.UTF8, StringUtil.BLANK);
     }
 
     /**
@@ -837,7 +837,7 @@ public final class FileUtil {
         if (inputStream != null && outputStream != null) {
             try {
                 int length = -1;
-                byte[] buffer = new byte[Constant.Capacity.BYTES_PER_MB];
+                byte[] buffer = new byte[Constants.Capacity.BYTES_PER_MB];
                 while ((length = inputStream.read(buffer, 0, buffer.length)) != -1) {
                     outputStream.write(buffer, 0, length);
                     outputStream.flush();
@@ -1022,7 +1022,7 @@ public final class FileUtil {
                 ZipEntry zipEntry = (ZipEntry) entries.nextElement();
                 if (!zipEntry.isDirectory()) {
                     String key = zipEntry.getName();
-                    String value = zipEntry.getCrc() + Constant.Symbol.DOT + zipEntry.getSize();
+                    String value = zipEntry.getCrc() + Constants.Symbol.DOT + zipEntry.getSize();
                     map.put(key, value);
                 }
             }
@@ -1073,7 +1073,7 @@ public final class FileUtil {
                 if (!zipEntry.isDirectory()) {
                     String zipEntryName = zipEntry.getName();
                     String oldZipEntryHash = map.get(zipEntryName);
-                    String newZipEntryHash = zipEntry.getCrc() + Constant.Symbol.DOT + zipEntry.getSize();
+                    String newZipEntryHash = zipEntry.getCrc() + Constants.Symbol.DOT + zipEntry.getSize();
                     // old zip entry hash not exist is a new zip entry,if exist
                     // is a modified zip entry
                     if (oldZipEntryHash == null) {
@@ -1146,7 +1146,7 @@ public final class FileUtil {
         differenOutputDirectory = new File(differenOutputDirectory).getAbsolutePath();
         for (String oldFile : oldFileList) {
             String key = new File(oldFile).getAbsolutePath().substring(oldDirectoryAbsolutePath.length() + 1);
-            key = key.replace(Constant.Symbol.SLASH_RIGHT, Constant.Symbol.SLASH_LEFT);
+            key = key.replace(Constants.Symbol.SLASH_RIGHT, Constants.Symbol.SLASH_LEFT);
             String value = Generator.MD5File(oldFile);
             oldFileMD5Map.put(key, value);
         }
@@ -1154,11 +1154,11 @@ public final class FileUtil {
         String newDirectoryAbsolutePath = new File(newDirectory).getAbsolutePath();
         for (String newFile : newFileList) {
             String key = new File(newFile).getAbsolutePath().substring(newDirectoryAbsolutePath.length() + 1);
-            key = key.replace(Constant.Symbol.SLASH_RIGHT, Constant.Symbol.SLASH_LEFT);
+            key = key.replace(Constants.Symbol.SLASH_RIGHT, Constants.Symbol.SLASH_LEFT);
             String value = Generator.MD5File(newFile);
             String oldValue = oldFileMD5Map.get(key);
             if (oldValue == null || (!oldValue.equals(value))) {
-                String toFile = differenOutputDirectory + Constant.Symbol.SLASH_LEFT + key;
+                String toFile = differenOutputDirectory + Constants.Symbol.SLASH_LEFT + key;
                 // System.out.println("key:"+key+",oldValue:"+oldValue+",value:"+value);
                 copyFile(newFile, toFile, FileCopyType.FILE_TO_FILE);
             }
@@ -1201,7 +1201,7 @@ public final class FileUtil {
         BufferedReader bufferedReader = null;
         OutputStream outputStream = null;
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(templateInputStream, Constant.Encoding.UTF8));
+            bufferedReader = new BufferedReader(new InputStreamReader(templateInputStream, Constants.Encoding.UTF8));
             StringBuilder content = new StringBuilder();
             String line = null;
             Set<Entry<String, String>> entrySet = valueMap.entrySet();
@@ -1216,7 +1216,7 @@ public final class FileUtil {
             }
             createFile(outputFullFilename);
             outputStream = new FileOutputStream(outputFullFilename);
-            outputStream.write(content.toString().getBytes(Constant.Encoding.UTF8));
+            outputStream.write(content.toString().getBytes(Constants.Encoding.UTF8));
             outputStream.flush();
         } catch (Exception e) {
             throw new FileUtilException(e);

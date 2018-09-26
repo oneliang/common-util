@@ -13,7 +13,7 @@ import jxl.write.WritableCell;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.ObjectUtil;
 import com.oneliang.util.common.StringUtil;
 
@@ -87,8 +87,8 @@ public final class JxlUtil{
 					for (Method method:methods) {
 						String methodName=method.getName();
 						String fieldName=null;
-						if(methodName.startsWith(Constant.Method.PREFIX_SET)){
-							fieldName=ObjectUtil.methodNameToFieldName(Constant.Method.PREFIX_SET, methodName);
+						if(methodName.startsWith(Constants.Method.PREFIX_SET)){
+							fieldName=ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_SET, methodName);
 						}
 						if(fieldName!=null){
 							int columnIndex=jxlMappingBean.getIndex(fieldName);

@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
@@ -39,8 +39,8 @@ public final class FileUpload {
 		FileUploadResult fileUploadResult=null;
 		OutputStream outputStream=null;
 		try{
-			outputStream=new FileOutputStream(saveFilePath+Constant.Symbol.SLASH_LEFT+filename);
-			byte[] buffer=new byte[Constant.Capacity.BYTES_PER_KB];
+			outputStream=new FileOutputStream(saveFilePath+Constants.Symbol.SLASH_LEFT+filename);
+			byte[] buffer=new byte[Constants.Capacity.BYTES_PER_KB];
 			int length=-1;
 			while((length=inputStream.read(buffer,0,buffer.length))!=-1){
 				outputStream.write(buffer,0,length);
@@ -96,13 +96,13 @@ public final class FileUpload {
 							headByteArray=lineByteArray.toByteArray();
 							lineByteArray.reset();
 						}else{
-							String line=new String(lineByteArray.toByteArray(),Constant.Encoding.UTF8);
+							String line=new String(lineByteArray.toByteArray(),Constants.Encoding.UTF8);
 							String[] header=line.split(HEADER_SEPARATE);
 							if(header!=null&&header.length>1){
-								if(header[0].equals(Constant.Http.HeaderKey.CONTENT_DISPOSITION)){
+								if(header[0].equals(Constants.Http.HeaderKey.CONTENT_DISPOSITION)){
 									formField=true;
 									contentDisposition=header[1];
-								}else if(header[0].equals(Constant.Http.HeaderKey.CONTENT_TYPE)){
+								}else if(header[0].equals(Constants.Http.HeaderKey.CONTENT_TYPE)){
 									formField=false;
 									if(contentDisposition!=null&&contentDisposition.indexOf(FILENAME_START_SIGN)>0){
 										int startIndex=contentDisposition.indexOf(FILENAME_START_SIGN)+FILENAME_START_SIGN.length();
@@ -122,10 +122,10 @@ public final class FileUpload {
 								if(saveFilenames!=null&&saveFilenames.length>fileCount){
 									String tempFilename=saveFilenames[fileCount];
 									if(tempFilename!=null){
-										saveFilename=tempFilename+originalFilename.substring(originalFilename.lastIndexOf(Constant.Symbol.DOT),originalFilename.length());
+										saveFilename=tempFilename+originalFilename.substring(originalFilename.lastIndexOf(Constants.Symbol.DOT),originalFilename.length());
 									}
 								}
-								outputStream=new FileOutputStream(saveFilePath+Constant.Symbol.SLASH_LEFT+saveFilename);
+								outputStream=new FileOutputStream(saveFilePath+Constants.Symbol.SLASH_LEFT+saveFilename);
 								int i=0;
 								boolean mayBeEndSign=false;
 								byte[] byteArray=new byte[headByteArray.length];
@@ -195,7 +195,7 @@ public final class FileUpload {
 										count++;
 										i++;
 									}
-									if(i%Constant.Capacity.BYTES_PER_KB==0){
+									if(i%Constants.Capacity.BYTES_PER_KB==0){
 										outputStream.flush();
 									}
 								}

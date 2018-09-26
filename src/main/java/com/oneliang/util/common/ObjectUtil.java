@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.exception.MethodInvokeException;
 import com.oneliang.exception.MethodNotFoundException;
 import com.oneliang.util.logging.Logger;
@@ -155,10 +155,10 @@ public final class ObjectUtil {
      */
     public static String methodNameToFieldName(String methodName, boolean ignoreFirstLetterCase) {
         String fieldName = null;
-        if (methodName.startsWith(Constant.Method.PREFIX_GET) && !methodName.equals(Constant.Method.GET_CLASS)) {
-            fieldName = ObjectUtil.methodNameToFieldName(Constant.Method.PREFIX_GET, methodName, ignoreFirstLetterCase);
-        } else if (methodName.startsWith(Constant.Method.PREFIX_IS)) {
-            fieldName = ObjectUtil.methodNameToFieldName(Constant.Method.PREFIX_IS, methodName, ignoreFirstLetterCase);
+        if (methodName.startsWith(Constants.Method.PREFIX_GET) && !methodName.equals(Constants.Method.GET_CLASS)) {
+            fieldName = ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_GET, methodName, ignoreFirstLetterCase);
+        } else if (methodName.startsWith(Constants.Method.PREFIX_IS)) {
+            fieldName = ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_IS, methodName, ignoreFirstLetterCase);
         }
         return fieldName;
     }
@@ -295,12 +295,12 @@ public final class ObjectUtil {
      */
     public static Object getterOrIsMethodInvoke(final Object object, final String fieldName, final boolean ignoreFirstLetterCase) {
         Object value = null;
-        String methodName = ObjectUtil.fieldNameToMethodName(Constant.Method.PREFIX_GET, fieldName, ignoreFirstLetterCase);
+        String methodName = ObjectUtil.fieldNameToMethodName(Constants.Method.PREFIX_GET, fieldName, ignoreFirstLetterCase);
         Method method = null;
         try {
             method = object.getClass().getMethod(methodName, new Class[] {});
         } catch (Exception e) {
-            methodName = ObjectUtil.fieldNameToMethodName(Constant.Method.PREFIX_IS, fieldName, ignoreFirstLetterCase);
+            methodName = ObjectUtil.fieldNameToMethodName(Constants.Method.PREFIX_IS, fieldName, ignoreFirstLetterCase);
             try {
                 method = object.getClass().getMethod(methodName, new Class[] {});
             } catch (Exception ex) {

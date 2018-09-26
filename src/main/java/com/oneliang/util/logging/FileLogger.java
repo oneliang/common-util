@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
 
@@ -31,7 +31,7 @@ public class FileLogger extends BaseLogger {
     protected void log(Level level, Object message, Throwable throwable) {
         String messageString = this.processMessage(level, message, throwable) + StringUtil.CRLF_STRING;
         try {
-            this.fileOutputStream.write(messageString.getBytes(Constant.Encoding.UTF8));
+            this.fileOutputStream.write(messageString.getBytes(Constants.Encoding.UTF8));
             if (throwable != null) {
                 throwable.printStackTrace(new PrintStream(this.fileOutputStream));
             }

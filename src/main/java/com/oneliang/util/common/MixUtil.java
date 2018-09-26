@@ -3,7 +3,7 @@ package com.oneliang.util.common;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 
 public final class MixUtil {
 
@@ -76,7 +76,7 @@ public final class MixUtil {
 	 * @throws Exception
 	 */
 	public static String mix(String string,int offset) throws Exception{
-		return mix(string,Constant.Encoding.UTF8,offset);
+		return mix(string,Constants.Encoding.UTF8,offset);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public final class MixUtil {
 	 * @throws Exception
 	 */
 	public static String deMix(String string,int offset) throws Exception{
-		return deMix(string,Constant.Encoding.UTF8,offset);
+		return deMix(string,Constants.Encoding.UTF8,offset);
 	}
 
 	/**

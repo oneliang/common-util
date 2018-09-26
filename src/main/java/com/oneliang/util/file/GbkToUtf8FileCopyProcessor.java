@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil.FileCopyProcessor;
 
@@ -28,8 +28,8 @@ public class GbkToUtf8FileCopyProcessor implements FileCopyProcessor {
 				FileUtil.createFile(toFile);
 				InputStream inputStream=new FileInputStream(fromFile);
 				OutputStream outputStream=new FileOutputStream(toFile);
-				BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(inputStream,Constant.Encoding.GBK));
-				BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(outputStream,Constant.Encoding.UTF8));
+				BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(inputStream,Constants.Encoding.GBK));
+				BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(outputStream,Constants.Encoding.UTF8));
 				String string=null;
 				while((string=bufferedReader.readLine())!=null){
 					bufferedWriter.write(string+StringUtil.CRLF_STRING);

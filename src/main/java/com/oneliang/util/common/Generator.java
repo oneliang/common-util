@@ -11,7 +11,7 @@ import java.security.MessageDigest;
 import java.util.Random;
 import java.util.UUID;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 
 public final class Generator{
 
@@ -63,7 +63,7 @@ public final class Generator{
 		String string = null;
 		if (source != null) {
 			try {
-				string = StringUtil.byteArrayToHexString(MD5ByteArray(source.getBytes(Constant.Encoding.UTF8)));
+				string = StringUtil.byteArrayToHexString(MD5ByteArray(source.getBytes(Constants.Encoding.UTF8)));
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -286,7 +286,7 @@ public final class Generator{
 		if(inputStream!=null){
 			try {
 				MessageDigest md = MessageDigest.getInstance("MD5");
-				byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+				byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
 				int readCount = 0;
 				while ((readCount = inputStream.read(buffer,0,buffer.length)) != -1) {
 					md.update(buffer, 0, readCount);
@@ -331,7 +331,7 @@ public final class Generator{
 		String string = null;
 		if (source != null) {
 			try {
-				string = StringUtil.byteArrayToHexString(SHA1ByteArray(source.getBytes(Constant.Encoding.UTF8)));
+				string = StringUtil.byteArrayToHexString(SHA1ByteArray(source.getBytes(Constants.Encoding.UTF8)));
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

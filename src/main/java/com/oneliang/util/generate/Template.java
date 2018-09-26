@@ -6,7 +6,7 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
 import com.oneliang.util.json.JsonUtil;
@@ -28,7 +28,7 @@ public class Template {
         }
         try {
             final StringBuilder stringBuilder = new StringBuilder();
-            FileUtil.readFileContentIgnoreLine(parameter.getTemplateFile(), Constant.Encoding.UTF8, new FileUtil.ReadFileContentProcessor() {
+            FileUtil.readFileContentIgnoreLine(parameter.getTemplateFile(), Constants.Encoding.UTF8, new FileUtil.ReadFileContentProcessor() {
                 public boolean afterReadLine(String line) {
                     stringBuilder.append(line);
                     stringBuilder.append(StringUtil.CRLF_STRING);
@@ -59,14 +59,14 @@ public class Template {
             byte[] toFileByteArray = null;
             if (object != null && StringUtil.isNotBlank(object.toString())) {
                 logger.debug(object);
-                toFileByteArray = object.toString().getBytes(Constant.Encoding.UTF8);
+                toFileByteArray = object.toString().getBytes(Constants.Encoding.UTF8);
             } else {
                 logger.debug(templateContent);
-                toFileByteArray = stringBuilder.toString().getBytes(Constant.Encoding.UTF8);
+                toFileByteArray = stringBuilder.toString().getBytes(Constants.Encoding.UTF8);
             }
             FileUtil.writeFile(toFile, toFileByteArray);
         } catch (Exception e) {
-            logger.error(Constant.Base.EXCEPTION, e);
+            logger.error(Constants.Base.EXCEPTION, e);
         }
     }
 

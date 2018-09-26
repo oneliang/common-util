@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
@@ -45,7 +45,7 @@ public final class HttpUtil {
      * @param advancedOption
      */
     public static String sendRequestGet(String httpUrl, AdvancedOption advancedOption) {
-        return sendRequestGet(httpUrl, null, Constant.Encoding.UTF8, advancedOption);
+        return sendRequestGet(httpUrl, null, Constants.Encoding.UTF8, advancedOption);
     }
 
     /**
@@ -81,7 +81,7 @@ public final class HttpUtil {
      * @return String
      */
     public static String sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, AdvancedOption advancedOption) {
-        return sendRequestGet(httpUrl, httpHeaderList, Constant.Encoding.UTF8, advancedOption);
+        return sendRequestGet(httpUrl, httpHeaderList, Constants.Encoding.UTF8, advancedOption);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class HttpUtil {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         sendRequestGet(httpUrl, httpHeaderList, advancedOption, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int contentLength) throws Exception {
-                byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+                byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
                 while ((dataLength = inputStream.read(buffer, 0, buffer.length)) != -1) {
                     byteArrayOutputStream.write(buffer, 0, dataLength);
@@ -110,16 +110,16 @@ public final class HttpUtil {
             }
 
             public void exceptionCallback(Exception exception) {
-                logger.error(Constant.Base.EXCEPTION, exception);
+                logger.error(Constants.Base.EXCEPTION, exception);
             }
         });
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         String result = null;
         if (byteArray.length > 0) {
             try {
-                result = new String(byteArray, StringUtil.isBlank(returnEncoding) ? Constant.Encoding.UTF8 : returnEncoding);
+                result = new String(byteArray, StringUtil.isBlank(returnEncoding) ? Constants.Encoding.UTF8 : returnEncoding);
             } catch (UnsupportedEncodingException e) {
-                logger.error(Constant.Base.EXCEPTION, e);
+                logger.error(Constants.Base.EXCEPTION, e);
             }
         }
         return result;
@@ -147,7 +147,7 @@ public final class HttpUtil {
      * @param callback
      */
     public static void sendRequestGet(String httpUrl, List<HttpNameValue> httpHeaderList, int timeout, AdvancedOption advancedOption, Callback callback) {
-        sendRequest(httpUrl, Constant.Http.RequestMethod.GET, httpHeaderList, null, null, null, timeout, null, advancedOption, callback);
+        sendRequest(httpUrl, Constants.Http.RequestMethod.GET, httpHeaderList, null, null, null, timeout, null, advancedOption, callback);
     }
 
     /**
@@ -195,7 +195,7 @@ public final class HttpUtil {
      * @return String
      */
     public static String sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, int timeout, AdvancedOption advancedOption) {
-        return sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, Constant.Encoding.UTF8, advancedOption);
+        return sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, Constants.Encoding.UTF8, advancedOption);
     }
 
     /**
@@ -213,7 +213,7 @@ public final class HttpUtil {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         sendRequestPost(httpUrl, httpHeaderList, httpParameterList, timeout, advancedOption, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int length) throws Exception {
-                byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+                byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
                 while ((dataLength = inputStream.read(buffer, 0, buffer.length)) != -1) {
                     byteArrayOutputStream.write(buffer, 0, dataLength);
@@ -222,7 +222,7 @@ public final class HttpUtil {
             };
 
             public void exceptionCallback(Exception exception) {
-                logger.error(Constant.Base.EXCEPTION, exception);
+                logger.error(Constants.Base.EXCEPTION, exception);
             }
 
             public void httpNotOkCallback(int responseCode, Map<String, List<String>> headerFieldMap) throws Exception {
@@ -233,9 +233,9 @@ public final class HttpUtil {
         String result = null;
         if (byteArray.length > 0) {
             try {
-                result = new String(byteArray, StringUtil.isBlank(returnEncoding) ? Constant.Encoding.UTF8 : returnEncoding);
+                result = new String(byteArray, StringUtil.isBlank(returnEncoding) ? Constants.Encoding.UTF8 : returnEncoding);
             } catch (UnsupportedEncodingException e) {
-                logger.error(Constant.Base.EXCEPTION, e);
+                logger.error(Constants.Base.EXCEPTION, e);
             }
         }
         return result;
@@ -270,9 +270,9 @@ public final class HttpUtil {
         String result = null;
         if (tempByteArray.length > 0) {
             try {
-                result = new String(tempByteArray, Constant.Encoding.UTF8);
+                result = new String(tempByteArray, Constants.Encoding.UTF8);
             } catch (UnsupportedEncodingException e) {
-                logger.error(Constant.Base.EXCEPTION, e);
+                logger.error(Constants.Base.EXCEPTION, e);
             }
         }
         return result;
@@ -293,7 +293,7 @@ public final class HttpUtil {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         sendRequestPostWithBytes(httpUrl, httpHeaderList, byteArray, timeout, advancedOption, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int length) throws Exception {
-                byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+                byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
                 while ((dataLength = inputStream.read(buffer, 0, buffer.length)) != -1) {
                     byteArrayOutputStream.write(buffer, 0, dataLength);
@@ -302,7 +302,7 @@ public final class HttpUtil {
             };
 
             public void exceptionCallback(Exception exception) {
-                logger.error(Constant.Base.EXCEPTION, exception);
+                logger.error(Constants.Base.EXCEPTION, exception);
             }
 
             public void httpNotOkCallback(int responseCode, Map<String, List<String>> headerFieldMap) throws Exception {
@@ -339,7 +339,7 @@ public final class HttpUtil {
     public static String sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, AdvancedOption advancedOption) {
         String result = sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, new InputStreamProcessor() {
             public void process(InputStream inputStream, OutputStream outputStream) throws Exception {
-                byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+                byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
                 while ((dataLength = inputStream.read(buffer, 0, buffer.length)) != -1) {
                     outputStream.write(buffer, 0, dataLength);
@@ -362,7 +362,7 @@ public final class HttpUtil {
      * @return String
      */
     public static String sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, AdvancedOption advancedOption) {
-        return sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, inputStreamProcessor, Constant.Encoding.UTF8, advancedOption);
+        return sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, inputStreamProcessor, Constants.Encoding.UTF8, advancedOption);
     }
 
     /**
@@ -381,7 +381,7 @@ public final class HttpUtil {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, inputStreamProcessor, advancedOption, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int length) throws Exception {
-                byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+                byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
                 while ((dataLength = inputStream.read(buffer, 0, buffer.length)) != -1) {
                     byteArrayOutputStream.write(buffer, 0, dataLength);
@@ -390,7 +390,7 @@ public final class HttpUtil {
             };
 
             public void exceptionCallback(Exception exception) {
-                logger.error(Constant.Base.EXCEPTION, exception);
+                logger.error(Constants.Base.EXCEPTION, exception);
             }
 
             public void httpNotOkCallback(int responseCode, Map<String, List<String>> headerFieldMap) throws Exception {
@@ -401,9 +401,9 @@ public final class HttpUtil {
         String result = null;
         if (byteArray.length > 0) {
             try {
-                result = new String(byteArray, StringUtil.isBlank(returnEncoding) ? Constant.Encoding.UTF8 : returnEncoding);
+                result = new String(byteArray, StringUtil.isBlank(returnEncoding) ? Constants.Encoding.UTF8 : returnEncoding);
             } catch (UnsupportedEncodingException e) {
-                logger.error(Constant.Base.EXCEPTION, e);
+                logger.error(Constants.Base.EXCEPTION, e);
             }
         }
         return result;
@@ -421,7 +421,7 @@ public final class HttpUtil {
     public static void sendRequestWithInputStream(String httpUrl, List<HttpNameValue> httpHeaderList, InputStream inputStream, int timeout, AdvancedOption advancedOption, Callback callback) {
         sendRequestWithInputStream(httpUrl, httpHeaderList, inputStream, timeout, new InputStreamProcessor() {
             public void process(InputStream inputStream, OutputStream outputStream) throws Exception {
-                byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+                byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
                 while ((dataLength = inputStream.read(buffer, 0, buffer.length)) != -1) {
                     outputStream.write(buffer, 0, dataLength);
@@ -460,7 +460,7 @@ public final class HttpUtil {
      * @param callback
      */
     private static void sendRequestPost(String httpUrl, List<HttpNameValue> httpHeaderList, List<HttpNameValue> httpParameterList, byte[] streamByteArray, InputStream inputStream, int timeout, InputStreamProcessor inputStreamProcessor, AdvancedOption advancedOption, Callback callback) {
-        sendRequest(httpUrl, Constant.Http.RequestMethod.POST, httpHeaderList, httpParameterList, streamByteArray, inputStream, timeout, inputStreamProcessor, advancedOption, callback);
+        sendRequest(httpUrl, Constants.Http.RequestMethod.POST, httpHeaderList, httpParameterList, streamByteArray, inputStream, timeout, inputStreamProcessor, advancedOption, callback);
     }
 
     /**
@@ -504,18 +504,18 @@ public final class HttpUtil {
                 int index = 0;
                 for (HttpNameValue httpParameter : httpParameterList) {
                     content.append(httpParameter.getName());
-                    content.append(Constant.Symbol.EQUAL);
-                    content.append(URLEncoder.encode(httpParameter.getValue(), Constant.Encoding.UTF8));
+                    content.append(Constants.Symbol.EQUAL);
+                    content.append(URLEncoder.encode(httpParameter.getValue(), Constants.Encoding.UTF8));
                     if (index < length - 1) {
-                        content.append(Constant.Symbol.AND);
+                        content.append(Constants.Symbol.AND);
                     }
                     index++;
                 }
             }
             httpUrlConnection.connect();
-            if (StringUtil.isNotBlank(method) && method.equalsIgnoreCase(Constant.Http.RequestMethod.POST)) {
+            if (StringUtil.isNotBlank(method) && method.equalsIgnoreCase(Constants.Http.RequestMethod.POST)) {
                 OutputStream outputStream = httpUrlConnection.getOutputStream();
-                outputStream.write(content.toString().getBytes(Constant.Encoding.UTF8));
+                outputStream.write(content.toString().getBytes(Constants.Encoding.UTF8));
                 if (streamByteArray != null) {
                     outputStream.write(streamByteArray);
                     outputStream.flush();
@@ -679,7 +679,7 @@ public final class HttpUtil {
         HttpUtil.sendRequestGet("http://www.baidu.com", httpHeaderList, null, new Callback() {
             public void httpOkCallback(Map<String, List<String>> headerFieldMap, InputStream inputStream, int contentLength) throws Exception {
                 System.out.println(contentLength);
-                byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+                byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
                 int dataLength = -1;
                 while ((dataLength = inputStream.read(buffer, 0, buffer.length)) != -1) {
                     byteArrayOutputStream.write(buffer, 0, dataLength);

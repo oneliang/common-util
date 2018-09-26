@@ -24,7 +24,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.ClassUtil.ClassProcessor;
 
 public final class JavaXmlUtil{
@@ -103,7 +103,7 @@ public final class JavaXmlUtil{
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource domSource = new DOMSource(document);
-			transformer.setOutputProperty(OutputKeys.ENCODING, Constant.Encoding.UTF8);
+			transformer.setOutputProperty(OutputKeys.ENCODING, Constants.Encoding.UTF8);
 			outputStream=new FileOutputStream(outputFullFilename);
 			StreamResult result = new StreamResult(outputStream);
 			transformer.transform(domSource, result);
@@ -141,8 +141,8 @@ public final class JavaXmlUtil{
 			for(Method method:methods){
                 String methodName=method.getName();
                 String fieldName=null;
-                if(methodName.startsWith(Constant.Method.PREFIX_SET)){
-                    fieldName=ObjectUtil.methodNameToFieldName(Constant.Method.PREFIX_SET, methodName);
+                if(methodName.startsWith(Constants.Method.PREFIX_SET)){
+                    fieldName=ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_SET, methodName);
                 }
                 if(fieldName!=null){
                 	Node node=namedNodeMap.getNamedItem(fieldName);
@@ -176,7 +176,7 @@ public final class JavaXmlUtil{
 	public static <T extends Object> List<T> xmlToList(String xml, String xmlObjectTag, Class<T> clazz, Map<String,String> mapping) {
 		List<T> list = new ArrayList<T>();
 		try {
-			InputStream inputStream = new ByteArrayInputStream(xml.getBytes(Constant.Encoding.UTF8));
+			InputStream inputStream = new ByteArrayInputStream(xml.getBytes(Constants.Encoding.UTF8));
 			Document document = JavaXmlUtil.parse(inputStream);
 			Element root = document.getDocumentElement();
 			NodeList nodeList=root.getElementsByTagName(xmlObjectTag);
@@ -206,8 +206,8 @@ public final class JavaXmlUtil{
 			for(Method method:methods){
                 String methodName=method.getName();
                 Class<?>[] classes=method.getParameterTypes();
-                if(methodName.startsWith(Constant.Method.PREFIX_SET)){
-                	String fieldName=ObjectUtil.methodNameToFieldName(Constant.Method.PREFIX_SET, methodName);
+                if(methodName.startsWith(Constants.Method.PREFIX_SET)){
+                	String fieldName=ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_SET, methodName);
                     if(fieldName!=null){
                     	String xmlTagName=mapping.get(fieldName);
                     	if(xmlTagName!=null){
@@ -241,7 +241,7 @@ public final class JavaXmlUtil{
 	public static <T extends Object> T xmlToObject(String xml, Class<T> clazz, Map<String,String> mapping) {
 		T object=null;
 		try {
-			InputStream inputStream = new ByteArrayInputStream(xml.getBytes(Constant.Encoding.UTF8));
+			InputStream inputStream = new ByteArrayInputStream(xml.getBytes(Constants.Encoding.UTF8));
 			Document document = JavaXmlUtil.parse(inputStream);
 			Element root = document.getDocumentElement();
 			object=xmlToObject(root, clazz, mapping);

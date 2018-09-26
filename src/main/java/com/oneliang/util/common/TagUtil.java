@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 
 public final class TagUtil{
 
@@ -41,7 +41,7 @@ public final class TagUtil{
 	 * @return the field array
 	 */
 	public static String[] fieldSplit(final String string){
-		return string.split(Constant.Symbol.LOGIC_AND);
+		return string.split(Constants.Symbol.LOGIC_AND);
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public final class TagUtil{
 	 */
 	public static String[] fieldStyleSplit(final String string){
 		String[] strings=new String[2];
-		String[] fieldStyle=string.split(Constant.Symbol.MINUS);
+		String[] fieldStyle=string.split(Constants.Symbol.MINUS);
 		if(fieldStyle.length==2){
 			strings[0]=fieldStyle[0];
 			strings[1]=" "+fieldStyle[1];

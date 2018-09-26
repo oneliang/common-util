@@ -1,6 +1,6 @@
 package com.oneliang.util.jvm;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
 
@@ -48,8 +48,8 @@ public class JvmMonitor implements Runnable {
 			    long heapMaxSize=Runtime.getRuntime().maxMemory();
 //			    long heapFreeSize=Runtime.getRuntime().freeMemory();
 
-			    long heapSizeM=heapSize/Constant.Capacity.BYTES_PER_MB;
-			    long heapMaxSizeM=heapMaxSize/Constant.Capacity.BYTES_PER_MB;
+			    long heapSizeM=heapSize/Constants.Capacity.BYTES_PER_MB;
+			    long heapMaxSizeM=heapMaxSize/Constants.Capacity.BYTES_PER_MB;
 //			    long heapFreeSizeM=heapFreeSize/Constant.Capacity.BYTES_PER_MB;
 			    short currentPercent=(short)((double)heapSizeM/heapMaxSizeM*100);
 			    if(currentPercent>=this.percent){
@@ -61,7 +61,7 @@ public class JvmMonitor implements Runnable {
 				logger.debug("need to interrupt:"+e.getMessage());
 				Thread.currentThread().interrupt();
 			}catch (Exception e){
-				logger.error(Constant.Base.EXCEPTION, e);
+				logger.error(Constants.Base.EXCEPTION, e);
 			}
 		}
 	}

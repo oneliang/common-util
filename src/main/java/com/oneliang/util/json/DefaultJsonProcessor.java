@@ -2,7 +2,7 @@ package com.oneliang.util.json;
 
 import java.util.Date;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.ClassUtil;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.common.TimeUtil;
@@ -31,9 +31,9 @@ public class DefaultJsonProcessor implements JsonProcessor {
                     || valueClazz.equals(Float.class) || valueClazz.equals(Double.class) || valueClazz.equals(Byte.class)) {
                 result = value == null ? StringUtil.NULL : value.toString();
             } else if (valueClazz.equals(String.class) || valueClazz.equals(Character.class)) {
-                result = value == null ? StringUtil.NULL : Constant.Symbol.DOUBLE_QUOTES + value.toString() + Constant.Symbol.DOUBLE_QUOTES;
+                result = value == null ? StringUtil.NULL : Constants.Symbol.DOUBLE_QUOTES + value.toString() + Constants.Symbol.DOUBLE_QUOTES;
             } else if (valueClazz.equals(Date.class)) {
-                result = value == null ? StringUtil.NULL : Constant.Symbol.DOUBLE_QUOTES + TimeUtil.dateToString((Date) value) + Constant.Symbol.DOUBLE_QUOTES;
+                result = value == null ? StringUtil.NULL : Constants.Symbol.DOUBLE_QUOTES + TimeUtil.dateToString((Date) value) + Constants.Symbol.DOUBLE_QUOTES;
             } else {
                 if (value instanceof Iterable) {
                     result = JsonUtil.iterableToJson((Iterable<?>) value, new String[] {}, this, ignoreFirstLetterCase);

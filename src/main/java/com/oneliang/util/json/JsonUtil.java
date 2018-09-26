@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.exception.MethodInvokeException;
 import com.oneliang.util.common.ClassUtil;
 import com.oneliang.util.common.ObjectUtil;
@@ -34,15 +34,15 @@ public final class JsonUtil {
         String result = null;
         if (object != null) {
             StringBuilder string = new StringBuilder();
-            string.append(Constant.Symbol.MIDDLE_BRACKET_LEFT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT);
             if (object instanceof Object[]) {
                 Object[] fields = (Object[]) object;
                 for (int i = 0; i < fields.length; i++) {
-                    string.append(Constant.Symbol.DOUBLE_QUOTES);
+                    string.append(Constants.Symbol.DOUBLE_QUOTES);
                     string.append(fields[i].toString());
-                    string.append(Constant.Symbol.DOUBLE_QUOTES);
+                    string.append(Constants.Symbol.DOUBLE_QUOTES);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             } else if (object instanceof boolean[]) {
@@ -50,7 +50,7 @@ public final class JsonUtil {
                 for (int i = 0; i < fields.length; i++) {
                     string.append(fields[i]);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             } else if (object instanceof byte[]) {
@@ -58,7 +58,7 @@ public final class JsonUtil {
                 for (int i = 0; i < fields.length; i++) {
                     string.append(fields[i]);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             } else if (object instanceof short[]) {
@@ -66,7 +66,7 @@ public final class JsonUtil {
                 for (int i = 0; i < fields.length; i++) {
                     string.append(fields[i]);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             } else if (object instanceof int[]) {
@@ -74,7 +74,7 @@ public final class JsonUtil {
                 for (int i = 0; i < fields.length; i++) {
                     string.append(fields[i]);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             } else if (object instanceof long[]) {
@@ -82,7 +82,7 @@ public final class JsonUtil {
                 for (int i = 0; i < fields.length; i++) {
                     string.append(fields[i]);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             } else if (object instanceof float[]) {
@@ -90,7 +90,7 @@ public final class JsonUtil {
                 for (int i = 0; i < fields.length; i++) {
                     string.append(fields[i]);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             } else if (object instanceof double[]) {
@@ -98,7 +98,7 @@ public final class JsonUtil {
                 for (int i = 0; i < fields.length; i++) {
                     string.append(fields[i]);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             } else if (object instanceof char[]) {
@@ -106,11 +106,11 @@ public final class JsonUtil {
                 for (int i = 0; i < fields.length; i++) {
                     string.append(fields[i]);
                     if (i < fields.length - 1) {
-                        string.append(Constant.Symbol.COMMA);
+                        string.append(Constants.Symbol.COMMA);
                     }
                 }
             }
-            string.append(Constant.Symbol.MIDDLE_BRACKET_RIGHT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT);
             result = string.toString();
         }
         return result;
@@ -144,7 +144,7 @@ public final class JsonUtil {
         String result = null;
         if (array != null) {
             StringBuilder string = new StringBuilder();
-            string.append(Constant.Symbol.MIDDLE_BRACKET_LEFT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT);
             StringBuilder subString = new StringBuilder();
             int length = array.length;
             for (int i = 0; i < length; i++) {
@@ -155,11 +155,11 @@ public final class JsonUtil {
                     subString.append(object.toString());
                 }
                 if (i < length - 1) {
-                    subString.append(Constant.Symbol.COMMA);
+                    subString.append(Constants.Symbol.COMMA);
                 }
             }
             string.append(subString.toString());
-            string.append(Constant.Symbol.MIDDLE_BRACKET_RIGHT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT);
             result = string.toString();
         }
         return result;
@@ -223,16 +223,16 @@ public final class JsonUtil {
         String result = null;
         if (array != null) {
             StringBuilder string = new StringBuilder();
-            string.append(Constant.Symbol.MIDDLE_BRACKET_LEFT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT);
             int length = array.length;
             for (int i = 0; i < length; i++) {
                 T object = array[i];
                 string.append(objectToJson(object, fields, jsonProcessor, ignoreFirstLetterCase));
                 if (i < length - 1) {
-                    string.append(Constant.Symbol.COMMA);
+                    string.append(Constants.Symbol.COMMA);
                 }
             }
-            string.append(Constant.Symbol.MIDDLE_BRACKET_RIGHT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT);
             result = string.toString();
         }
         return result;
@@ -286,16 +286,16 @@ public final class JsonUtil {
         String result = null;
         if (array != null) {
             StringBuilder string = new StringBuilder();
-            string.append(Constant.Symbol.MIDDLE_BRACKET_LEFT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT);
             int length = array.length;
             for (int i = 0; i < length; i++) {
                 T object = array[i];
                 string.append(objectToJson(object, fieldMap, jsonProcessor, ignoreFirstLetterCase));
                 if (i < length - 1) {
-                    string.append(Constant.Symbol.COMMA);
+                    string.append(Constants.Symbol.COMMA);
                 }
             }
-            string.append(Constant.Symbol.MIDDLE_BRACKET_RIGHT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT);
             result = string.toString();
         }
         return result;
@@ -359,16 +359,16 @@ public final class JsonUtil {
         String json = null;
         if (iterable != null) {
             StringBuilder string = new StringBuilder();
-            string.append(Constant.Symbol.MIDDLE_BRACKET_LEFT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT);
             Iterator<T> iterator = iterable.iterator();
             while (iterator.hasNext()) {
                 T object = iterator.next();
                 string.append(objectToJson(object, fields, jsonProcessor, ignoreFirstLetterCase));
                 if (iterator.hasNext()) {
-                    string.append(Constant.Symbol.COMMA);
+                    string.append(Constants.Symbol.COMMA);
                 }
             }
-            string.append(Constant.Symbol.MIDDLE_BRACKET_RIGHT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT);
             json = string.toString();
         }
         return json;
@@ -422,16 +422,16 @@ public final class JsonUtil {
         String json = null;
         if (iterable != null) {
             StringBuilder string = new StringBuilder();
-            string.append(Constant.Symbol.MIDDLE_BRACKET_LEFT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT);
             Iterator<T> iterator = iterable.iterator();
             while (iterator.hasNext()) {
                 T object = iterator.next();
                 string.append(objectToJson(object, fieldMap, jsonProcessor, ignoreFirstLetterCase));
                 if (iterator.hasNext()) {
-                    string.append(Constant.Symbol.COMMA);
+                    string.append(Constants.Symbol.COMMA);
                 }
             }
-            string.append(Constant.Symbol.MIDDLE_BRACKET_RIGHT);
+            string.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT);
             json = string.toString();
         }
         return json;
@@ -492,7 +492,7 @@ public final class JsonUtil {
         if (object != null) {
             StringBuilder objectJson = new StringBuilder();
             Class<?> clazz = object.getClass();
-            objectJson.append(Constant.Symbol.BIG_BRACKET_LEFT);
+            objectJson.append(Constants.Symbol.BIG_BRACKET_LEFT);
             if (fields != null && fields.length > 0) {
                 int length = fields.length;
                 for (int i = 0; i < length; i++) {
@@ -501,9 +501,9 @@ public final class JsonUtil {
                     if (jsonProcessor != null) {
                         methodReturnValue = jsonProcessor.process(clazz, fieldName, methodReturnValue, ignoreFirstLetterCase);
                     }
-                    objectJson.append(Constant.Symbol.DOUBLE_QUOTES + fieldName + Constant.Symbol.DOUBLE_QUOTES + Constant.Symbol.COLON + (methodReturnValue == null ? StringUtil.NULL : methodReturnValue.toString()));
+                    objectJson.append(Constants.Symbol.DOUBLE_QUOTES + fieldName + Constants.Symbol.DOUBLE_QUOTES + Constants.Symbol.COLON + (methodReturnValue == null ? StringUtil.NULL : methodReturnValue.toString()));
                     if (i < length - 1) {
-                        objectJson.append(Constant.Symbol.COMMA);
+                        objectJson.append(Constants.Symbol.COMMA);
                     }
                 }
             } else {
@@ -522,7 +522,7 @@ public final class JsonUtil {
                         if (jsonProcessor != null) {
                             value = jsonProcessor.process(clazz, fieldName, value, ignoreFirstLetterCase);
                         }
-                        subString.append(Constant.Symbol.DOUBLE_QUOTES + fieldName + Constant.Symbol.DOUBLE_QUOTES + Constant.Symbol.COLON + (value == null ? StringUtil.NULL : value.toString()) + Constant.Symbol.COMMA);
+                        subString.append(Constants.Symbol.DOUBLE_QUOTES + fieldName + Constants.Symbol.DOUBLE_QUOTES + Constants.Symbol.COLON + (value == null ? StringUtil.NULL : value.toString()) + Constants.Symbol.COMMA);
                     }
                 }
                 if (subString.length() > 0) {
@@ -530,7 +530,7 @@ public final class JsonUtil {
                     objectJson.append(subString.toString());
                 }
             }
-            objectJson.append(Constant.Symbol.BIG_BRACKET_RIGHT);
+            objectJson.append(Constants.Symbol.BIG_BRACKET_RIGHT);
             json = objectJson.toString();
         }
         return json;
@@ -586,7 +586,7 @@ public final class JsonUtil {
             StringBuilder objectJson = new StringBuilder();
             Class<?> clazz = object.getClass();
             Iterator<Entry<String, String>> iterator = fieldMap.entrySet().iterator();
-            objectJson.append(Constant.Symbol.BIG_BRACKET_LEFT);
+            objectJson.append(Constants.Symbol.BIG_BRACKET_LEFT);
             while (iterator.hasNext()) {
                 Entry<String, String> entry = iterator.next();
                 String key = entry.getKey();
@@ -595,12 +595,12 @@ public final class JsonUtil {
                 if (jsonProcessor != null) {
                     methodReturnValue = jsonProcessor.process(clazz, fieldName, methodReturnValue, ignoreFirstLetterCase);
                 }
-                objectJson.append(key + Constant.Symbol.COLON + (methodReturnValue == null ? StringUtil.NULL : methodReturnValue.toString()));
+                objectJson.append(key + Constants.Symbol.COLON + (methodReturnValue == null ? StringUtil.NULL : methodReturnValue.toString()));
                 if (iterator.hasNext()) {
-                    objectJson.append(Constant.Symbol.COMMA);
+                    objectJson.append(Constants.Symbol.COMMA);
                 }
             }
-            objectJson.append(Constant.Symbol.BIG_BRACKET_RIGHT);
+            objectJson.append(Constants.Symbol.BIG_BRACKET_RIGHT);
             json = objectJson.toString();
         }
         return json;
@@ -650,8 +650,8 @@ public final class JsonUtil {
             for (Method method : methods) {
                 String methodName = method.getName();
                 String fieldName = null;
-                if (methodName.startsWith(Constant.Method.PREFIX_SET)) {
-                    fieldName = ObjectUtil.methodNameToFieldName(Constant.Method.PREFIX_SET, methodName, ignoreFirstLetterCase);
+                if (methodName.startsWith(Constants.Method.PREFIX_SET)) {
+                    fieldName = ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_SET, methodName, ignoreFirstLetterCase);
                 }
                 if (fieldName != null) {
                     Class<?>[] classes = method.getParameterTypes();
@@ -685,7 +685,7 @@ public final class JsonUtil {
                             try {
                                 method.invoke(object, value);
                             } catch (Exception e) {
-                                throw new MethodInvokeException(clazz.getSimpleName() + Constant.Symbol.DOT + fieldName, e);
+                                throw new MethodInvokeException(clazz.getSimpleName() + Constants.Symbol.DOT + fieldName, e);
                             }
                         }
                     }

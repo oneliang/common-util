@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.exception.FileLoadException;
 import com.oneliang.util.common.StringUtil;
 
@@ -91,14 +91,14 @@ public final class JarUtil {
 		if(jarClassLoader!=null){
 			JarInputStream jarInputStream=null;
 			try {
-				jarClassLoader.addURL(new URL(Constant.Protocol.FILE+jarFileRealPath));
+				jarClassLoader.addURL(new URL(Constants.Protocol.FILE+jarFileRealPath));
 				jarInputStream=new JarInputStream(new FileInputStream(jarFileRealPath));
 				JarEntry jarEntry=jarInputStream.getNextJarEntry();
 				while(jarEntry!=null){
 					String entryName=jarEntry.getName();
-					if (entryName.endsWith(Constant.Symbol.DOT+Constant.File.CLASS)) {
-						entryName=entryName.substring(0, entryName.length()-(Constant.Symbol.DOT+Constant.File.CLASS).length());
-						String className=entryName.replace(Constant.Symbol.SLASH_LEFT, Constant.Symbol.DOT);
+					if (entryName.endsWith(Constants.Symbol.DOT+Constants.File.CLASS)) {
+						entryName=entryName.substring(0, entryName.length()-(Constants.Symbol.DOT+Constants.File.CLASS).length());
+						String className=entryName.replace(Constants.Symbol.SLASH_LEFT, Constants.Symbol.DOT);
 						boolean sign=false;
 						if(StringUtil.isBlank(packageName)){
 							sign=true;

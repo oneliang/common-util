@@ -17,7 +17,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.exception.InitializeException;
 import com.oneliang.util.common.JavaXmlUtil;
 import com.oneliang.util.common.StringUtil;
@@ -143,7 +143,7 @@ public class LoggerManager implements Runnable,ResourceProcessor<LoggerManager.L
 	private static LoggerBean searchLoggerBeanInPackage(String className){
 		LoggerBean loggerBean=null;
 		if(StringUtil.isNotBlank(className)){
-			int lastIndex=className.lastIndexOf(Constant.Symbol.DOT);
+			int lastIndex=className.lastIndexOf(Constants.Symbol.DOT);
 			if(lastIndex>0){
 				String packageName=className.substring(0, lastIndex);
 				Iterator<Entry<String,LoggerBean>> iterator=loggerBeanMap.entrySet().iterator();
@@ -239,7 +239,7 @@ public class LoggerManager implements Runnable,ResourceProcessor<LoggerManager.L
 	 */
 	public void initialize(final String parameters){
 		try{
-			String[] parameterArray=parameters.split(Constant.Symbol.COMMA);
+			String[] parameterArray=parameters.split(Constants.Symbol.COMMA);
 			String file=null;
 			if(parameterArray!=null){
 				for(String parameter:parameterArray){

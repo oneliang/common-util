@@ -1,6 +1,6 @@
 package com.oneliang;
 
-public abstract interface Constant {
+public abstract interface Constants {
 
     public static abstract interface Base {
         public static final String EXCEPTION = "exception";

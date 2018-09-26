@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.TimeUtil;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
@@ -74,7 +74,7 @@ public class Timer implements Runnable{
 							try{
 								timerTask.runTask();
 							}catch (Exception e) {
-								logger.error(Constant.Base.EXCEPTION, e);								
+								logger.error(Constants.Base.EXCEPTION, e);								
 							}
 							if(timerTask.getPeriod()<=0){
 								this.timerTaskList.remove(timerTask);
@@ -93,7 +93,7 @@ public class Timer implements Runnable{
 				logger.debug("need to interrupt:"+e.getMessage());
 				Thread.currentThread().interrupt();
 			}catch (Exception e){
-				logger.error(Constant.Base.EXCEPTION, e);
+				logger.error(Constants.Base.EXCEPTION, e);
 			}
 		}
 	}

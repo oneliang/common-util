@@ -7,7 +7,7 @@ import jxl.Cell;
 import jxl.CellType;
 import jxl.write.Label;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.ClassUtil;
 import com.oneliang.util.common.ObjectUtil;
 import com.oneliang.util.common.StringUtil;
@@ -34,7 +34,7 @@ public class DefaultJxlProcessor implements JxlProcessor {
 				List<String> list=StringUtil.parseStringGroup(value,REGEX,FIRST_REGEX,StringUtil.BLANK,1);
 				for (String string:list) {
 					int pos = 0;
-					if ((pos=string.lastIndexOf(Constant.Symbol.DOT)) > 0) {
+					if ((pos=string.lastIndexOf(Constants.Symbol.DOT)) > 0) {
 						String className=string.substring(0, pos);
 						String fieldName=string.substring(pos + 1, string.length());
 						if(className.equals(object.getClass().getSimpleName())||className.equals(object.getClass().getName())){

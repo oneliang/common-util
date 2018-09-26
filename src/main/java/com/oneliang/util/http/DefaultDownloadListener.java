@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.http.HttpDownloader.DownloadListener;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
@@ -27,7 +27,7 @@ public class DefaultDownloadListener implements DownloadListener {
 			File file=new File(saveFile);
 	        file.createNewFile();
 	        FileOutputStream fileOutputStream=new FileOutputStream(file);
-	        byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+	        byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
 	        int length=-1;
 	        while((length=inputStream.read(buffer,0,buffer.length))!=-1){
 	            fileOutputStream.write(buffer,0,length);
@@ -44,6 +44,6 @@ public class DefaultDownloadListener implements DownloadListener {
 	}
 
 	public void onFailure(Exception exception) {
-		logger.error(Constant.Base.EXCEPTION, exception);
+		logger.error(Constants.Base.EXCEPTION, exception);
 	}
 }

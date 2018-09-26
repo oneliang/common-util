@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.DefaultFileCopyProcessor;
 import com.oneliang.util.file.FileUtil;
@@ -32,7 +32,7 @@ public class FileContentSeperator extends DefaultFileCopyProcessor {
             if (StringUtil.isMatchPattern(filename, seperatorConfig.suffix)) {
                 isMatch = true;
                 final StringBuilder content = new StringBuilder();
-                FileUtil.readFileContentIgnoreLine(from, Constant.Encoding.UTF8, new ReadFileContentProcessor() {
+                FileUtil.readFileContentIgnoreLine(from, Constants.Encoding.UTF8, new ReadFileContentProcessor() {
                     private boolean needToCollect = false;
 
                     public boolean afterReadLine(String line) {
@@ -51,7 +51,7 @@ public class FileContentSeperator extends DefaultFileCopyProcessor {
                 });
                 if (content.toString().length() > 0) {
                     try {
-                        FileUtil.writeFile(to, content.toString().getBytes(Constant.Encoding.UTF8));
+                        FileUtil.writeFile(to, content.toString().getBytes(Constants.Encoding.UTF8));
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }

@@ -16,7 +16,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.common.TimeUtil;
 import com.oneliang.util.logging.Logger;
@@ -217,7 +217,7 @@ public class MailMessage{
 						&& (dispostion.equals(Part.ATTACHMENT) || dispostion
 								.equals(Part.INLINE))) {
 					filename = bodyPart.getFileName();
-					if (filename!=null&&filename.toLowerCase().indexOf(Constant.Encoding.GB2312.toLowerCase()) != -1) {
+					if (filename!=null&&filename.toLowerCase().indexOf(Constants.Encoding.GB2312.toLowerCase()) != -1) {
 						filename = MimeUtility.decodeText(filename);
 					}
 					this.saveFile(path, filename, bodyPart.getInputStream());
@@ -226,7 +226,7 @@ public class MailMessage{
 				} else {
 					filename = bodyPart.getFileName();
 					if (filename != null
-							&& (filename.toLowerCase().indexOf(Constant.Encoding.GB2312.toLowerCase()) != -1)) {
+							&& (filename.toLowerCase().indexOf(Constants.Encoding.GB2312.toLowerCase()) != -1)) {
 						filename = MimeUtility.decodeText(filename);
 					}
 					this.saveFile(path, filename, bodyPart.getInputStream());
@@ -257,14 +257,14 @@ public class MailMessage{
 			try {
 				bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
 				bufferedInputStream = new BufferedInputStream(inputStream);
-				byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+				byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
 				int length=-1;
 				while((length=bufferedInputStream.read(buffer,0,buffer.length))!=-1){
 					bufferedOutputStream.write(buffer,0,length);
 					bufferedOutputStream.flush();
 				}
 			} catch (Exception e) {
-				logger.error(Constant.Base.EXCEPTION, e);
+				logger.error(Constants.Base.EXCEPTION, e);
 			} finally {
 				if(bufferedInputStream!=null){
 					bufferedInputStream.close();

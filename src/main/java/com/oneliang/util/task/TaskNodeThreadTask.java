@@ -1,6 +1,6 @@
 package com.oneliang.util.task;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.concurrent.ThreadTask;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
@@ -23,7 +23,7 @@ public class TaskNodeThreadTask implements ThreadTask {
 				try {
 					taskNode.wait();
 				} catch (InterruptedException e) {
-					logger.error(Constant.Base.EXCEPTION, e);
+					logger.error(Constants.Base.EXCEPTION, e);
 				}
 			}
 		}
@@ -34,7 +34,7 @@ public class TaskNodeThreadTask implements ThreadTask {
 				taskNode.getRunnable().run();
 			}
 		}catch(Exception e){
-			logger.error(Constant.Base.EXCEPTION, e);
+			logger.error(Constants.Base.EXCEPTION, e);
 			taskEngine.setSuccessful(false);
 		}finally{
 			taskNode.setFinished(true);

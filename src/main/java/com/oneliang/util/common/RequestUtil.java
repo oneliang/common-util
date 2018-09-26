@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.exception.MethodInvokeException;
 import com.oneliang.util.common.ClassUtil.ClassProcessor;
 
@@ -51,8 +51,8 @@ public final class RequestUtil{
 			for(Method method:methods){
 				String methodName=method.getName();
 				String fieldName=null;
-				if(methodName.startsWith(Constant.Method.PREFIX_SET)){
-					fieldName=ObjectUtil.methodNameToFieldName(Constant.Method.PREFIX_SET, methodName);
+				if(methodName.startsWith(Constants.Method.PREFIX_SET)){
+					fieldName=ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_SET, methodName);
 				}
 				if(fieldName!=null){
 					if(map.containsKey(fieldName)){
@@ -107,8 +107,8 @@ public final class RequestUtil{
 			for(Method method:methods){
 				String methodName=method.getName();
 				String fieldName=null;
-				if(methodName.startsWith(Constant.Method.PREFIX_SET)){
-					fieldName=ObjectUtil.methodNameToFieldName(Constant.Method.PREFIX_SET, methodName);
+				if(methodName.startsWith(Constants.Method.PREFIX_SET)){
+					fieldName=ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_SET, methodName);
 				}
 				if(fieldName!=null){
 					if(map.containsKey(fieldName)){
@@ -153,11 +153,11 @@ public final class RequestUtil{
 	 * @return Map<String,String[]>
 	 */
 	public static Map<String,String[]> parseParameterString(String parameterString){
-		String[] stringArray=parameterString.split(Constant.Symbol.AND);
+		String[] stringArray=parameterString.split(Constants.Symbol.AND);
 		Map<String,List<String>> map=new HashMap<String,List<String>>();
 		Map<String,String[]> parameterMap=new HashMap<String,String[]>();
 		for(String string:stringArray){
-			int equalIndex=string.indexOf(Constant.Symbol.EQUAL);
+			int equalIndex=string.indexOf(Constants.Symbol.EQUAL);
 			if(equalIndex>0){
 				String key=string.substring(0, equalIndex);
 				String value=string.substring(equalIndex+1,string.length());
@@ -197,9 +197,9 @@ public final class RequestUtil{
 				if(valueArray!=null){
 					for(String value:valueArray){
 						stringBuilder.append(key);
-						stringBuilder.append(Constant.Symbol.EQUAL);
+						stringBuilder.append(Constants.Symbol.EQUAL);
 						stringBuilder.append(value);
-						stringBuilder.append(Constant.Symbol.AND);
+						stringBuilder.append(Constants.Symbol.AND);
 					}
 				}
 			}

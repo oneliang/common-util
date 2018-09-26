@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 
 /**
  * String util class
@@ -15,7 +15,7 @@ import com.oneliang.Constant;
 public final class StringUtil{
 	
 	private static final String METCH_PATTERN_REGEX="[\\*]+";
-	private static final String METCH_PATTERN=Constant.Symbol.WILDCARD;
+	private static final String METCH_PATTERN=Constants.Symbol.WILDCARD;
 	private static final String METCH_PATTERN_REPLACEMENT="[\\\\S|\\\\s]*";
 	public static final String BLANK="";
 	public static final String SPACE=" ";
@@ -157,7 +157,7 @@ public final class StringUtil{
 		boolean result=false;
 		if(string!=null&&patternString!=null){
 			if(patternString.indexOf(METCH_PATTERN)>=0){
-				String matchPattern=Constant.Symbol.XOR+patternString.replaceAll(METCH_PATTERN_REGEX, METCH_PATTERN_REPLACEMENT)+Constant.Symbol.DOLLAR;
+				String matchPattern=Constants.Symbol.XOR+patternString.replaceAll(METCH_PATTERN_REGEX, METCH_PATTERN_REPLACEMENT)+Constants.Symbol.DOLLAR;
 				result=isMatchRegex(string, matchPattern);
 			}else{
 				if(string.equals(patternString)){

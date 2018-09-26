@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.file.FileUtil.FileCopyProcessor;
 
 public class DefaultFileCopyProcessor implements FileCopyProcessor{
@@ -30,7 +30,7 @@ public class DefaultFileCopyProcessor implements FileCopyProcessor{
 				InputStream inputStream = new FileInputStream(fromFile);
 				OutputStream outputStream = new FileOutputStream(toFile);
 				try{
-					byte[] buffer = new byte[Constant.Capacity.BYTES_PER_KB];
+					byte[] buffer = new byte[Constants.Capacity.BYTES_PER_KB];
 					int length=-1;
 					while((length=inputStream.read(buffer,0,buffer.length))!=-1){
 						outputStream.write(buffer,0,length);

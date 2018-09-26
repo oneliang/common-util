@@ -1,6 +1,6 @@
 package com.oneliang.util.resource;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
 
@@ -136,7 +136,7 @@ public abstract class ResourcePool<T extends Object> implements Runnable {
 							try {
 								destroyResource(resource);
 							} catch (Exception e) {
-								logger.error(Constant.Base.EXCEPTION, e);
+								logger.error(Constants.Base.EXCEPTION, e);
 							}
 							this.resourcesStatus[index]=null;
 							this.currentSize--;
@@ -162,7 +162,7 @@ public abstract class ResourcePool<T extends Object> implements Runnable {
 				logger.debug("need to interrupt:"+e.getMessage());
 				Thread.currentThread().interrupt();
 			} catch (Exception e){
-				logger.error(Constant.Base.EXCEPTION, e);
+				logger.error(Constants.Base.EXCEPTION, e);
 			}
 		}
 	}
