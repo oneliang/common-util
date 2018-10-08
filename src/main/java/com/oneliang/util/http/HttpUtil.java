@@ -219,7 +219,7 @@ public final class HttpUtil {
                     byteArrayOutputStream.write(buffer, 0, dataLength);
                 }
                 byteArrayOutputStream.close();
-            };
+            }
 
             public void exceptionCallback(Exception exception) {
                 logger.error(Constants.Base.EXCEPTION, exception);
@@ -299,7 +299,7 @@ public final class HttpUtil {
                     byteArrayOutputStream.write(buffer, 0, dataLength);
                 }
                 byteArrayOutputStream.close();
-            };
+            }
 
             public void exceptionCallback(Exception exception) {
                 logger.error(Constants.Base.EXCEPTION, exception);
@@ -387,7 +387,7 @@ public final class HttpUtil {
                     byteArrayOutputStream.write(buffer, 0, dataLength);
                 }
                 byteArrayOutputStream.close();
-            };
+            }
 
             public void exceptionCallback(Exception exception) {
                 logger.error(Constants.Base.EXCEPTION, exception);
