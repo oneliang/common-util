@@ -481,8 +481,8 @@ public final class HttpUtil {
         try {
             URL url = new URL(httpUrl);
             Proxy proxy = Proxy.NO_PROXY;
-            if (advancedOption != null && StringUtil.isNotBlank(advancedOption.hostname) && advancedOption.port > 0) {
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(advancedOption.hostname, advancedOption.port);
+            if (advancedOption != null && StringUtil.isNotBlank(advancedOption.proxyHostname) && advancedOption.proxyPort > 0) {
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(advancedOption.proxyHostname, advancedOption.proxyPort);
                 proxy = new Proxy(Proxy.Type.HTTP, inetSocketAddress);
             }
             HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection(proxy);
@@ -644,8 +644,8 @@ public final class HttpUtil {
     }
 
     public static class AdvancedOption {
-        public String hostname = null;
-        public int port = 0;
+        public String proxyHostname = null;
+        public int proxyPort = 0;
     }
 
     public static void main(String[] args) throws Exception {
