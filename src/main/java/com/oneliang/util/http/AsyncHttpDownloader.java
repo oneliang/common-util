@@ -3,7 +3,6 @@ package com.oneliang.util.http;
 import java.util.List;
 
 import com.oneliang.util.concurrent.ThreadPool;
-import com.oneliang.util.concurrent.ThreadTask;
 import com.oneliang.util.http.HttpDownloader.DownloadListener;
 import com.oneliang.util.http.HttpUtil.HttpNameValue;
 
@@ -41,8 +40,8 @@ public class AsyncHttpDownloader{
      * @param downloadListener
      */
     public void download(final String httpUrl,final List<HttpNameValue> httpHeaderList, final List<HttpNameValue> httpParameterList,final int timeout,final String saveFile,final DownloadListener downloadListener){
-        this.threadPool.addThreadTask(new ThreadTask(){
-            public void runTask() {
+        this.threadPool.addRunnable(new Runnable(){
+            public void run() {
                 httpDownloader.download(httpUrl, httpHeaderList, httpParameterList, timeout, saveFile, downloadListener);
             }
         });

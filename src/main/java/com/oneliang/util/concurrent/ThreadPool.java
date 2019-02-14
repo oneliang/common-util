@@ -16,7 +16,7 @@ public final class ThreadPool implements Runnable {
     private int totalTaskCount = 0;
     private int currentTaskCount = 0;
     private InnerThread[] allInnerThread = null;
-    private Dispatcher<ThreadTask> dispatcher = new DefaultDispatcher<ThreadTask>();
+    private Dispatcher<Runnable> dispatcher = new DefaultDispatcher<Runnable>();
     private DaemonThread daemonThread = null;
     private Thread thread = null;
     private Processor processor = null;
@@ -46,21 +46,21 @@ public final class ThreadPool implements Runnable {
                             if (this.processor != null) {
                                 this.processor.beforeRunTaskProcess(this.dispatcher);
                             }
-                            ThreadTask threadTask = this.dispatcher.poll();
-                            if (threadTask != null) {
+                            Runnable runnable = this.dispatcher.poll();
+                            if (runnable != null) {
                                 logger.verbose("second");
-                                innerThread.setCurrentThreadTask(threadTask);
+                                innerThread.setCurrentRunnable(runnable);
                             }
                         } else if (innerThread == null) {
                             hasAllInnerThreadBusy = false;
                             if (this.processor != null) {
                                 this.processor.beforeRunTaskProcess(this.dispatcher);
                             }
-                            ThreadTask threadTask = this.dispatcher.poll();
-                            if (threadTask != null) {
+                            Runnable runnable = this.dispatcher.poll();
+                            if (runnable != null) {
                                 logger.verbose("first");
                                 innerThread = new InnerThread(this);
-                                innerThread.setCurrentThreadTask(threadTask);
+                                innerThread.setCurrentRunnable(runnable);
                                 innerThread.start();
                                 this.allInnerThread[index] = innerThread;
                                 this.daemonThread.addInnerThread(innerThread);
@@ -133,7 +133,7 @@ public final class ThreadPool implements Runnable {
      * 
      * @param dispatcher
      */
-    public void setDispatcher(Dispatcher<ThreadTask> dispatcher) {
+    public void setDispatcher(Dispatcher<Runnable> dispatcher) {
         this.dispatcher = dispatcher;
     }
 
@@ -168,12 +168,12 @@ public final class ThreadPool implements Runnable {
     }
 
     /**
-     * @param threadTask
-     *            the threadTask to add
+     * @param runnable
+     *            the runnable to add
      */
-    public void addThreadTask(ThreadTask threadTask) {
-        if (threadTask != null) {
-            this.dispatcher.offer(threadTask);
+    public void addRunnable(Runnable runnable) {
+        if (runnable != null) {
+            this.dispatcher.offer(runnable);
             synchronized (this) {
                 this.totalTaskCount++;
                 this.notify();
@@ -203,7 +203,7 @@ public final class ThreadPool implements Runnable {
         private ThreadPool threadPool = null;
         private long beginTimeMillis = 0;
         private long finishedTimeMillis = 0;
-        private ThreadTask currentThreadTask = null;
+        private Runnable currentRunnable = null;
         private int finishedCount = 0;
         private int executeCount = 0;
         private Thread thread = null;
@@ -250,15 +250,15 @@ public final class ThreadPool implements Runnable {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     synchronized (this) {
-                        if (this.currentThreadTask != null) {
+                        if (this.currentRunnable != null) {
                             logger.verbose(this + "--begin--");
                             this.beginTimeMillis = System.currentTimeMillis();
                             try {
-                                this.currentThreadTask.runTask();
+                                this.currentRunnable.run();
                             } finally {
                                 this.finishedTimeMillis = System.currentTimeMillis();
                                 this.finishedCount++;
-                                this.currentThreadTask = null;
+                                this.currentRunnable = null;
                                 logger.verbose(this + "--end--cost:" + (this.finishedTimeMillis - this.beginTimeMillis));
                             }
                         }
@@ -281,13 +281,13 @@ public final class ThreadPool implements Runnable {
         }
 
         /**
-         * @param currentThreadTask
-         *            the currentThreadTask to set
+         * @param currentRunnable
+         *            the currentRunnable to set
          */
-        public void setCurrentThreadTask(ThreadTask currentThreadTask) {
+        public void setCurrentRunnable(Runnable currentRunnable) {
             synchronized (this) {
                 this.executeCount++;
-                this.currentThreadTask = currentThreadTask;
+                this.currentRunnable = currentRunnable;
                 this.notify();
             }
         }
@@ -303,7 +303,7 @@ public final class ThreadPool implements Runnable {
          * @return the idle
          */
         public boolean isIdle() {
-            return this.currentThreadTask == null ? true : false;
+            return this.currentRunnable == null ? true : false;
         }
 
         /**
@@ -406,7 +406,7 @@ public final class ThreadPool implements Runnable {
          * 
          * @param dispatcher
          */
-        public abstract void beforeRunTaskProcess(Dispatcher<ThreadTask> dispatcher);
+        public abstract void beforeRunTaskProcess(Dispatcher<Runnable> dispatcher);
     }
 
     public static interface Dispatcher<T> extends Iterable<T> {

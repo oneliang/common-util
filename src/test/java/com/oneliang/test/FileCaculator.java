@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.List;
 
 import com.oneliang.Constants;
+import com.oneliang.util.common.Generator;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
 
@@ -44,6 +45,7 @@ public class FileCaculator {
                     FileUtil.readFileContentIgnoreLine(fileAbsolutePath, Constants.Encoding.UTF8, new FileUtil.ReadFileContentProcessor() {
                         @Override
                         public boolean afterReadLine(String line) {
+                            line = line.trim();
                             if (!line.isEmpty()) {
                                 javaLineCounter.count++;
                             }

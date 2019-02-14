@@ -18,14 +18,13 @@ import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.concurrent.ThreadPool;
 import com.oneliang.util.concurrent.ThreadPool.Dispatcher;
 import com.oneliang.util.concurrent.ThreadPool.Processor;
-import com.oneliang.util.concurrent.ThreadTask;
 import com.oneliang.util.file.FileUtil;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
 
 public class TaskEngine {
 
-    private static final Logger logger = LoggerManager.getLogger(TaskNodeThreadTask.class);
+    private static final Logger logger = LoggerManager.getLogger(TaskNodeRunnable.class);
 
     public static enum Mode {
         DEFAULT, SERVER
@@ -45,10 +44,10 @@ public class TaskEngine {
         }
     };
     private Processor processor = new Processor() {
-        public void beforeRunTaskProcess(Dispatcher<ThreadTask> dispatcher) {
-            ThreadTask threadTask = dispatcher.peek();
-            // ConcurrentLinkedQueue<ThreadTask>
-            // queue=(ConcurrentLinkedQueue<ThreadTask>)threadTaskQueue;
+        public void beforeRunTaskProcess(Dispatcher<Runnable> dispatcher) {
+            Runnable threadTask = dispatcher.peek();
+            // ConcurrentLinkedQueue<Runnable>
+            // queue=(ConcurrentLinkedQueue<Runnable>)threadTaskQueue;
             if (threadTask instanceof TaskNode) {
                 TaskNode taskNode = (TaskNode) threadTask;
             }
@@ -125,7 +124,7 @@ public class TaskEngine {
         }
         Integer[] depthArray = depthList.toArray(new Integer[] {});
         Arrays.sort(depthArray);
-        Map<String, TaskNode> hasAddThreadTaskMap = new HashMap<String, TaskNode>();
+        Map<String, TaskNode> hasAddRunnableMap = new HashMap<String, TaskNode>();
         for (Integer depth : depthArray) {
             List<TaskNode> taskNodeList = taskNodeDepthMap.get(depth);
             if (autoSort) {
@@ -134,22 +133,22 @@ public class TaskEngine {
             for (TaskNode taskNode : taskNodeList) {
                 taskNode.setDepth(depth);
                 logger.info("task node depth:" + depth + ",name:" + taskNode.getName() + (this.taskNodeTimeProperties != null ? (",cost time:" + this.taskNodeTimeProperties.getProperty(taskNode.getName())) : StringUtil.BLANK));
-                if (!hasAddThreadTaskMap.containsKey(taskNode.getName())) {
-                    MultiTaskNodeThreadTask multiTaskNodeThreadTask = null;
+                if (!hasAddRunnableMap.containsKey(taskNode.getName())) {
+                    MultiTaskNodeRunnable multiTaskNodeRunnable = null;
                     List<TaskNode> singleChildTaskNodeList = this.findSingleChildTaskNodeList(taskNode);
                     if (singleChildTaskNodeList != null && !singleChildTaskNodeList.isEmpty()) {
-                        multiTaskNodeThreadTask = new MultiTaskNodeThreadTask();
-                        multiTaskNodeThreadTask.addTaskNodeThreadTask(new TaskNodeThreadTask(this, taskNode));
-                        hasAddThreadTaskMap.put(taskNode.getName(), taskNode);
+                        multiTaskNodeRunnable = new MultiTaskNodeRunnable();
+                        multiTaskNodeRunnable.addTaskNodeRunnable(new TaskNodeRunnable(this, taskNode));
+                        hasAddRunnableMap.put(taskNode.getName(), taskNode);
                         for (TaskNode singleChildTaskNode : singleChildTaskNodeList) {
-                            multiTaskNodeThreadTask.addTaskNodeThreadTask(new TaskNodeThreadTask(this, singleChildTaskNode));
-                            hasAddThreadTaskMap.put(singleChildTaskNode.getName(), singleChildTaskNode);
+                            multiTaskNodeRunnable.addTaskNodeRunnable(new TaskNodeRunnable(this, singleChildTaskNode));
+                            hasAddRunnableMap.put(singleChildTaskNode.getName(), singleChildTaskNode);
                         }
-                        this.threadPool.addThreadTask(multiTaskNodeThreadTask);
+                        this.threadPool.addRunnable(multiTaskNodeRunnable);
                     }
-                    if (multiTaskNodeThreadTask == null) {
-                        hasAddThreadTaskMap.put(taskNode.getName(), taskNode);
-                        this.threadPool.addThreadTask(new TaskNodeThreadTask(this, taskNode));
+                    if (multiTaskNodeRunnable == null) {
+                        hasAddRunnableMap.put(taskNode.getName(), taskNode);
+                        this.threadPool.addRunnable(new TaskNodeRunnable(this, taskNode));
                     }
                 }
             }

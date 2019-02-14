@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.concurrent.ThreadPool;
-import com.oneliang.util.concurrent.ThreadTask;
 import com.oneliang.util.logging.AbstractLogger;
 import com.oneliang.util.logging.BaseLogger;
 import com.oneliang.util.logging.ComplexLogger;
@@ -32,8 +31,8 @@ public class TestThreadPool {
         threadPool.setMinThreads(1);
         threadPool.setMaxThreads(1);
         threadPool.start();
-        threadPool.addThreadTask(new ThreadTask() {
-            public void runTask() {
+        threadPool.addRunnable(new Runnable() {
+            public void run() {
                 logger.info("aaabbbccc");
             }
         });
