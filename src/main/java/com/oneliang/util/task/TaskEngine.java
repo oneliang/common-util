@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import com.oneliang.exception.MethodNotSupportedException;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.concurrent.ThreadPool;
+import com.oneliang.util.concurrent.ThreadPool.Dispatcher;
 import com.oneliang.util.concurrent.ThreadPool.Processor;
 import com.oneliang.util.concurrent.ThreadTask;
 import com.oneliang.util.file.FileUtil;
@@ -44,8 +45,8 @@ public class TaskEngine {
         }
     };
     private Processor processor = new Processor() {
-        public void beforeRunTaskProcess(Queue<ThreadTask> threadTaskQueue) {
-            ThreadTask threadTask = threadTaskQueue.peek();
+        public void beforeRunTaskProcess(Dispatcher<ThreadTask> dispatcher) {
+            ThreadTask threadTask = dispatcher.peek();
             // ConcurrentLinkedQueue<ThreadTask>
             // queue=(ConcurrentLinkedQueue<ThreadTask>)threadTaskQueue;
             if (threadTask instanceof TaskNode) {

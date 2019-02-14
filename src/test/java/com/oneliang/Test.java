@@ -1,17 +1,12 @@
 package com.oneliang;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oneliang.util.common.MathUtil;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.common.TimeUtil;
@@ -73,20 +68,20 @@ public class Test {
         // }
         System.exit(0);
         System.out.println(TimeUtil.timeMillisToDate(1533279433000l));
-        JsonFactory jsonFactory = new JsonFactory();
+//        JsonFactory jsonFactory = new JsonFactory();
         // ByteArrayOutputStream byteArrayOutputStream = new
         // ByteArrayOutputStream();
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper = new ObjectMapper();
-        try {
-            JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(System.out, JsonEncoding.UTF8);
-            TestBean testBean = new TestBean();
-            testBean.setId("id");
-            testBean.setName("name");
-            jsonGenerator.writeObject(testBean);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper = new ObjectMapper();
+//        try {
+//            JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(System.out, JsonEncoding.UTF8);
+//            TestBean testBean = new TestBean();
+//            testBean.setId("id");
+//            testBean.setName("name");
+//            jsonGenerator.writeObject(testBean);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         // System.out.println(byteArrayOutputStream.size());
         System.exit(0);

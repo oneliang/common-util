@@ -16,7 +16,7 @@ public final class ThreadPool implements Runnable {
     private int totalTaskCount = 0;
     private int currentTaskCount = 0;
     private InnerThread[] allInnerThread = null;
-    private Queue<ThreadTask> threadTaskQueue = new ConcurrentLinkedQueue<ThreadTask>();
+    private Dispatcher<ThreadTask> dispatcher = new DefaultDispatcher<ThreadTask>();
     private DaemonThread daemonThread = null;
     private Thread thread = null;
     private Processor processor = null;
@@ -37,16 +37,16 @@ public final class ThreadPool implements Runnable {
         initialPool();
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                if (!this.threadTaskQueue.isEmpty()) {
+                if (!this.dispatcher.isEmpty()) {
                     int index = 0;
                     boolean hasAllInnerThreadBusy = true;
                     for (InnerThread innerThread : this.allInnerThread) {
                         if (innerThread != null && innerThread.isIdle()) {
                             hasAllInnerThreadBusy = false;
                             if (this.processor != null) {
-                                this.processor.beforeRunTaskProcess(this.threadTaskQueue);
+                                this.processor.beforeRunTaskProcess(this.dispatcher);
                             }
-                            ThreadTask threadTask = this.threadTaskQueue.poll();
+                            ThreadTask threadTask = this.dispatcher.poll();
                             if (threadTask != null) {
                                 logger.verbose("second");
                                 innerThread.setCurrentThreadTask(threadTask);
@@ -54,9 +54,9 @@ public final class ThreadPool implements Runnable {
                         } else if (innerThread == null) {
                             hasAllInnerThreadBusy = false;
                             if (this.processor != null) {
-                                this.processor.beforeRunTaskProcess(this.threadTaskQueue);
+                                this.processor.beforeRunTaskProcess(this.dispatcher);
                             }
-                            ThreadTask threadTask = this.threadTaskQueue.poll();
+                            ThreadTask threadTask = this.dispatcher.poll();
                             if (threadTask != null) {
                                 logger.verbose("first");
                                 innerThread = new InnerThread(this);
@@ -125,7 +125,16 @@ public final class ThreadPool implements Runnable {
             this.daemonThread.interrupt();
             this.daemonThread = null;
         }
-        this.threadTaskQueue.clear();
+        this.dispatcher.clear();
+    }
+
+    /**
+     * set dispatcher
+     * 
+     * @param dispatcher
+     */
+    public void setDispatcher(Dispatcher<ThreadTask> dispatcher) {
+        this.dispatcher = dispatcher;
     }
 
     /**
@@ -164,7 +173,7 @@ public final class ThreadPool implements Runnable {
      */
     public void addThreadTask(ThreadTask threadTask) {
         if (threadTask != null) {
-            this.threadTaskQueue.add(threadTask);
+            this.dispatcher.offer(threadTask);
             synchronized (this) {
                 this.totalTaskCount++;
                 this.notify();
@@ -395,8 +404,51 @@ public final class ThreadPool implements Runnable {
         /**
          * before run task
          * 
-         * @param threadTaskQueue
+         * @param dispatcher
          */
-        public abstract void beforeRunTaskProcess(Queue<ThreadTask> threadTaskQueue);
+        public abstract void beforeRunTaskProcess(Dispatcher<ThreadTask> dispatcher);
+    }
+
+    public static interface Dispatcher<T> extends Iterable<T> {
+        /**
+         * offer
+         * 
+         * @param e
+         * @return boolean
+         */
+        public abstract boolean offer(T t);
+
+        /**
+         * poll, will remove
+         * 
+         * @return T
+         */
+        public abstract T poll();
+
+        /**
+         * peek, but do not remove
+         * 
+         * @return T
+         */
+        public abstract T peek();
+
+        /**
+         * isEmpty
+         * 
+         * @return boolean
+         */
+        public abstract boolean isEmpty();
+
+        /**
+         * size
+         * 
+         * @return int
+         */
+        public abstract int size();
+
+        /**
+         * clear
+         */
+        public abstract void clear();
     }
 }
