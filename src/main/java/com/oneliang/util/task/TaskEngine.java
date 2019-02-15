@@ -24,7 +24,7 @@ import com.oneliang.util.logging.LoggerManager;
 
 public class TaskEngine {
 
-    private static final Logger logger = LoggerManager.getLogger(TaskNodeRunnable.class);
+    private static final Logger logger = LoggerManager.getLogger(TaskEngine.class);
 
     public static enum Mode {
         DEFAULT, SERVER
