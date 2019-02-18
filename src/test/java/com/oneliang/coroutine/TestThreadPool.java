@@ -29,11 +29,40 @@ public class TestThreadPool {
     public static void main(String[] args) {
         ThreadPool threadPool = new ThreadPool();
         threadPool.setMinThreads(1);
-        threadPool.setMaxThreads(1);
+        threadPool.setMaxThreads(2);
         threadPool.start();
+        TestRunnable testRunnable = new TestRunnable();
+        threadPool.addRunnable(testRunnable);
+        final Result<Integer> result = new Result<>();
+        Job job = new Job() {
+            public Job execute() {
+                Integer value = result.getValue();
+                if (value == null) {
+                    value = 1;
+                } else {
+                    value += 1;
+                }
+                result.setValue(value);
+                if (value == 10000) {
+                    logger.debug(String.format("result:%s", value));
+                    return null;
+                }
+                return this;
+            }
+        };
+        testRunnable.addJob(job);
         threadPool.addRunnable(new Runnable() {
             public void run() {
-                logger.info("aaabbbccc");
+                logger.debug("a begin");
+                Integer a = null;
+                while (a == null || a < 10000) {
+                    if (a == null) {
+                        a = 1;
+                    } else {
+                        a += 1;
+                    }
+                }
+                logger.debug(String.format("a result:%s", a));
             }
         });
     }

@@ -15,8 +15,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.oneliang.exception.MethodNotSupportedException;
 import com.oneliang.util.common.StringUtil;
+import com.oneliang.util.concurrent.Dispatcher;
 import com.oneliang.util.concurrent.ThreadPool;
-import com.oneliang.util.concurrent.ThreadPool.Dispatcher;
 import com.oneliang.util.concurrent.ThreadPool.Processor;
 import com.oneliang.util.file.FileUtil;
 import com.oneliang.util.logging.Logger;

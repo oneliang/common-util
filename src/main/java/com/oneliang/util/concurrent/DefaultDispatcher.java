@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.oneliang.util.concurrent.ThreadPool.Dispatcher;
-
 public class DefaultDispatcher<T> implements Dispatcher<T> {
 
     private Queue<T> queue = new ConcurrentLinkedQueue<>();
