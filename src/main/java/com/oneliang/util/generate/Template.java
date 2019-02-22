@@ -58,7 +58,7 @@ public class Template {
             String toFile = parameter.getToFile();
             byte[] toFileByteArray = null;
             if (object != null && StringUtil.isNotBlank(object.toString())) {
-                logger.debug(object);
+                logger.debug(object.toString());
                 toFileByteArray = object.toString().getBytes(Constants.Encoding.UTF8);
             } else {
                 logger.debug(templateContent);

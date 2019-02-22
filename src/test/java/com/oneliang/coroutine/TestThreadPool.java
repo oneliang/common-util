@@ -44,7 +44,7 @@ public class TestThreadPool {
                 }
                 result.setValue(value);
                 if (value == 10000) {
-                    logger.debug(String.format("result:%s", value));
+                    logger.debug("result:%s", value);
                     return null;
                 }
                 return this;
@@ -62,7 +62,7 @@ public class TestThreadPool {
                         a += 1;
                     }
                 }
-                logger.debug(String.format("a result:%s", a));
+                logger.debug("a result:%s", a);
             }
         });
     }

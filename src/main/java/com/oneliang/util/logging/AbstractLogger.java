@@ -20,45 +20,50 @@ public abstract class AbstractLogger implements Logger {
      * verbose
      * 
      * @param message
+     * @param args
      */
-    public void verbose(Object message) {
-        logByLevel(Level.VERBOSE, message, null);
+    public void verbose(String message, Object... args) {
+        logByLevel(Level.VERBOSE, message, null, args);
     }
 
     /**
      * debug
      * 
      * @param message
+     * @param args
      */
-    public void debug(Object message) {
-        logByLevel(Level.DEBUG, message, null);
+    public void debug(String message, Object... args) {
+        logByLevel(Level.DEBUG, message, null, args);
     }
 
     /**
      * info
      * 
      * @param message
+     * @param args
      */
-    public void info(Object message) {
-        logByLevel(Level.INFO, message, null);
+    public void info(String message, Object... args) {
+        logByLevel(Level.INFO, message, null, args);
     }
 
     /**
      * warning
      * 
      * @param message
+     * @param args
      */
-    public void warning(Object message) {
-        logByLevel(Level.WARNING, message, null);
+    public void warning(String message, Object... args) {
+        logByLevel(Level.WARNING, message, null, args);
     }
 
     /**
      * error
      * 
      * @param message
+     * @param args
      */
-    public void error(Object message) {
-        this.error(message, null);
+    public void error(String message, Object... args) {
+        this.error(message, null, args);
     }
 
     /**
@@ -66,18 +71,20 @@ public abstract class AbstractLogger implements Logger {
      * 
      * @param message
      * @param throwable
+     * @param args
      */
-    public void error(Object message, Throwable throwable) {
-        logByLevel(Level.ERROR, message, throwable);
+    public void error(String message, Throwable throwable, Object... args) {
+        logByLevel(Level.ERROR, message, throwable, args);
     }
 
     /**
      * fatal
      * 
      * @param message
+     * @param args
      */
-    public void fatal(Object message) {
-        logByLevel(Level.FATAL, message, null);
+    public void fatal(String message, Object... args) {
+        logByLevel(Level.FATAL, message, null, args);
     }
 
     /**
@@ -86,10 +93,11 @@ public abstract class AbstractLogger implements Logger {
      * @param level
      * @param message
      * @param throwable
+     * @param args
      */
-    private void logByLevel(Level level, Object message, Throwable throwable) {
+    private void logByLevel(Level level, String message, Throwable throwable, Object... args) {
         if (level.ordinal() >= this.level.ordinal()) {
-            log(level, message, throwable);
+            log(level, String.format(message, args), throwable);
         }
     }
 
@@ -100,5 +108,5 @@ public abstract class AbstractLogger implements Logger {
      * @param message
      * @param throwable
      */
-    protected abstract void log(Level level, Object message, Throwable throwable);
+    protected abstract void log(Level level, String message, Throwable throwable);
 }

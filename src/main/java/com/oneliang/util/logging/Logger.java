@@ -13,51 +13,58 @@ public abstract interface Logger {
      * verbose
      * 
      * @param message
+     * @param args
      */
-    public abstract void verbose(Object message);
+    public abstract void verbose(String message, Object... args);
 
     /**
      * debug
      * 
      * @param message
+     * @param args
      */
-    public abstract void debug(Object message);
+    public abstract void debug(String message, Object... args);
 
     /**
      * info
      * 
      * @param message
+     * @param args
      */
-    public abstract void info(Object message);
+    public abstract void info(String message, Object... args);
 
     /**
      * warning
      * 
      * @param message
+     * @param args
      */
-    public abstract void warning(Object message);
+    public abstract void warning(String message, Object... args);
 
     /**
      * error
      * 
      * @param message
+     * @param args
      */
-    public abstract void error(Object message);
+    public abstract void error(String message, Object... args);
 
     /**
      * error
      * 
      * @param message
      * @param throwable
+     * @param args
      */
-    public abstract void error(Object message, Throwable throwable);
+    public abstract void error(String message, Throwable throwable, Object... args);
 
     /**
      * fatal
      * 
      * @param message
+     * @param args
      */
-    public abstract void fatal(Object message);
+    public abstract void fatal(String message, Object... args);
 
     /**
      * destroy

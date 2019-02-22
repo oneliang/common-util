@@ -22,7 +22,7 @@ public class BaseLogger extends AbstractLogger {
      * @param message
      * @param throwable
      */
-    protected void log(Level level, Object message, Throwable throwable) {
+    protected void log(Level level, String message, Throwable throwable) {
         System.out.println(processMessage(level, message, throwable));
         if (throwable != null) {
             throwable.printStackTrace();
@@ -37,7 +37,7 @@ public class BaseLogger extends AbstractLogger {
      * @param throwable
      * @return String
      */
-    protected String processMessage(Level level, Object message, Throwable throwable) {
+    protected String processMessage(Level level, String message, Throwable throwable) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Constants.Symbol.MIDDLE_BRACKET_LEFT);
         stringBuilder.append(TimeUtil.dateToString(TimeUtil.getTime(), TimeUtil.YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND));

@@ -28,7 +28,7 @@ public class FileLogger extends BaseLogger {
         }
     }
 
-    protected void log(Level level, Object message, Throwable throwable) {
+    protected void log(Level level, String message, Throwable throwable) {
         String messageString = this.processMessage(level, message, throwable) + StringUtil.CRLF_STRING;
         try {
             this.fileOutputStream.write(messageString.getBytes(Constants.Encoding.UTF8));
