@@ -5,15 +5,15 @@ import java.util.Set;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
 
-public class StateMachine {
+public class StateMachine<T extends State> {
 
     private static final Logger logger = LoggerManager.getLogger(StateMachine.class);
-    private final State startState;
-    private State currentState = null;
+    private final StateMap<T> stateMap;
+    private T currentState = null;
 
-    public StateMachine(State startState) {
-        this.startState = startState;
-        this.currentState = this.startState;
+    public StateMachine(StateMap<T> stateMap) {
+        this.stateMap = stateMap;
+        this.currentState = this.stateMap.startState;
     }
 
     /**
@@ -48,12 +48,13 @@ public class StateMachine {
      * @param key
      * @throws StateNotFoundException
      */
+    @SuppressWarnings("unchecked")
     public void previousState(int key) throws StateNotFoundException {
         if (currentState == null) {
             logger.error("current state is null");
             return;
         }
-        this.currentState = this.currentState.previous(key);
+        this.currentState = (T) this.currentState.previous(key);
     }
 
     /**
@@ -88,25 +89,19 @@ public class StateMachine {
      * @param key
      * @throws StateNotFoundException
      */
+    @SuppressWarnings("unchecked")
     public void nextState(int key) throws StateNotFoundException {
         if (currentState == null) {
             logger.error("current state is null");
             return;
         }
-        this.currentState = this.currentState.next(key);
-    }
-
-    /**
-     * @return the startState
-     */
-    public State getStartState() {
-        return startState;
+        this.currentState = (T) this.currentState.next(key);
     }
 
     /**
      * @return the currentState
      */
-    public State getCurrentState() {
+    public T getCurrentState() {
         return currentState;
     }
 }
